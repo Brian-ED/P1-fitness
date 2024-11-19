@@ -13,4 +13,5 @@
 # Executables
 *.exe
 *.out
+*.pdb
 main
