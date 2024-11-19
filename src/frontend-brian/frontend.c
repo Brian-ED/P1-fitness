@@ -7,13 +7,13 @@ typedef enum {
 WindowMode window_mode = WINDOW_MODE_MAIN_MENU;
 
 void Start() {
-  SetTraceLogLevel(LOG_WARNING);
+  SetTraceLogLevel(LOG_WARNING); // Make it so that only important warnings are printed out
 
   const int screenWidth = 800;
   const int screenHeight = 450;
   const int fontSize = 40;
 
-  int frames_since_transition = WINDOW_MODE_MAIN_MENU;
+  int frames_since_transition = 0;
 
   InitWindow(screenWidth, screenHeight, "raylib [core] example - window flags");
 
