@@ -1,7 +1,7 @@
 {
   "code-runner.executorMap":
   {
-    "c": "cd $dir && zig cc -lm -lraylib main.c -o main && ./main && rm ./main",
+    "c": "cd $dir && zig cc -lm main.c -o main.exe && main.exe",
     // "c": "cd $dir && zig cc -lm -lraylib $fileName -o $fileNameWithoutExt && $dir$fileNameWithoutExt && rm $dir$fileNameWithoutExt",
   },
   "code-runner.fileDirectoryAsCwd": true
