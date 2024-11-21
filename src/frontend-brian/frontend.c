@@ -1,4 +1,5 @@
 #include <raylib.h>
+#include <math.h>
 #include <raymath.h>
 #include <stdio.h>
 
@@ -13,20 +14,18 @@
 //------------------------------------------------------------------------------------------
 typedef enum {
   WINDOW_MODE_MAIN_MENU,
-} WindowMode;
+} ApplicationMode;
 
-WindowMode window_mode = WINDOW_MODE_MAIN_MENU;
+ApplicationMode window_mode = WINDOW_MODE_MAIN_MENU;
 
 Vector2 GetWindowSize() {
     return (Vector2){GetScreenWidth(), GetScreenHeight()};
 };
 
 Vector2 Vector2Mod(Vector2 divided, Vector2 divider) {
-    int xd = (int)divider.x;
-    int yd = (int)divider.y;
     return (Vector2){
-        (float)( ((int)divided.x % xd + xd) % xd),
-        (float)( ((int)divided.y % yd + yd) % yd),
+        fmodf(divided.x, divider.x),
+        fmodf(divided.y, divider.y),
     };
 }
 
@@ -51,16 +50,17 @@ void DrawTextV(char *text, Vector2 pos, int fontSize, Color color) {
     DrawText(text, pos.x, pos.y, fontSize, color);
 }
 
-void DrawBackgroundTexture(Texture tex, Rectangle texSource, Vector2 texOffset, float fade) {
+void DrawBackgroundTexture(Texture tex, Vector2 texOffset, float fade) {
     Color whiteFade = Fade(WHITE, fade);
-    Vector2 texSize = {texSource.width, texSource.height};
+    Rectangle texture_source = {.x=0, .y=0, .width=tex.width, .height=tex.height};
     Vector2 backgroundSize = GetWindowSize();
+    texOffset = Vector2Subtract(texOffset, (Vector2){tex.width, tex.height});
 
     // drawing the image until it fills the entire background
-    for (float i=texOffset.x; i<backgroundSize.x; i+=texSource.width) {
-        for (float j=texOffset.y; j<backgroundSize.y; j+=texSource.height) {
-            // Draw a part of a texture defined by a rectangle
-            DrawTextureRec(tex, texSource, (Vector2){i, j}, whiteFade);
+    for (float i=texOffset.x; i<backgroundSize.x; i+=texture_source.width) {
+        for (float j=texOffset.y; j<backgroundSize.y; j+=texture_source.height) {
+            // Draw a part of a texture defined by the rectangle texture_source
+            DrawTextureRec(tex, texture_source, (Vector2){i, j}, whiteFade);
         }
     }
 }
@@ -93,8 +93,7 @@ void StartApplication(char *background_image_file_path) {
     // Loading background image
     Texture tex = LoadTexture(background_image_file_path);
     Vector2 texPosition = {.x=0, .y=0};
-    Vector2 texSize = {.x=936, .y=1000};
-    Rectangle texSource = {.x=0, .y=0, .width=texSize.x, .height=texSize.y};
+
     Color titleColor = BLACK;
 
     // run at 60 frames-per-second
@@ -109,7 +108,7 @@ void StartApplication(char *background_image_file_path) {
         GuiSetStyle(DEFAULT, TEXT_SIZE, (int)((float)fontSize*(1.0/3.0)));
         GuiSetStyle(DEFAULT, TEXT_LINE_SPACING, (int)((float)fontSize*(1.0/3.0)));
 
-        WindowMode last_window_mode = window_mode;
+        ApplicationMode last_window_mode = window_mode;
         int window_changed = (last_window_mode != window_mode);
 
         // x frame = 1 second
@@ -123,11 +122,9 @@ void StartApplication(char *background_image_file_path) {
         }
 
         BeginDrawing();
-
             texPosition.x += 2 * BACKGROUND_SPEED;
             texPosition.y += 1 * BACKGROUND_SPEED;
-            texPosition = Vector2Mod(texPosition, (Vector2){texSource.width, texSource.height});
-            texPosition = Vector2Subtract(texPosition, texSize);
+              = Vector2Mod(texPosition, (Vector2){tex.width, tex.height});
             ClearBackground(BLACK);
 
             if (window_mode == WINDOW_MODE_MAIN_MENU) {
@@ -140,7 +137,7 @@ void StartApplication(char *background_image_file_path) {
                     if (isTransitioning) {
                         fade = seconds_since_transition-1;
                     }
-                    DrawBackgroundTexture(tex, texSource, texPosition, fade*0.6);
+                    DrawBackgroundTexture(tex, texPosition, fade*0.6);
 
                     char *fitnessTitle = "Fitness";
                     int LengthOfFitnessTitle = MeasureText(fitnessTitle, fontSize);

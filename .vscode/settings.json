@@ -1,7 +1,7 @@
 {
   "code-runner.executorMap":
   {
-    "c": "cd $dir && zig cc main.c -o main.exe -lm -I /raylib/raylib/src/ -L /raylib/raylib/src -lraylib -lopengl32 -lgdi32 -lwinmm && main.exe",
+    "c": "cd $dir && zig cc main.c -o main.exe -lm -I /raylib/raylib/src/ -L /raylib/raylib/src -lraylib && ./main.exe",
     // "c": "cd $dir && zig cc -lm -lraylib $fileName -o $fileNameWithoutExt && $dir$fileNameWithoutExt && rm $dir$fileNameWithoutExt",
   },
   "code-runner.fileDirectoryAsCwd": true,
