@@ -1,7 +1,5 @@
 #include <raylib.h>
-#include <math.h>
 #include <raymath.h>
-#include <stdio.h>
 
 #define RAYGUI_IMPLEMENTATION
 #include "raygui.c"
@@ -124,7 +122,7 @@ void StartApplication(char *background_image_file_path) {
         BeginDrawing();
             texPosition.x += 2 * BACKGROUND_SPEED;
             texPosition.y += 1 * BACKGROUND_SPEED;
-              = Vector2Mod(texPosition, (Vector2){tex.width, tex.height});
+            texPosition  = Vector2Mod(texPosition, (Vector2){tex.width, tex.height});
             ClearBackground(BLACK);
 
             if (window_mode == WINDOW_MODE_MAIN_MENU) {
@@ -158,9 +156,7 @@ void StartApplication(char *background_image_file_path) {
                 DrawFPS(10, 10);
             }
             if (buttonOn) {
-                printf("ON!!\n");
-            }else{
-                printf("OFF!!\n");
+                printf("Button pressed!!\n");
             }
 
             fflush(stdout);
