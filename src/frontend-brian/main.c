@@ -1,6 +1,6 @@
 #include "frontend.c"
 
 int main() {
-  Start();
+  StartWindow();
   return 0;
 }
