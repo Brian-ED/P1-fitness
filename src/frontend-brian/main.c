@@ -3,6 +3,7 @@
 #include "frontend.c"
 
 int main() {
-  StartApplication("../../content/workout-images.png");
+  OpenApplication();
+  StartScreen("../../content/workout-images.png");
   return 0;
 }

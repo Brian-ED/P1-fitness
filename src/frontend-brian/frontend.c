@@ -5,6 +5,7 @@
 #include "raygui.c"
 
 #define BACKGROUND_SPEED 0.5
+#define FRAMES_PER_SECOND 60
 
 
 //------------------------------------------------------------------------------------------
@@ -66,12 +67,7 @@ void DrawBackgroundTexture(Texture tex, Vector2 texOffset, float fade) {
 //------------------------------------------------------------------------------------
 // Function for starting the fitness application
 //------------------------------------------------------------------------------------
-void StartApplication(char *background_image_file_path) {
-
-    // Variabe definitions
-    Vector2 window_size = {800.0, 450.0};
-    float seconds_since_transition = 0;
-    bool buttonOn = false;
+void OpenApplication() {
 
     // Setup before running app
     //--------------------------------------------------------------------------------------
@@ -80,7 +76,7 @@ void StartApplication(char *background_image_file_path) {
     SetTraceLogLevel(LOG_WARNING);
 
     // Open the actual window
-    InitWindow((int)window_size.x, (int)window_size.y, "Fitness");
+    InitWindow(800, 450, "Fitness");
 
     // Make it so the window is resizable when the app is run on Windows, Linux and Mac
     SetWindowState(FLAG_WINDOW_RESIZABLE);
@@ -88,19 +84,26 @@ void StartApplication(char *background_image_file_path) {
     // Setting exit key to nothing, so the ESCAPE key doesn't turn off the application
     SetExitKey(KEY_NULL);
 
+    // run at 60 frames-per-second
+    SetTargetFPS(FRAMES_PER_SECOND);
+
+}
+
+void StartScreen(char *background_image_file_path) {
+
+    // Variabe definitions
+    float seconds_since_transition = 0;
+    bool buttonOn = false;
+
     // Loading background image
     Texture tex = LoadTexture(background_image_file_path);
     Vector2 texPosition = {.x=0, .y=0};
 
     Color titleColor = BLACK;
 
-    // run at 60 frames-per-second
-    int fps = 60;
-    SetTargetFPS(fps);
-
     // Main application loop
     while (!WindowShouldClose()) {
-        window_size = GetWindowSize();
+        Vector2 window_size = GetWindowSize();
         Vector2 windowMiddle = Vector2Scale(window_size, 0.5);
         int fontSize = Max(window_size)/10;
         GuiSetStyle(DEFAULT, TEXT_SIZE, (int)((float)fontSize*(1.0/3.0)));
@@ -110,10 +113,9 @@ void StartApplication(char *background_image_file_path) {
         int window_changed = (last_window_mode != window_mode);
 
         // x frame = 1 second
-        // x = second/frame
-        // fps = frame/second
-        // x = 1/fps
-        seconds_since_transition += 1.0/(float)fps;
+        // x = second/frame = 1/FRAMES_PER_SECOND
+        // x = 1/FRAMES_PER_SECOND
+        seconds_since_transition += 1.0/(float)FRAMES_PER_SECOND;
 
         if (window_changed) {
             seconds_since_transition = 0.0;
