@@ -1,6 +1,6 @@
 #include "frontend.c"
 
 int main() {
-  StartWindow();
+  StartApplication("../../content/workout-images.png");
   return 0;
 }

@@ -7,6 +7,10 @@
 
 #define BACKGROUND_SPEED 0.5
 
+
+//------------------------------------------------------------------------------------------
+// Types and Structures Definition
+//------------------------------------------------------------------------------------------
 typedef enum {
   WINDOW_MODE_MAIN_MENU,
 } WindowMode;
@@ -26,8 +30,13 @@ Vector2 Vector2Mod(Vector2 divided, Vector2 divider) {
     };
 }
 
-Rectangle Vector2ToRectangle(Vector2 v1, Vector2 size) {
-    return (Rectangle){.x = v1.x, .y = v1.y, .width = size.x, .height = size.y};
+Rectangle Vector2ToRectangle(Vector2 position, Vector2 size) {
+    return (Rectangle){
+        .x      = position.x,
+        .y      = position.y,
+        .width  = size.x,
+        .height = size.y
+    };
 }
 
 float Min(Vector2 v) {
@@ -38,7 +47,7 @@ float Max(Vector2 v) {
 }
 
 // Draw text (using default font)
-void DrawTextV(const char *text, Vector2 pos, int fontSize, Color color) {
+void DrawTextV(char *text, Vector2 pos, int fontSize, Color color) {
     DrawText(text, pos.x, pos.y, fontSize, color);
 }
 
@@ -47,27 +56,42 @@ void DrawBackgroundTexture(Texture tex, Rectangle texSource, Vector2 texOffset, 
     Vector2 texSize = {texSource.width, texSource.height};
     Vector2 backgroundSize = GetWindowSize();
 
+    // drawing the image until it fills the entire background
     for (float i=texOffset.x; i<backgroundSize.x; i+=texSource.width) {
         for (float j=texOffset.y; j<backgroundSize.y; j+=texSource.height) {
-            DrawTextureRec(tex, texSource, (Vector2){i, j}, whiteFade); // Draw a part of a texture defined by a rectangle
+            // Draw a part of a texture defined by a rectangle
+            DrawTextureRec(tex, texSource, (Vector2){i, j}, whiteFade);
         }
     }
 }
 
-void StartWindow() {
-    SetTraceLogLevel(LOG_WARNING); // Make it so that only important warnings are printed out
+//------------------------------------------------------------------------------------
+// Function for starting the fitness application
+//------------------------------------------------------------------------------------
+void StartApplication(char *background_image_file_path) {
 
-    Vector2 windowSize = {800.0, 450.0};
-
+    // Variabe definitions
+    Vector2 window_size = {800.0, 450.0};
     float seconds_since_transition = 0;
-
-    InitWindow((int)windowSize.x, (int)windowSize.y, "Fitness");
-    SetWindowState(FLAG_WINDOW_RESIZABLE);
-    SetExitKey(KEY_NULL);
-
     bool buttonOn = false;
 
-    Texture tex = LoadTexture("../../content/workout-images.png");
+    // Setup before running app
+    //--------------------------------------------------------------------------------------
+
+    // Make it so that only important warnings are printed out
+    SetTraceLogLevel(LOG_WARNING);
+
+    // Open the actual window
+    InitWindow((int)window_size.x, (int)window_size.y, "Fitness");
+
+    // Make it so the window is resizable when the app is run on Windows, Linux and Mac
+    SetWindowState(FLAG_WINDOW_RESIZABLE);
+
+    // Setting exit key to nothing, so the ESCAPE key doesn't turn off the application
+    SetExitKey(KEY_NULL);
+
+    // Loading background image
+    Texture tex = LoadTexture(background_image_file_path);
     Vector2 texPosition = {.x=0, .y=0};
     Vector2 texSize = {.x=936, .y=1000};
     Rectangle texSource = {.x=0, .y=0, .width=texSize.x, .height=texSize.y};
@@ -77,10 +101,11 @@ void StartWindow() {
     int fps = 60;
     SetTargetFPS(fps);
 
+    // Main application loop
     while (!WindowShouldClose()) {
-        windowSize = GetWindowSize();
-        Vector2 windowMiddle = Vector2Scale(windowSize, 0.5);
-        int fontSize = Max(windowSize)/10;
+        window_size = GetWindowSize();
+        Vector2 windowMiddle = Vector2Scale(window_size, 0.5);
+        int fontSize = Max(window_size)/10;
         GuiSetStyle(DEFAULT, TEXT_SIZE, (int)((float)fontSize*(1.0/3.0)));
         GuiSetStyle(DEFAULT, TEXT_LINE_SPACING, (int)((float)fontSize*(1.0/3.0)));
 
@@ -108,7 +133,7 @@ void StartWindow() {
             if (window_mode == WINDOW_MODE_MAIN_MENU) {
                 if (seconds_since_transition<1) {
                     // Get color lerp interpolation between two colors, factor [0.0f..1.0f]
-                    DrawRectangle(0, 0, windowSize.x, windowSize.y, Fade(RAYWHITE, seconds_since_transition));
+                    DrawRectangle(0, 0, window_size.x, window_size.y, Fade(RAYWHITE, seconds_since_transition));
                 } else {
                     int isTransitioning = seconds_since_transition<2;
                     float fade = 1.0;
@@ -124,8 +149,8 @@ void StartWindow() {
                     DrawTextV(fitnessTitle, TextPos, fontSize, Fade(titleColor,fade));
 
                     if (!isTransitioning) {
-                        Vector2 recSize = Vector2Multiply(windowSize, (Vector2){0.20, 0.2});
-                        Vector2 recMiddle = {windowMiddle.x, windowSize.y*(11.0/15.0)};
+                        Vector2 recSize = Vector2Multiply(window_size, (Vector2){0.20, 0.2});
+                        Vector2 recMiddle = {windowMiddle.x, window_size.y*(11.0/15.0)};
                         Vector2 recTopLeft = Vector2Subtract(recMiddle, Vector2Scale(recSize,0.5));
                         Rectangle r = Vector2ToRectangle(recTopLeft, recSize);
                         buttonOn = GuiButton(r, "Type your\nwhy");
