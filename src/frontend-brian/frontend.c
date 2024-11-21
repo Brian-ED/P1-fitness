@@ -54,7 +54,7 @@ void DrawBackgroundTexture(Texture tex, Rectangle texSource, Vector2 texOffset, 
     }
 }
 
-void Start() {
+void StartWindow() {
     SetTraceLogLevel(LOG_WARNING); // Make it so that only important warnings are printed out
 
     Vector2 windowSize = {800.0, 450.0};
@@ -62,6 +62,7 @@ void Start() {
     float seconds_since_transition = 0;
 
     InitWindow((int)windowSize.x, (int)windowSize.y, "Fitness");
+    SetWindowState(FLAG_WINDOW_RESIZABLE);
     SetExitKey(KEY_NULL);
 
     bool buttonOn = false;
@@ -78,8 +79,10 @@ void Start() {
 
     while (!WindowShouldClose()) {
         windowSize = GetWindowSize();
-        Vector2 screenMiddle = Vector2Scale(windowSize, 0.5);
-        int fontSize = Min(windowSize)/10;
+        Vector2 windowMiddle = Vector2Scale(windowSize, 0.5);
+        int fontSize = Max(windowSize)/10;
+        GuiSetStyle(DEFAULT, TEXT_SIZE, (int)((float)fontSize*(1.0/3.0)));
+        GuiSetStyle(DEFAULT, TEXT_LINE_SPACING, (int)((float)fontSize*(1.0/3.0)));
 
         WindowMode last_window_mode = window_mode;
         int window_changed = (last_window_mode != window_mode);
@@ -117,15 +120,15 @@ void Start() {
                     char *fitnessTitle = "Fitness";
                     int LengthOfFitnessTitle = MeasureText(fitnessTitle, fontSize);
                     Vector2 TextSize = {LengthOfFitnessTitle, fontSize};
-                    Vector2 TextPos = Vector2Subtract(screenMiddle, Vector2Scale( TextSize, 0.5));
+                    Vector2 TextPos = Vector2Subtract(windowMiddle, Vector2Scale( TextSize, 0.5));
                     DrawTextV(fitnessTitle, TextPos, fontSize, Fade(titleColor,fade));
 
                     if (!isTransitioning) {
-                        Vector2 recSize = Vector2Multiply(windowSize, (Vector2){0.11, 0.2});
-                        Vector2 recMiddle = {screenMiddle.x, windowSize.y*(11.0/15.0)};
+                        Vector2 recSize = Vector2Multiply(windowSize, (Vector2){0.20, 0.2});
+                        Vector2 recMiddle = {windowMiddle.x, windowSize.y*(11.0/15.0)};
                         Vector2 recTopLeft = Vector2Subtract(recMiddle, Vector2Scale(recSize,0.5));
                         Rectangle r = Vector2ToRectangle(recTopLeft, recSize);
-                        buttonOn = GuiButton(r, "Calender");
+                        buttonOn = GuiButton(r, "Type your\nwhy");
                     }
 
                     ClearBackground(RAYWHITE);
