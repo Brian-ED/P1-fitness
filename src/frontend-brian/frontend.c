@@ -8,6 +8,8 @@
 #define FRAMES_PER_SECOND 60
 
 
+int debug_mode_grid = false;
+
 //------------------------------------------------------------------------------------------
 // Types and Structures Definition
 //------------------------------------------------------------------------------------------
@@ -21,14 +23,7 @@ Vector2 GetWindowSize() {
     return (Vector2){GetScreenWidth(), GetScreenHeight()};
 };
 
-Vector2 Vector2Mod(Vector2 divided, Vector2 divider) {
-    return (Vector2){
-        fmodf(divided.x, divider.x),
-        fmodf(divided.y, divider.y),
-    };
-}
-
-Rectangle Vector2ToRectangle(Vector2 position, Vector2 size) {
+Rectangle PosAndSizeToRectangle(Vector2 position, Vector2 size) {
     return (Rectangle){
         .x      = position.x,
         .y      = position.y,
@@ -49,17 +44,18 @@ void DrawTextV(char *text, Vector2 pos, int fontSize, Color color) {
     DrawText(text, pos.x, pos.y, fontSize, color);
 }
 
-void DrawBackgroundTexture(Texture tex, Vector2 texOffset, float fade) {
+void DrawBackgroundTexture(Texture background, float background_x, float background_y, float fade) {
     Color whiteFade = Fade(WHITE, fade);
-    Rectangle texture_source = {.x=0, .y=0, .width=tex.width, .height=tex.height};
-    Vector2 backgroundSize = GetWindowSize();
-    texOffset = Vector2Subtract(texOffset, (Vector2){tex.width, tex.height});
+    Vector2 windowSize = GetWindowSize();
+
+    background_x -= background.width;
+    background_y -= background.height;
 
     // drawing the image until it fills the entire background
-    for (float i=texOffset.x; i<backgroundSize.x; i+=texture_source.width) {
-        for (float j=texOffset.y; j<backgroundSize.y; j+=texture_source.height) {
+    for (float i=background_x; i<windowSize.x; i+=background.width) {
+        for (float j=background_y; j<windowSize.y; j+=background.height) {
             // Draw a part of a texture defined by the rectangle texture_source
-            DrawTextureRec(tex, texture_source, (Vector2){i, j}, whiteFade);
+            DrawTexture(background, i, j, whiteFade);
         }
     }
 }
@@ -76,7 +72,7 @@ void OpenApplication() {
     SetTraceLogLevel(LOG_WARNING);
 
     // Open the actual window
-    InitWindow(800, 450, "Fitness");
+    InitWindow(450, 800, "Fitness");
 
     // Make it so the window is resizable when the app is run on Windows, Linux and Mac
     SetWindowState(FLAG_WINDOW_RESIZABLE);
@@ -89,7 +85,7 @@ void OpenApplication() {
 
 }
 
-void StartScreen(char *background_image_file_path) {
+char *StartScreen(char *background_image_file_path) {
 
     // Variabe definitions
     float seconds_since_transition = 0;
@@ -97,7 +93,8 @@ void StartScreen(char *background_image_file_path) {
 
     // Loading background image
     Texture tex = LoadTexture(background_image_file_path);
-    Vector2 texPosition = {.x=0, .y=0};
+    float background_x = 0;
+    float background_y = 0;
 
     Color titleColor = BLACK;
 
@@ -121,10 +118,14 @@ void StartScreen(char *background_image_file_path) {
             seconds_since_transition = 0.0;
         }
 
+        if (IsKeyPressed(KEY_D)) {
+            debug_mode_grid = !debug_mode_grid;
+        }
         BeginDrawing();
-            texPosition.x += 2 * BACKGROUND_SPEED;
-            texPosition.y += 1 * BACKGROUND_SPEED;
-            texPosition  = Vector2Mod(texPosition, (Vector2){tex.width, tex.height});
+            background_x += 2 * BACKGROUND_SPEED;
+            background_y += 1 * BACKGROUND_SPEED;
+            background_x = fmodf(background_x, tex.width);
+            background_y = fmodf(background_y, tex.height);
             ClearBackground(BLACK);
 
             if (window_mode == WINDOW_MODE_MAIN_MENU) {
@@ -137,7 +138,7 @@ void StartScreen(char *background_image_file_path) {
                     if (isTransitioning) {
                         fade = seconds_since_transition-1;
                     }
-                    DrawBackgroundTexture(tex, texPosition, fade*0.6);
+                    DrawBackgroundTexture(tex, background_x, background_y, fade*0.6);
 
                     char *fitnessTitle = "Fitness";
                     int LengthOfFitnessTitle = MeasureText(fitnessTitle, fontSize);
@@ -146,10 +147,10 @@ void StartScreen(char *background_image_file_path) {
                     DrawTextV(fitnessTitle, TextPos, fontSize, Fade(titleColor,fade));
 
                     if (!isTransitioning) {
-                        Vector2 recSize = Vector2Multiply(window_size, (Vector2){0.20, 0.2});
+                        Vector2 recSize = Vector2Multiply(window_size, (Vector2){0.3, 0.2});
                         Vector2 recMiddle = {windowMiddle.x, window_size.y*(11.0/15.0)};
                         Vector2 recTopLeft = Vector2Subtract(recMiddle, Vector2Scale(recSize,0.5));
-                        Rectangle r = Vector2ToRectangle(recTopLeft, recSize);
+                        Rectangle r = PosAndSizeToRectangle(recTopLeft, recSize);
                         buttonOn = GuiButton(r, "Type your\nwhy");
                     }
 
@@ -157,14 +158,16 @@ void StartScreen(char *background_image_file_path) {
                 }
                 DrawFPS(10, 10);
             }
+            if (debug_mode_grid) {
+                GuiGrid(PosAndSizeToRectangle(Vector2Zero(), window_size), "Type your\nwhy",  window_size.x/4, 1, NULL);
+            }
+
             if (buttonOn) {
-                printf("Button pressed!!\n");
+                return "Type your\nwhy";
             }
 
             fflush(stdout);
         EndDrawing();
     }
-
-    UnloadTexture(tex);
-    CloseWindow();
+    return "";
 }
