@@ -3,18 +3,27 @@
 
 void welcome_back(){
     printf("Welcome back!");
-    bool update_personal_info;
-    if(update_personal_info) {
-        goto type_starter_personal_info;
-    }
 }
-void change_program_or_exercises(){
-    printf("Do you want to change workout program or exercises");
+
+bool update_personal_info_or_not(){
     bool yes;
-    if(yes){
-        goto days_a_week;
-    }
-    else{
-        goto work_out_program;
-    }
+    printf("Do you want to change personal info?");
+    scanf("%c", yes);
+    return yes;
+}
+
+bool change_days_a_week_or_not(){
+    bool yes;
+    printf("Do you want to change how many days you can work out a week?\n
+    Type 1 for yes.\nType 0 for no");
+    scanf("%c", yes);
+    return yes;
+}
+
+bool change_exercises_or_not(){
+    bool yes;
+    printf("Do you want to change exercises?\n
+    Type 1 for yes.\nType 0 for no");
+    scanf("%c", yes);
+    return yes;
 }
