@@ -9,6 +9,7 @@
 
 
 int debug_mode_grid = false;
+char *ui_center_button_text = NULL;
 
 //------------------------------------------------------------------------------------------
 // Types and Structures Definition
@@ -32,9 +33,6 @@ Rectangle PosAndSizeToRectangle(Vector2 position, Vector2 size) {
     };
 }
 
-float Min(Vector2 v) {
-    return v.x>v.y ?v.x :v.y;
-}
 float Max(Vector2 v) {
     return v.x>v.y ?v.y :v.x;
 }
@@ -46,16 +44,21 @@ void DrawTextV(char *text, Vector2 pos, int fontSize, Color color) {
 
 void DrawBackgroundTexture(Texture background, float background_x, float background_y, float fade) {
     Color whiteFade = Fade(WHITE, fade);
-    Vector2 windowSize = GetWindowSize();
+    Vector2 window_size = GetWindowSize();
+
+    float scale = Max(Vector2Divide(window_size, (Vector2){background.width, background.height}));
+
+    background_x *= scale;
+    background_y *= scale;
 
     background_x -= background.width;
     background_y -= background.height;
 
     // drawing the image until it fills the entire background
-    for (float i=background_x; i<windowSize.x; i+=background.width) {
-        for (float j=background_y; j<windowSize.y; j+=background.height) {
+    for (float i=background_x; i<window_size.x; i+=background.width*scale) {
+        for (float j=background_y; j<window_size.y; j+=background.height*scale) {
             // Draw a part of a texture defined by the rectangle texture_source
-            DrawTexture(background, i, j, whiteFade);
+            DrawTextureEx(background, (Vector2){i, j}, 0, scale, whiteFade);  // Draw a Texture2D with extended parameters
         }
     }
 }
@@ -85,14 +88,17 @@ void OpenApplication() {
 
 }
 
-char *StartScreen(char *background_image_file_path) {
+//------------------------------------------------------------------------------------
+// Function for starting the fitness application
+//------------------------------------------------------------------------------------
+char *StartScreen() {
 
     // Variabe definitions
     float seconds_since_transition = 0;
-    bool buttonOn = false;
+    char *buttonPressed = NULL;
 
     // Loading background image
-    Texture tex = LoadTexture(background_image_file_path);
+    Texture tex = LoadTexture(BACKGROUND_IMAGE);
     float background_x = 0;
     float background_y = 0;
 
@@ -143,27 +149,41 @@ char *StartScreen(char *background_image_file_path) {
                     char *fitnessTitle = "Fitness";
                     int LengthOfFitnessTitle = MeasureText(fitnessTitle, fontSize);
                     Vector2 TextSize = {LengthOfFitnessTitle, fontSize};
-                    Vector2 TextPos = Vector2Subtract(windowMiddle, Vector2Scale( TextSize, 0.5));
-                    DrawTextV(fitnessTitle, TextPos, fontSize, Fade(titleColor,fade));
+                    Vector2 text_position = Vector2Subtract(windowMiddle, Vector2Scale(TextSize, 0.5));
+                    DrawRectangleV(Vector2Subtract(text_position, (Vector2){7,7}), Vector2Add(TextSize, (Vector2){14,14}), Fade(BLACK,fade));
+                    DrawRectangleV(Vector2Subtract(text_position, (Vector2){4,4}), Vector2Add(TextSize, (Vector2){8,8}), Fade(WHITE,fade));
+                    DrawTextV(fitnessTitle, text_position, fontSize, Fade(titleColor,fade));
 
                     if (!isTransitioning) {
-                        Vector2 recSize = Vector2Multiply(window_size, (Vector2){0.3, 0.2});
-                        Vector2 recMiddle = {windowMiddle.x, window_size.y*(11.0/15.0)};
-                        Vector2 recTopLeft = Vector2Subtract(recMiddle, Vector2Scale(recSize,0.5));
-                        Rectangle r = PosAndSizeToRectangle(recTopLeft, recSize);
-                        buttonOn = GuiButton(r, "Type your\nwhy");
+                        Vector2 rec_size = Vector2Multiply(window_size, (Vector2){0.3, 0.2});
+                        Vector2 rec_middle = {windowMiddle.x, window_size.y*(11.0/15.0)};
+                        Vector2 rec_top_left = Vector2Subtract(rec_middle, Vector2Scale(rec_size,0.5));
+                        Rectangle r = PosAndSizeToRectangle(rec_top_left, rec_size);
+
+                        int any_button_pressed = 0;
+                        if (ui_center_button_text != NULL) {
+                            int is_button_pressed = GuiButton(r, ui_center_button_text);
+                            if (is_button_pressed) {
+                                any_button_pressed = true;
+                                buttonPressed = ui_center_button_text;
+                            }
+                        }
+                        if (any_button_pressed) {
+                            ui_center_button_text = NULL;
+                        }
                     }
 
                     ClearBackground(RAYWHITE);
                 }
                 DrawFPS(10, 10);
             }
+
             if (debug_mode_grid) {
-                GuiGrid(PosAndSizeToRectangle(Vector2Zero(), window_size), "Type your\nwhy",  window_size.x/4, 1, NULL);
+                GuiGrid(PosAndSizeToRectangle(Vector2Zero(), window_size), NULL,  window_size.x/10, 1, NULL);
             }
 
-            if (buttonOn) {
-                return "Type your\nwhy";
+            if (buttonPressed != NULL) {
+                return buttonPressed;
             }
 
             fflush(stdout);
