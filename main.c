@@ -23,9 +23,9 @@ int main() {
             goto start_app; // starting over
         }
 
-    welcome_back:
+    welcome_back: // User has been in the application before, so we say welcome back.
         printf("Welcome back!");
-        goto end_program;
+        goto end_program; // TODO: "goto end_program;" ends the program, but when a user comes back, they should be going to the "update weight" question.
 
     start_introduction:
         printf("Hey! you need to type in your user information!");
