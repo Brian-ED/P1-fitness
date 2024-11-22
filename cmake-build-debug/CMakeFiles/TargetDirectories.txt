@@ -1,0 +1,3 @@
+C:/Users/lukas/CLionProjects/P1-fitness/cmake-build-debug/CMakeFiles/P1_fitness.dir
+C:/Users/lukas/CLionProjects/P1-fitness/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/lukas/CLionProjects/P1-fitness/cmake-build-debug/CMakeFiles/rebuild_cache.dir
