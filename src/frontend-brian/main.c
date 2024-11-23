@@ -4,17 +4,19 @@
 #define BACKGROUND_IMAGE "../../content/workout-images.png"
 #include "frontend.c"
 
+Interface titleWindow = {
+    .title = "Fitness",
+    .middle_button = "Type your\nWhy",
+};
+
 int main() {
-  OpenApplication();
+    OpenApplication();
 
-  char *why_text = "Type your\nWhy";
-  ui_center_button_text = why_text;
+    char *button_pressed = UseInterface(titleWindow);
 
-  char *button_pressed = StartScreen();
+    if (button_pressed == titleWindow.middle_button) {
+        printf("You pressed the middle button!\n");
+    }
 
-  if (button_pressed == why_text) {
-    printf("You pressed the button!\n");
-  }
-
-  return 0;
+    return 0;
 }
