@@ -7,6 +7,7 @@
 
 #define BACKGROUND_SPEED 0.5
 #define FRAMES_PER_SECOND 60
+#define SECONDS_PER_FRAME (1.0/(float)FRAMES_PER_SECOND)
 #define TEXT_LENGTH 30
 
 Texture background_image;
@@ -45,6 +46,12 @@ Rectangle InArea(Vector2 position, Vector2 size) {
     return (Rectangle){position.x, position.y, size.x, size.y};
 }
 
+void DrawNewEmptyFrame() {
+    EndDrawing(); // Ends drawing the last frame
+    BeginDrawing(); // Begins drawing the next frame
+    if (WindowShouldClose()) exit(0);
+}
+
 void DrawBackgroundWithFade(float fade) {
     Color whiteFade = Fade(WHITE, fade);
     Vector2 window_size = GetWindowSize();
@@ -58,10 +65,8 @@ void DrawBackgroundWithFade(float fade) {
 
 
     // drawing the image until it fills the entire background of the window
-    for (float i = scale*(background_x-background_image.width); i < window_size.x; i += background_image.width * scale)
-    {
-        for (float j = scale*(background_y-background_image.height); j < window_size.y; j += background_image.height * scale)
-        {
+    for (float i = scale*(background_x-background_image.width); i < window_size.x; i += background_image.width * scale) {
+        for (float j = scale*(background_y-background_image.height); j < window_size.y; j += background_image.height * scale) {
             // Draw a part of a texture defined by the rectangle texture_source
             DrawTextureEx(background_image, (Vector2){i, j}, 0, scale, whiteFade); // Draw a Texture2D with extended parameters
         }
@@ -83,30 +88,38 @@ void DrawBackgroundWithFade(float fade) {
 }
 
 void DrawNewFrame() {
-    EndDrawing(); // Begins the drawing of next frame
-    BeginDrawing(); // Begins the drawing of next frame
-
+    DrawNewEmptyFrame();
     ClearBackground(RAYWHITE);
     DrawBackgroundWithFade(0.6);
-    if (WindowShouldClose()) {
-        exit(0);
-    }
 }
 
-void DrawTitle(char *title, float font_size, Vector2 position_of_title_0_to_1) {
+void DrawTitle(char *title, float text_height, Vector2 position_of_title_0_to_1) {
+
     float x = GetWindowSize().x * position_of_title_0_to_1.x;
     float y = GetWindowSize().y * position_of_title_0_to_1.y;
+    int text_pixel_height = (int)(Min(GetWindowSize())*text_height);
 
-    int width_of_title = MeasureText(title, Min(GetWindowSize())*font_size);
-    int height_of_title = Min(GetWindowSize())*font_size;
+    int width_of_title = MeasureText(title, text_pixel_height);
+    int height_of_title = text_pixel_height;
 
     Vector2 text_position = {
         x - width_of_title/2,
-        x - height_of_title/2,
+        y - height_of_title/2,
     };
     DrawRectangle(text_position.x-7, text_position.y-7, width_of_title+14, height_of_title+14, BLACK);
     DrawRectangle(text_position.x-4, text_position.y-4, width_of_title+8, height_of_title+8, WHITE);
-    DrawText(title, text_position.x, text_position.y, Min(GetWindowSize())*font_size, BLACK);
+    DrawText(title, text_position.x, text_position.y, text_pixel_height, BLACK);
+}
+
+int DrawButton(char *text, float text_height, Rectangle area_0_to_1) {
+    Vector2 rec_size = Vector2Multiply(GetWindowSize(), (Vector2){area_0_to_1.width, area_0_to_1.height});
+    Vector2 rec_middle = Vector2Multiply(GetWindowSize(), (Vector2){area_0_to_1.x, area_0_to_1.y});
+    Vector2 rec_top_left = Vector2Subtract(rec_middle, Vector2Scale(rec_size, 0.5));
+    Rectangle r = PosAndSizeToRectangle(rec_top_left, rec_size);
+    GuiSetStyle(DEFAULT, TEXT_SIZE, (int)(Min(GetWindowSize()) * text_height));
+    GuiSetStyle(DEFAULT, TEXT_LINE_SPACING, (int)(Min(GetWindowSize())*text_height));
+
+    return GuiButton(r, text);
 }
 
 //------------------------------------------------------------------------------------
@@ -118,7 +131,7 @@ void OpenApplication() {
     SetTraceLogLevel(LOG_WARNING);
 
     // Open the actual window
-    InitWindow(450, 800, "Fitness");
+    InitWindow(1, 1, "Fitness");
 
     // Make the window resizable
     SetWindowState(FLAG_WINDOW_RESIZABLE);
@@ -132,42 +145,26 @@ void OpenApplication() {
     // Loading background image
     background_image = LoadTexture(BACKGROUND_IMAGE);
 
-    float seconds_since_start = 0.0;
+    float seconds_since_start;
 
-    // Main application loop
-    while (seconds_since_start < 2)
-    {
-        if (WindowShouldClose()) {
-            exit(0);
-        }
-        Vector2 window_size = GetWindowSize();
-
-        // x frame = 1 second
-        // x = second/frame = 1/FRAMES_PER_SECOND
-        // x = 1/FRAMES_PER_SECOND
-        seconds_since_start += 1.0 / (float)FRAMES_PER_SECOND;
-
-        BeginDrawing();
-            if (seconds_since_start < 1) {
-                ClearBackground(BLACK);
-                DrawRectangle(0, 0, window_size.x, window_size.y, Fade(RAYWHITE, seconds_since_start));
-            } else {
-                ClearBackground(RAYWHITE);
-                float fade = seconds_since_start - 1;
-                DrawBackgroundWithFade(fade * 0.6);
-            }
-        EndDrawing();
-    }
     BeginDrawing();
-}
+    ClearBackground(BLACK);
 
-int DrawButton(char *text, float font_size, Rectangle area_0_to_1) {
-    Vector2 rec_size = Vector2Multiply(GetWindowSize(), (Vector2){area_0_to_1.width, area_0_to_1.height});
-    Vector2 rec_middle = Vector2Multiply(GetWindowSize(), (Vector2){area_0_to_1.x, area_0_to_1.y});
-    Vector2 rec_top_left = Vector2Subtract(rec_middle, Vector2Scale(rec_size, 0.5));
-    Rectangle r = PosAndSizeToRectangle(rec_top_left, rec_size);
-    GuiSetStyle(DEFAULT, TEXT_SIZE, (int)( Min(GetWindowSize()) * font_size));
-    GuiSetStyle(DEFAULT, TEXT_LINE_SPACING, (int)(Min(GetWindowSize())*font_size));
+    seconds_since_start = 0.0;
+    while (seconds_since_start < 1) {
+        // x frames = 1 second  // divide "frames" on both sides.
+        // x = second/frames = SECONDS_PER_FRAME
+        seconds_since_start += SECONDS_PER_FRAME;
+        DrawNewEmptyFrame();
+        ClearBackground(BLACK);
+        DrawRectangleV(AtPos(0, 0), GetWindowSize(), Fade(RAYWHITE, seconds_since_start));
+    }
 
-    return GuiButton(r, text);
+    seconds_since_start = 0.0;
+    while (seconds_since_start < 1) {
+        seconds_since_start += SECONDS_PER_FRAME;
+        DrawNewEmptyFrame();
+        ClearBackground(RAYWHITE);
+        DrawBackgroundWithFade(seconds_since_start * 0.6);
+    }
 }
