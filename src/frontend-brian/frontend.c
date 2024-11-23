@@ -42,7 +42,7 @@ Rectangle PosAndSizeToRectangle(Vector2 position, Vector2 size)
         .height = size.y};
 }
 
-float Max(Vector2 v)
+float Min(Vector2 v)
 {
     return v.x > v.y ? v.y : v.x;
 }
@@ -69,7 +69,7 @@ void DrawBackgroundWithFade(float fade)
     background_x = fmodf(background_x, background_image.width);
     background_y = fmodf(background_y, background_image.height);
 
-    float scale = Max(Vector2Divide(window_size, (Vector2){background_image.width, background_image.height}));
+    float scale = Min(Vector2Divide(window_size, (Vector2){background_image.width, background_image.height}));
 
 
     // drawing the image until it fills the entire background of the window
@@ -84,13 +84,13 @@ void DrawBackgroundWithFade(float fade)
 
     // Toggle debug mode if user pressed ctrl+D
     if (IsKeyDown(KEY_LEFT_CONTROL) && IsKeyPressed(KEY_D)) {
-        DrawFPS(10, 10);
         debug_mode_grid = !debug_mode_grid;
     }
 
     // Toggle
     if (debug_mode_grid) {
-        GuiGrid(InArea(AtPos(0,0), GetWindowSize()), NULL, GetWindowSize().x/10, 1, NULL);
+        DrawFPS(10, 10);
+        GuiGrid(InArea(AtPos(0,0), GetWindowSize()), Vector2Scale(GetWindowSize(),0.1), 1, NULL);
     }
 
     // Finish all printing out to terminal
@@ -112,8 +112,8 @@ void DrawTitle(char *title, float fontSize, Vector2 position_of_title) {
     float x_0_to_1 = position_of_title.x;
     float y_0_to_1 = position_of_title.y;
 
-    int width_of_title = MeasureText(title, Max(GetWindowSize())*fontSize);
-    int height_of_title = Max(GetWindowSize())*fontSize;
+    int width_of_title = MeasureText(title, Min(GetWindowSize())*fontSize);
+    int height_of_title = Min(GetWindowSize())*fontSize;
 
     Vector2 text_position = {
         (GetWindowSize().x * x_0_to_1) - width_of_title/2,
@@ -121,7 +121,7 @@ void DrawTitle(char *title, float fontSize, Vector2 position_of_title) {
     };
     DrawRectangle(text_position.x-7, text_position.y-7, width_of_title+14, height_of_title+14, BLACK);
     DrawRectangle(text_position.x-4, text_position.y-4, width_of_title+8, height_of_title+8, WHITE);
-    DrawText(title, text_position.x, text_position.y, Max(GetWindowSize())*fontSize, BLACK);
+    DrawText(title, text_position.x, text_position.y, Min(GetWindowSize())*fontSize, BLACK);
 }
 
 //------------------------------------------------------------------------------------
@@ -152,6 +152,9 @@ void OpenApplication() {
     // Main application loop
     while (seconds_since_start < 2)
     {
+        if (WindowShouldClose()) {
+            exit(0);
+        }
         Vector2 window_size = GetWindowSize();
 
         // x frame = 1 second
@@ -168,19 +171,18 @@ void OpenApplication() {
                 float fade = seconds_since_start - 1;
                 DrawBackgroundWithFade(fade * 0.6);
             }
-            DrawFPS(10, 10);
         EndDrawing();
     }
     BeginDrawing();
 }
 
-int DrawButton(char *text, float fontSize, float x_0_to_1, float y_0_to_1, float width_0_to_1, float height_0_to_1) {
-    Vector2 rec_size = Vector2Multiply(GetWindowSize(), (Vector2){width_0_to_1, height_0_to_1});
-    Vector2 rec_middle = Vector2Multiply(GetWindowSize(), (Vector2){x_0_to_1, y_0_to_1});
+int DrawButton(char *text, float fontSize, Rectangle area_0_to_1) {
+    Vector2 rec_size = Vector2Multiply(GetWindowSize(), (Vector2){area_0_to_1.width, area_0_to_1.height});
+    Vector2 rec_middle = Vector2Multiply(GetWindowSize(), (Vector2){area_0_to_1.x, area_0_to_1.y});
     Vector2 rec_top_left = Vector2Subtract(rec_middle, Vector2Scale(rec_size, 0.5));
     Rectangle r = PosAndSizeToRectangle(rec_top_left, rec_size);
-    GuiSetStyle(DEFAULT, TEXT_SIZE, (int)( Max(GetWindowSize()) * fontSize));
-    GuiSetStyle(DEFAULT, TEXT_LINE_SPACING, (int)(Max(GetWindowSize())*fontSize));
+    GuiSetStyle(DEFAULT, TEXT_SIZE, (int)( Min(GetWindowSize()) * fontSize));
+    GuiSetStyle(DEFAULT, TEXT_LINE_SPACING, (int)(Min(GetWindowSize())*fontSize));
 
     return GuiButton(r, text);
 }

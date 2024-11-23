@@ -8,21 +8,23 @@ int main() {
     OpenApplication();
 
     char *title = "Fitness";
-    char *middle_button = "Type your\nWhy";
+    float title_size = 0.1;
+
+    char *button_text = "Type your\nWhy";
+    float button_size = 0.03;
+
     int button_pressed = 0;
-    float fontSize = 0.1;
 
     // Main application loop
     while (!button_pressed) {
         DrawNewFrame();
 
-        DrawTitle(title, fontSize, AtPos(0.5, 0.5));
+        DrawTitle(title, title_size, AtPos(0.5, 0.5));
 
-        button_pressed = DrawButton(middle_button, fontSize/3.0, 0.5, 11.0/15.0, 0.3, 0.2);
+        button_pressed = DrawButton(button_text, button_size, InArea(AtPos(0.5, 11.0/15.0), WithSize(0.3, 0.2)));
         if (button_pressed) {
             printf("You pressed the middle button!\n");
         }
-
     }
 
     return 0;
