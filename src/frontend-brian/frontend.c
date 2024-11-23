@@ -15,17 +15,6 @@ float background_x = 0;
 float background_y = 0;
 
 //------------------------------------------------------------------------------------------
-// Type and Structure Definitions
-//------------------------------------------------------------------------------------------
-typedef struct {
-    char *title;
-    char *middle_button;
-    char *left_button;
-    char *right_button;
-    void (*customUIFunction)(void); // This is if for if you want to add custom UI features
-} Interface;
-
-//------------------------------------------------------------------------------------------
 // Function Definitions
 //------------------------------------------------------------------------------------------
 Vector2 GetWindowSize()
@@ -108,20 +97,20 @@ void DrawNewFrame() {
     }
 }
 
-void DrawTitle(char *title, float fontSize, Vector2 position_of_title) {
-    float x_0_to_1 = position_of_title.x;
-    float y_0_to_1 = position_of_title.y;
+void DrawTitle(char *title, float font_size, Vector2 position_of_title_0_to_1) {
+    float x = GetWindowSize().x * position_of_title_0_to_1.x;
+    float y = GetWindowSize().y * position_of_title_0_to_1.y;
 
-    int width_of_title = MeasureText(title, Min(GetWindowSize())*fontSize);
-    int height_of_title = Min(GetWindowSize())*fontSize;
+    int width_of_title = MeasureText(title, Min(GetWindowSize())*font_size);
+    int height_of_title = Min(GetWindowSize())*font_size;
 
     Vector2 text_position = {
-        (GetWindowSize().x * x_0_to_1) - width_of_title/2,
-        (GetWindowSize().y * x_0_to_1) - height_of_title/2,
+        x - width_of_title/2,
+        x - height_of_title/2,
     };
     DrawRectangle(text_position.x-7, text_position.y-7, width_of_title+14, height_of_title+14, BLACK);
     DrawRectangle(text_position.x-4, text_position.y-4, width_of_title+8, height_of_title+8, WHITE);
-    DrawText(title, text_position.x, text_position.y, Min(GetWindowSize())*fontSize, BLACK);
+    DrawText(title, text_position.x, text_position.y, Min(GetWindowSize())*font_size, BLACK);
 }
 
 //------------------------------------------------------------------------------------
@@ -176,13 +165,13 @@ void OpenApplication() {
     BeginDrawing();
 }
 
-int DrawButton(char *text, float fontSize, Rectangle area_0_to_1) {
+int DrawButton(char *text, float font_size, Rectangle area_0_to_1) {
     Vector2 rec_size = Vector2Multiply(GetWindowSize(), (Vector2){area_0_to_1.width, area_0_to_1.height});
     Vector2 rec_middle = Vector2Multiply(GetWindowSize(), (Vector2){area_0_to_1.x, area_0_to_1.y});
     Vector2 rec_top_left = Vector2Subtract(rec_middle, Vector2Scale(rec_size, 0.5));
     Rectangle r = PosAndSizeToRectangle(rec_top_left, rec_size);
-    GuiSetStyle(DEFAULT, TEXT_SIZE, (int)( Min(GetWindowSize()) * fontSize));
-    GuiSetStyle(DEFAULT, TEXT_LINE_SPACING, (int)(Min(GetWindowSize())*fontSize));
+    GuiSetStyle(DEFAULT, TEXT_SIZE, (int)( Min(GetWindowSize()) * font_size));
+    GuiSetStyle(DEFAULT, TEXT_LINE_SPACING, (int)(Min(GetWindowSize())*font_size));
 
     return GuiButton(r, text);
 }
