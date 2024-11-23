@@ -17,13 +17,11 @@ float background_y = 0;
 //------------------------------------------------------------------------------------------
 // Function Definitions
 //------------------------------------------------------------------------------------------
-Vector2 GetWindowSize()
-{
+Vector2 GetWindowSize() {
     return (Vector2){GetScreenWidth(), GetScreenHeight()};
 };
 
-Rectangle PosAndSizeToRectangle(Vector2 position, Vector2 size)
-{
+Rectangle PosAndSizeToRectangle(Vector2 position, Vector2 size) {
     return (Rectangle){
         .x = position.x,
         .y = position.y,
@@ -31,8 +29,7 @@ Rectangle PosAndSizeToRectangle(Vector2 position, Vector2 size)
         .height = size.y};
 }
 
-float Min(Vector2 v)
-{
+float Min(Vector2 v) {
     return v.x > v.y ? v.y : v.x;
 }
 
@@ -48,8 +45,7 @@ Rectangle InArea(Vector2 position, Vector2 size) {
     return (Rectangle){position.x, position.y, size.x, size.y};
 }
 
-void DrawBackgroundWithFade(float fade)
-{
+void DrawBackgroundWithFade(float fade) {
     Color whiteFade = Fade(WHITE, fade);
     Vector2 window_size = GetWindowSize();
 
