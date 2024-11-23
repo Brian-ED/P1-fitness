@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include <raylib.h>
 #include <raymath.h>
 
@@ -46,13 +47,19 @@ float Max(Vector2 v)
     return v.x > v.y ? v.y : v.x;
 }
 
-// Draw text (using default font)
-void DrawTextV(char *text, Vector2 pos, int fontSize, Color color)
-{
-    DrawText(text, pos.x, pos.y, fontSize, color);
+Vector2 AtPos(float x, float y) {
+    return (Vector2){x, y};
 }
 
-void DrawBackgroundTexture(float fade)
+Vector2 WithSize(float x, float y) {
+    return (Vector2){x, y};
+}
+
+Rectangle InArea(Vector2 position, Vector2 size) {
+    return (Rectangle){position.x, position.y, size.x, size.y};
+}
+
+void DrawBackgroundWithFade(float fade)
 {
     Color whiteFade = Fade(WHITE, fade);
     Vector2 window_size = GetWindowSize();
@@ -74,6 +81,47 @@ void DrawBackgroundTexture(float fade)
             DrawTextureEx(background_image, (Vector2){i, j}, 0, scale, whiteFade); // Draw a Texture2D with extended parameters
         }
     }
+
+    // Toggle debug mode if user pressed ctrl+D
+    if (IsKeyDown(KEY_LEFT_CONTROL) && IsKeyPressed(KEY_D)) {
+        DrawFPS(10, 10);
+        debug_mode_grid = !debug_mode_grid;
+    }
+
+    // Toggle
+    if (debug_mode_grid) {
+        GuiGrid(InArea(AtPos(0,0), GetWindowSize()), NULL, GetWindowSize().x/10, 1, NULL);
+    }
+
+    // Finish all printing out to terminal
+    fflush(stdout);
+}
+
+void DrawNewFrame() {
+    EndDrawing(); // Begins the drawing of next frame
+    BeginDrawing(); // Begins the drawing of next frame
+
+    ClearBackground(RAYWHITE);
+    DrawBackgroundWithFade(0.6);
+    if (WindowShouldClose()) {
+        exit(0);
+    }
+}
+
+void DrawTitle(char *title, float fontSize, Vector2 position_of_title) {
+    float x_0_to_1 = position_of_title.x;
+    float y_0_to_1 = position_of_title.y;
+
+    int width_of_title = MeasureText(title, Max(GetWindowSize())*fontSize);
+    int height_of_title = Max(GetWindowSize())*fontSize;
+
+    Vector2 text_position = {
+        (GetWindowSize().x * x_0_to_1) - width_of_title/2,
+        (GetWindowSize().y * x_0_to_1) - height_of_title/2,
+    };
+    DrawRectangle(text_position.x-7, text_position.y-7, width_of_title+14, height_of_title+14, BLACK);
+    DrawRectangle(text_position.x-4, text_position.y-4, width_of_title+8, height_of_title+8, WHITE);
+    DrawText(title, text_position.x, text_position.y, Max(GetWindowSize())*fontSize, BLACK);
 }
 
 //------------------------------------------------------------------------------------
@@ -102,7 +150,7 @@ void OpenApplication() {
     float seconds_since_start = 0.0;
 
     // Main application loop
-    while (!(WindowShouldClose() || seconds_since_start > 2))
+    while (seconds_since_start < 2)
     {
         Vector2 window_size = GetWindowSize();
 
@@ -118,85 +166,21 @@ void OpenApplication() {
             } else {
                 ClearBackground(RAYWHITE);
                 float fade = seconds_since_start - 1;
-                DrawBackgroundTexture(fade * 0.6);
+                DrawBackgroundWithFade(fade * 0.6);
             }
             DrawFPS(10, 10);
         EndDrawing();
     }
+    BeginDrawing();
 }
 
-//------------------------------------------------------------------------------------
-// Function for starting the fitness application
-//------------------------------------------------------------------------------------
-char *UseInterface(Interface interface)
-{
-    // Variabe definitions
-    float seconds_since_transition = 0;
-    char *buttonPressed = NULL;
+int DrawButton(char *text, float fontSize, float x_0_to_1, float y_0_to_1, float width_0_to_1, float height_0_to_1) {
+    Vector2 rec_size = Vector2Multiply(GetWindowSize(), (Vector2){width_0_to_1, height_0_to_1});
+    Vector2 rec_middle = Vector2Multiply(GetWindowSize(), (Vector2){x_0_to_1, y_0_to_1});
+    Vector2 rec_top_left = Vector2Subtract(rec_middle, Vector2Scale(rec_size, 0.5));
+    Rectangle r = PosAndSizeToRectangle(rec_top_left, rec_size);
+    GuiSetStyle(DEFAULT, TEXT_SIZE, (int)( Max(GetWindowSize()) * fontSize));
+    GuiSetStyle(DEFAULT, TEXT_LINE_SPACING, (int)(Max(GetWindowSize())*fontSize));
 
-    // Main application loop
-    while (!WindowShouldClose())
-    {
-        seconds_since_transition += 1.0 / (float)FRAMES_PER_SECOND;
-        Vector2 window_size = GetWindowSize();
-        Vector2 windowMiddle = Vector2Scale(window_size, 0.5);
-        int fontSize = Max(window_size) / 10;
-        GuiSetStyle(DEFAULT, TEXT_SIZE, (int)((float)fontSize * (1.0 / 3.0)));
-        GuiSetStyle(DEFAULT, TEXT_LINE_SPACING, (int)((float)fontSize * (1.0 / 3.0)));
-
-        if (IsKeyPressed(KEY_D))
-        {
-            debug_mode_grid = !debug_mode_grid;
-        }
-        int isTransitioning = seconds_since_transition < 1;
-        float fade = 1.0;
-        if (isTransitioning)
-        {
-            fade = seconds_since_transition;
-        }
-
-        BeginDrawing();
-            ClearBackground(RAYWHITE);
-            DrawBackgroundTexture(0.6);
-
-            int width_of_title = MeasureText(interface.title, fontSize);
-            int height_of_title = fontSize;
-            Vector2 TextSize = {width_of_title, height_of_title};
-            Vector2 text_position = Vector2Subtract(windowMiddle, Vector2Scale(TextSize, 0.5));
-            DrawRectangleV(Vector2Subtract(text_position, (Vector2){7, 7}), Vector2Add(TextSize, (Vector2){14, 14}), Fade(BLACK, fade));
-            DrawRectangleV(Vector2Subtract(text_position, (Vector2){4, 4}), Vector2Add(TextSize, (Vector2){8, 8}), Fade(WHITE, fade));
-            DrawTextV(interface.title, text_position, fontSize, Fade(BLACK, fade));
-
-            if (!isTransitioning)
-            {
-                Vector2 rec_size = Vector2Multiply(window_size, (Vector2){0.3, 0.2});
-                Vector2 rec_middle = {windowMiddle.x, window_size.y * (11.0 / 15.0)};
-                Vector2 rec_top_left = Vector2Subtract(rec_middle, Vector2Scale(rec_size, 0.5));
-                Rectangle r = PosAndSizeToRectangle(rec_top_left, rec_size);
-
-                int any_button_pressed = 0;
-                if (interface.middle_button != NULL)
-                {
-                    int is_button_pressed = GuiButton(r, interface.middle_button);
-                    if (is_button_pressed)
-                    {
-                        any_button_pressed = true;
-                        buttonPressed = interface.middle_button;
-                    }
-                }
-            }
-
-            DrawFPS(10, 10);
-
-            if (debug_mode_grid) {
-                GuiGrid(PosAndSizeToRectangle(Vector2Zero(), window_size), NULL, window_size.x / 10, 1, NULL);
-            }
-        EndDrawing();
-
-        fflush(stdout);
-        if (buttonPressed != NULL) {
-            return buttonPressed;
-        }
-    }
-    return "";
+    return GuiButton(r, text);
 }
