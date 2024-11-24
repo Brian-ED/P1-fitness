@@ -145,26 +145,24 @@ void OpenApplication() {
     // Loading background image
     background_image = LoadTexture(BACKGROUND_IMAGE);
 
-    float seconds_since_start;
-
+    // Setup the first frame.
+    // The BeginDrawing here is useful for DrawNewEmptyFrame, since now it can both stop last frame and start a new one
     BeginDrawing();
-    ClearBackground(BLACK);
 
-    seconds_since_start = 0.0;
-    while (seconds_since_start < 1) {
-        // x frames = 1 second  // divide "frames" on both sides.
-        // x = second/frames = SECONDS_PER_FRAME
-        seconds_since_start += SECONDS_PER_FRAME;
+    // Starting the first animation, 1 second long, from black to RayWhite.
+    // RayWhite is a nicer shade of White
+    for (float t=0; t<1; t+=SECONDS_PER_FRAME) {
         DrawNewEmptyFrame();
         ClearBackground(BLACK);
-        DrawRectangleV(AtPos(0, 0), GetWindowSize(), Fade(RAYWHITE, seconds_since_start));
+
+        // Using ClearBackground to draw a transparent background doesn't work, so drawing a rectangle should work.
+        DrawRectangleV(AtPos(0, 0), GetWindowSize(), Fade(RAYWHITE, t));
     }
 
-    seconds_since_start = 0.0;
-    while (seconds_since_start < 1) {
-        seconds_since_start += SECONDS_PER_FRAME;
+    // Another animation, from white to the fitness icons background
+    for (float t=0; t<1; t+=SECONDS_PER_FRAME) {
         DrawNewEmptyFrame();
         ClearBackground(RAYWHITE);
-        DrawBackgroundWithFade(seconds_since_start * 0.6);
+        DrawBackgroundWithFade(t * 0.6);
     }
 }
