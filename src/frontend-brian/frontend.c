@@ -31,7 +31,19 @@ Rectangle PosAndSizeToRectangle(Vector2 position, Vector2 size) {
 }
 
 float Min(Vector2 v) {
-    return v.x > v.y ? v.y : v.x;
+    if (v.x > v.y) {
+        return v.y;
+    } else {
+        return v.x;
+    }
+}
+
+float Max(Vector2 v) {
+    if (v.x < v.y) {
+        return v.y;
+    } else {
+        return v.x;
+    }
 }
 
 Vector2 AtPos(float x, float y) {
@@ -97,18 +109,24 @@ void DrawTitle(char *title, float text_height, Vector2 position_of_title_0_to_1)
 
     float x = GetWindowSize().x * position_of_title_0_to_1.x;
     float y = GetWindowSize().y * position_of_title_0_to_1.y;
-    int text_pixel_height = (int)(Min(GetWindowSize())*text_height);
+    int text_pixel_height = (Min(GetWindowSize())*text_height);
 
-    int width_of_title = MeasureText(title, text_pixel_height);
-    int height_of_title = text_pixel_height;
+    float spacing = 0.7*text_pixel_height;
+    SetTextLineSpacing((int)spacing);
+
+    Vector2 v = MeasureTextEx(GetFontDefault(), title, text_pixel_height, 10);
+    int width_of_title = v.x;
+    int height_of_title = v.y;
 
     Vector2 text_position = {
         x - width_of_title/2,
         y - height_of_title/2,
     };
+    // TODO: make border scale, or text scale to be smaller.
+    // Currently the border is too large when window is small and too thin when window is large.
     DrawRectangle(text_position.x-7, text_position.y-7, width_of_title+14, height_of_title+14, BLACK);
     DrawRectangle(text_position.x-4, text_position.y-4, width_of_title+8, height_of_title+8, WHITE);
-    DrawText(title, text_position.x, text_position.y, text_pixel_height, BLACK);
+    DrawText(title, text_position.x, text_position.y, (int)text_pixel_height, BLACK);
 }
 
 int DrawButton(char *text, float text_height, Rectangle area_0_to_1) {
@@ -131,7 +149,9 @@ void OpenApplication() {
     SetTraceLogLevel(LOG_WARNING);
 
     // Open the actual window
-    InitWindow(1, 1, "Fitness");
+    InitWindow(400, 400, "Fitness");
+    SetWindowMinSize(1, 1);
+    SetWindowMaxSize(10000, 10000);
 
     // Make the window resizable
     SetWindowState(FLAG_WINDOW_RESIZABLE);
