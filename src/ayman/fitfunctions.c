@@ -10,11 +10,9 @@ char input[150];
 
 //
 int likedworkout(){
-    while (1) { // Loop until valid input is provided
+    while (1) { 
         printf("Do you like this workout? yes/no\n");
         scanf("%s", input);
-
-        // Compare input strings
         if (strcmp(input, "yes") == 0) {
             return 1;
         } else if (strcmp(input, "no") == 0) {
