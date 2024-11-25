@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-
+#include "src/Parsa/Funktioner.c"
 #include "src/frontend-brian/frontend.c"
 
 int main() {
@@ -29,6 +29,14 @@ int main() {
 
     start_introduction:
         printf("Hey! you need to type in your user information!");
+        Introduction();
+        why();
+        info();
+        program();
+        needs();
+        goto the_program_made;
+
+    the_program_made:
         goto end_program;
 
     end_program:
