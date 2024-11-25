@@ -105,37 +105,38 @@ void DrawNewFrame() {
     DrawBackgroundWithFade(0.6);
 }
 
-void DrawTitle(char *title, float text_height, Vector2 position_of_title_0_to_1) {
+void DrawTitle(char *title, float text_height_0_to_1, Vector2 position_of_title_0_to_1) {
 
-    float x = GetWindowSize().x * position_of_title_0_to_1.x;
-    float y = GetWindowSize().y * position_of_title_0_to_1.y;
-    int text_pixel_height = (Min(GetWindowSize())*text_height);
+    // Translate from 0_to_1 units to use pixels instead, which is gotten by multiplying by GetWidnowSize()
+    float text_pixel_height = Min(GetWindowSize())*text_height_0_to_1;
 
+    // spacing is the distance between the lines of the title.
+    // Multiplied by 0.7 because it turns out to be a big gap otherwise.
     float spacing = 0.7*text_pixel_height;
-    SetTextLineSpacing((int)spacing);
+    SetTextLineSpacing(spacing);
 
-    Vector2 v = MeasureTextEx(GetFontDefault(), title, text_pixel_height, 10);
-    int width_of_title = v.x;
-    int height_of_title = v.y;
+    float width_of_title = MeasureText(title, text_pixel_height);
+    float height_of_title = MeasureTextEx(GetFontDefault(), title, text_pixel_height, 10).y;
 
-    Vector2 text_position = {
-        x - width_of_title/2,
-        y - height_of_title/2,
+    Vector2 position = Vector2Multiply(GetWindowSize(), position_of_title_0_to_1);
+    Vector2 text_top_left = {
+        position.x - width_of_title/2,
+        position.y - height_of_title/2,
     };
     // TODO: make border scale, or text scale to be smaller.
-    // Currently the border is too large when window is small and too thin when window is large.
-    DrawRectangle(text_position.x-7, text_position.y-7, width_of_title+14, height_of_title+14, BLACK);
-    DrawRectangle(text_position.x-4, text_position.y-4, width_of_title+8, height_of_title+8, WHITE);
-    DrawText(title, text_position.x, text_position.y, (int)text_pixel_height, BLACK);
+    // Currently the border is too thick when window is small and too thin when window is large.
+    DrawRectangle(text_top_left.x-7, text_top_left.y-7, width_of_title+14, height_of_title+14, BLACK);
+    DrawRectangle(text_top_left.x-4, text_top_left.y-4, width_of_title+8, height_of_title+8, WHITE);
+    DrawText(title, text_top_left.x, text_top_left.y, text_pixel_height, BLACK);
 }
 
-int DrawButton(char *text, float text_height, Rectangle area_0_to_1) {
+int DrawButton(char *text, float text_height_0_to_1, Rectangle area_0_to_1) {
     Vector2 rec_size = Vector2Multiply(GetWindowSize(), (Vector2){area_0_to_1.width, area_0_to_1.height});
     Vector2 rec_middle = Vector2Multiply(GetWindowSize(), (Vector2){area_0_to_1.x, area_0_to_1.y});
     Vector2 rec_top_left = Vector2Subtract(rec_middle, Vector2Scale(rec_size, 0.5));
     Rectangle r = PosAndSizeToRectangle(rec_top_left, rec_size);
-    GuiSetStyle(DEFAULT, TEXT_SIZE, (int)(Min(GetWindowSize()) * text_height));
-    GuiSetStyle(DEFAULT, TEXT_LINE_SPACING, (int)(Min(GetWindowSize())*text_height));
+    GuiSetStyle(DEFAULT, TEXT_SIZE, Min(GetWindowSize()) * text_height_0_to_1);
+    GuiSetStyle(DEFAULT, TEXT_LINE_SPACING, Min(GetWindowSize())*text_height_0_to_1);
 
     return GuiButton(r, text);
 }
