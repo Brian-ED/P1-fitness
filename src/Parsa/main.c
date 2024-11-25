@@ -1,6 +1,16 @@
-#include "funktioner.c"
+#include "Funktioner.c"
 
 int main() {
-  IHaveADream();
+  Introduction();
+  //goto ;
+  //why:
+  why();
+  info();
+  program();
+  needs();
   return 0;
 }
+
+
+
+

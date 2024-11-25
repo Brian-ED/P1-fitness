@@ -5,3 +5,10 @@ void IHaveADream() {
 };
 
 
+int scan_prog(void){
+  open_prog = fopen()
+
+
+
+
+}

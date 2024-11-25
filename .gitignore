@@ -15,3 +15,9 @@
 *.out
 *.pdb
 main
+
+# cmake
+cmake-build-debug
+
+# No idea why, but ".idea" folder was added by Gajoe
+.idea

@@ -2,7 +2,8 @@
 #include <stdlib.h>
 #include <math.h>
 
-#include "src/frontend-brian/frontend.c"
+// #define BACKGROUND_IMAGE "content/workout-images.png"
+// #include "src/frontend-brian/frontend.c"
 
 int main() {
     char answer;
