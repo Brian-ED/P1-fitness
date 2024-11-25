@@ -1,1 +1,0 @@
-CMakeLists.txt not found in C:\Users\lukas\CLionProjects\P1-fitness Select CMakeLists.txt
