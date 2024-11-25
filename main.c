@@ -2,8 +2,12 @@
 #include <stdlib.h>
 #include <math.h>
 #include "src/Parsa/Funktioner.c"
+
+// BRIAN: to include frontend you can uncomment the import below "THIS"
+// It also defines background. The code errors if you don't include the background.
 #include "src/frontend-brian/frontend.c"
 
+// THIS:
 // #define BACKGROUND_IMAGE "content/workout-images.png"
 // #include "src/frontend-brian/frontend.c"
 
