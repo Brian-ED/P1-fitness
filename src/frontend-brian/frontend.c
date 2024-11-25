@@ -150,9 +150,8 @@ void OpenApplication() {
     SetTraceLogLevel(LOG_WARNING);
 
     // Open the actual window
-    InitWindow(400, 400, "Fitness");
+    InitWindow(440, 956, "Fitness");
     SetWindowMinSize(1, 1);
-    SetWindowMaxSize(10000, 10000);
 
     // Make the window resizable
     SetWindowState(FLAG_WINDOW_RESIZABLE);
