@@ -58,14 +58,16 @@ Rectangle InArea(Vector2 position, Vector2 size) {
     return (Rectangle){position.x, position.y, size.x, size.y};
 }
 
+// Sets up a new frame without a background
 void DrawNewEmptyFrame() {
     EndDrawing(); // Ends drawing the last frame
     BeginDrawing(); // Begins drawing the next frame
     if (WindowShouldClose()) exit(0);
 }
 
-void DrawBackgroundWithFade(float fade) {
-    Color whiteFade = Fade(WHITE, fade);
+// Draw background with a specific fade, making it semi-transparent
+void DrawBackgroundWithFade(float fade_0_to_1) {
+    Color whiteFade = Fade(WHITE, fade_0_to_1);
     Vector2 window_size = GetWindowSize();
 
     background_x += 2 * BACKGROUND_SPEED;
@@ -99,12 +101,14 @@ void DrawBackgroundWithFade(float fade) {
     fflush(stdout);
 }
 
+// Sets up a new frame to draw on, usually called in a while loop
 void DrawNewFrame() {
     DrawNewEmptyFrame();
     ClearBackground(RAYWHITE);
     DrawBackgroundWithFade(0.6);
 }
 
+// Draw text on a white background with a black border.
 void DrawTitle(char *title, float text_height_0_to_1, Vector2 position_of_title_0_to_1) {
 
     // Translate from 0_to_1 units to use pixels instead, which is gotten by multiplying by GetWidnowSize()
@@ -172,7 +176,11 @@ void OpenApplication() {
     // Starting the first animation, 1 second long, from black to RayWhite.
     // RayWhite is a nicer shade of White
     for (float t=0; t<1; t+=SECONDS_PER_FRAME) {
+
+        // Setup frame without background
         DrawNewEmptyFrame();
+
+        // Transition from black by making a black background and drawing white ontop with fade.
         ClearBackground(BLACK);
 
         // Using ClearBackground to draw a transparent background doesn't work, so drawing a rectangle should work.
