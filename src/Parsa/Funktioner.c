@@ -1,19 +1,40 @@
 #include <stdio.h>
 #include <stdlib.h>
-#define SIZE_NO_LIMIT 16 //the size of the array
+#define SIZE_NO_LIMIT 16 //the size of character array in each linked list node
 
 void Introduction() {
   printf("Welcome to a new chapter in your life\n");
   printf("Welcome to (APP name)\n");
 };
 
-//node in linked list
+/*struct: your_why = fixed-size array for storing some of input
+nextnode = pointer to the next node in the linked list
+this struct enables efficient memory management because of the fixed-sized array
+*/
 typedef struct node {
   char your_why[SIZE_NO_LIMIT];
   struct node *nextnode;
 } node;
 
-//reading the input that is in the linked list
+/*reading the input that is in the linked list
+Initialization:
+firstnode points to the first node of the list
+currentnode tracks the current node
+index tracks the position in the fixed-sized array
+reading char:
+getchar reads one char at a time and ends at a newline
+creating new node:
+if the list currentnode is empty or the current array is full
+new node is created with malloc
+linking nodes:
+if it is the first node firstnode is the pointer
+if not the previous node's nextnode is linked to the new node
+storing char:
+char is stored in your_why array of the current node and
+index is incremented
+this method allows us to handle inputs of any unlimited length
+without knowing the size in advance
+*/
 node* readinput(){
   node *firstnode = NULL, *currentnode = NULL;
   int index = 0;
@@ -44,6 +65,23 @@ node* readinput(){
   return firstnode;
 }
 
+/*printing the linked content
+printinput function goes through every node in the linked list
+and for each node, it reads and displays the characters stored
+in its your_why array.
+start at the first node:
+he pointer currentnode is initialized to firstnode, the starting
+point of the linked list.
+process each node:
+For every node, the program loops through the your_why array using
+for (int i = 0; i < SIZE_NO_LIMIT; i++)
+print char:
+putchar(currentnode -> your_why[i]) prints one character at a time from the array.
+move to next node:
+current = current->nextnode updates the pointer to the next node in the list
+this repeats until currentnode beacise NULL(end of the list)
+*/
+
 void printinput(node *firstnode){
   node *currentnode = firstnode;
   while (currentnode)
@@ -56,7 +94,7 @@ void printinput(node *firstnode){
   }
   putchar('\n');
 }
-
+//Iteratively frees each node of the linked list.
 void freemyguy(node *firstnode){
   node *currentnode = firstnode;
   while (currentnode)
@@ -66,7 +104,10 @@ void freemyguy(node *firstnode){
     free(temp);
   }
 }
-
+/*Prompts the user for input
+reads the input into a linked list
+prints the input and frees the memory
+*/
 void scaningwhy(){
   printf("What is your \"why\", tell us:");
   node *firstnode = readinput();
