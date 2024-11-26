@@ -11,6 +11,10 @@ void scan_prog(char *exercise){
     FILE* ex_prog = fopen(name, "r");
 
     if (ex_prog == NULL){
+//      Here is a mistake.
+//      You are re-declaring the variable with a type.
+//      this means you aren't overwriting ex_prog, but creating a new variable.
+//      ↓↓↓↓↓
         FILE* ex_prog = fopen(name, "ab+");
     }
 
