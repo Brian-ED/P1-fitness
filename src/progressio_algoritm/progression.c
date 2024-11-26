@@ -18,7 +18,7 @@ void scan_prog(char *exercise){
         printf("please enter the starting weight");
     }
     else 
-        printf("your ")
+        printf("your ");
 
 
     fclose(ex_prog);
