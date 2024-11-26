@@ -1,21 +1,91 @@
 #include <stdio.h>
 #include <stdlib.h>
+#define SIZE_NO_LIMIT 16 //the size of the array
+
 void Introduction() {
   printf("Welcome to a new chapter in your life\n");
   printf("Welcome to (APP name)\n");
 };
 
-char your_why[250];
+//node in linked list
+typedef struct node {
+  char your_why[SIZE_NO_LIMIT];
+  struct node *nextnode;
+} node;
+
+//reading the input that is in the linked list
+node* readinput(){
+  node *firstnode = NULL, *currentnode = NULL;
+  int index = 0;
+  char c;
+  while ((c=getchar()) != '\n')
+  {
+    if (!currentnode || index == SIZE_NO_LIMIT)
+    {
+      node *node2 = (node *)malloc(sizeof(node));
+      if (!node2)
+      {
+        printf("Can't allocate memory");
+        exit(EXIT_FAILURE);
+      }
+      node2 -> nextnode = NULL;
+      if (!firstnode)
+      {
+        firstnode = node2;
+      } else
+      {
+        currentnode -> nextnode = node2;
+      }
+      currentnode = node2;
+      index = 0;
+    }
+    currentnode -> your_why[index++] = c;
+  }
+  return firstnode;
+}
+
+void printinput(node *firstnode){
+  node *currentnode = firstnode;
+  while (currentnode)
+  {
+    for (int i = 0; i < SIZE_NO_LIMIT; i++)
+    {
+      putchar(currentnode -> your_why[i]);
+    }
+    currentnode = currentnode -> nextnode;
+  }
+  putchar('\n');
+}
+
+void freemyguy(node *firstnode){
+  node *currentnode = firstnode;
+  while (currentnode)
+  {
+    node *temp = currentnode;
+    currentnode = currentnode -> nextnode;
+    free(temp);
+  }
+}
+
+void scaningwhy(){
+  printf("What is your \"why\", tell us:");
+  node *firstnode = readinput();
+  printf("\nYou entered:\n");
+  printinput(firstnode);
+  freemyguy(firstnode);
+}
+
+/*char your_why[250];
 
 void why(){
   printf("What is your \"why\", tell us:");
   scanf("%249[^\n]", your_why);
   fflush(stdin);
   printf("Wow, how inspiring. We wish you the best of luck\n");
-};
+};*/
 //float tmp;
 float age;
-int height;
+float height;
 float weight;
 char gender;
 float protein;

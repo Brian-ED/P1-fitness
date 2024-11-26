@@ -4,7 +4,8 @@ int main() {
   Introduction();
   //goto ;
   //why:
-  why();
+  //why();
+  scaningwhy();
   info();
   program();
   needs();
