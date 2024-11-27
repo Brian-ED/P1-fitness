@@ -5,7 +5,7 @@
 void scan_prog(char *exercise){
 
     char *name = strcat(exercise, ".prog.txt");
-    printf("%s", name);
+    printf("%s\n", name);
 
 
     FILE* ex_prog = fopen(name, "r");
@@ -15,14 +15,16 @@ void scan_prog(char *exercise){
     }
 
      if (getc(ex_prog) == EOF){
-        printf("please enter the starting weight");
+        printf("please enter the starting weight\n");
     }
-    else 
-        printf("your ")
-
+   
 
     fclose(ex_prog);
 
 }
+
+
+
+
 
 
