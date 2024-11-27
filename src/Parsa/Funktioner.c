@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #define SIZE_NO_LIMIT 16 //the size of character array in each linked list node
 
 void Introduction() {
@@ -76,6 +77,7 @@ int age;
 int height;
 int weight;
 char gender;
+char gender2[7];
 float protein;
 float caloriem;
 float calorief;
@@ -100,7 +102,12 @@ void info(){
       printf("wrong input, please try again\n");
     }
   }
-
+  if (gender == 'm')
+  {
+    strcpy(gender2, "Male");
+  } else{
+    strcpy(gender2, "Female");
+  }
   protein = weight * 1.7;
   caloriem = 1.5 * 10 * weight + 6.25 * height - 5 * age + 5;
   calorief = 1.5 * 10 * weight + 6.25 * height - 5 * age - 161;
@@ -135,12 +142,13 @@ void needs(){
   }
 };
 
-void to_file(node *firstnode, int age, int height, int weight, char gender, float protein, float calorie){
+void to_file(node *firstnode, int age, int height, int weight, char gender2[7], float protein, float calorie){
   FILE* file = fopen("User_Data","w");
   if (file == NULL) {
     printf("Error opening file\n");
     exit(EXIT_FAILURE);
     }
+  fprintf(file, " --- Your Very Own Document ---\n\n\n");
   fprintf(file, "User's Why: ");
   node *currentnode = firstnode;
   while (currentnode) {
@@ -149,13 +157,15 @@ void to_file(node *firstnode, int age, int height, int weight, char gender, floa
    }
   // Write personal details and needs
   fprintf(file, "\nPersonal Information:\n");
-  fprintf(file, "Age: %d\nHeight: %d cm\nWeight: %d kg\nGender: %c\n\n", age, height, weight, gender);
+  fprintf(file, "Age: %d\nHeight: %d cm\nWeight: %d kg\nGender: %s\n\n", age, height, weight, gender2);
+  fprintf(file, "Training:\n");
+  fprintf(file, "Days: %d\n", program_days);
 
-  fprintf(file, "Nutritional Needs:\n");
+  fprintf(file, "\nNutritional Needs:\n");
   fprintf(file, "Protein Requirement: %.f grams/day\n", protein);
   fprintf(file, "Calorie Requirement: %.f calories/day\n", calorie);
+  fclose(file);
 }
-
 void free_space(node *firstnode){
   freemyguy(firstnode); //frees the memory
 }
