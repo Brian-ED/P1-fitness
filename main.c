@@ -1,8 +1,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include "src/Parsa/Funktioner.c"
 
+// BRIAN: to include frontend you can uncomment the import below "THIS"
+// It also defines background. The code errors if you don't include the background.
 #include "src/frontend-brian/frontend.c"
+
+// THIS:
+// #define BACKGROUND_IMAGE "content/workout-images.png"
+// #include "src/frontend-brian/frontend.c"
 
 int main() {
     char answer;
@@ -29,6 +36,14 @@ int main() {
 
     start_introduction:
         printf("Hey! you need to type in your user information!");
+        Introduction();
+        why();
+        info();
+        program();
+        needs();
+        goto the_program_made;
+
+    the_program_made:
         goto end_program;
 
     end_program:

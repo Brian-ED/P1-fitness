@@ -748,7 +748,7 @@ RAYGUIAPI int GuiSliderBar(Rectangle bounds, const char *textLeft, const char *t
 RAYGUIAPI int GuiProgressBar(Rectangle bounds, const char *textLeft, const char *textRight, float *value, float minValue, float maxValue); // Progress Bar control
 RAYGUIAPI int GuiStatusBar(Rectangle bounds, const char *text);                                        // Status Bar control, shows info text
 RAYGUIAPI int GuiDummyRec(Rectangle bounds, const char *text);                                         // Dummy control for placeholders
-RAYGUIAPI int GuiGrid(Rectangle bounds, const char *text, float spacing, int subdivs, Vector2 *mouseCell); // Grid control
+RAYGUIAPI int GuiGrid(Rectangle bounds, Vector2 spacing, int subdivs, Vector2 *mouseCell); // Grid control
 
 // Advance controls set
 RAYGUIAPI int GuiListView(Rectangle bounds, const char *text, int *scrollIndex, int *active);          // List View control
@@ -4045,7 +4045,7 @@ int GuiTextInputBox(Rectangle bounds, const char *title, const char *message, co
 // NOTE: Returns grid mouse-hover selected cell
 // About drawing lines at subpixel spacing, simple put, not easy solution:
 // https://stackoverflow.com/questions/4435450/2d-opengl-drawing-lines-that-dont-exactly-fit-pixel-raster
-int GuiGrid(Rectangle bounds, const char *text, float spacing, int subdivs, Vector2 *mouseCell)
+int GuiGrid(Rectangle bounds, Vector2 spacing, int subdivs, Vector2 *mouseCell)
 {
     // Grid lines alpha amount
     #if !defined(RAYGUI_GRID_ALPHA)
@@ -4058,9 +4058,10 @@ int GuiGrid(Rectangle bounds, const char *text, float spacing, int subdivs, Vect
     Vector2 mousePoint = GetMousePosition();
     Vector2 currentMouseCell = { -1, -1 };
 
-    float spaceWidth = spacing/(float)subdivs;
+    float spaceWidth = spacing.x/(float)subdivs;
+    float spaceHeight = spacing.y/(float)subdivs;
     int linesV = (int)(bounds.width/spaceWidth) + 1;
-    int linesH = (int)(bounds.height/spaceWidth) + 1;
+    int linesH = (int)(bounds.height/spaceHeight) + 1;
 
     int color = GuiGetStyle(DEFAULT, LINE_COLOR);
 
@@ -4071,8 +4072,8 @@ int GuiGrid(Rectangle bounds, const char *text, float spacing, int subdivs, Vect
         if (CheckCollisionPointRec(mousePoint, bounds))
         {
             // NOTE: Cell values must be the upper left of the cell the mouse is in
-            currentMouseCell.x = floorf((mousePoint.x - bounds.x)/spacing);
-            currentMouseCell.y = floorf((mousePoint.y - bounds.y)/spacing);
+            currentMouseCell.x = floorf((mousePoint.x - bounds.x)/spacing.x);
+            currentMouseCell.y = floorf((mousePoint.y - bounds.y)/spacing.y);
         }
     }
     //--------------------------------------------------------------------
@@ -4086,14 +4087,14 @@ int GuiGrid(Rectangle bounds, const char *text, float spacing, int subdivs, Vect
         // Draw vertical grid lines
         for (int i = 0; i < linesV; i++)
         {
-            Rectangle lineV = { bounds.x + spacing*i/subdivs, bounds.y, 1, bounds.height + 1 };
+            Rectangle lineV = { bounds.x + spacing.x*i/subdivs, bounds.y, 1, bounds.height + 1 };
             GuiDrawRectangle(lineV, 0, BLANK, ((i%subdivs) == 0)? GuiFade(GetColor(color), RAYGUI_GRID_ALPHA*4) : GuiFade(GetColor(color), RAYGUI_GRID_ALPHA));
         }
 
         // Draw horizontal grid lines
         for (int i = 0; i < linesH; i++)
         {
-            Rectangle lineH = { bounds.x, bounds.y + spacing*i/subdivs, bounds.width + 1, 1 };
+            Rectangle lineH = { bounds.x, bounds.y + spacing.y*i/subdivs, bounds.width + 1, 1 };
             GuiDrawRectangle(lineH, 0, BLANK, ((i%subdivs) == 0)? GuiFade(GetColor(color), RAYGUI_GRID_ALPHA*4) : GuiFade(GetColor(color), RAYGUI_GRID_ALPHA));
         }
     }
@@ -4843,7 +4844,6 @@ const char **GetTextLines(const char *text, int *count)
     int textSize = (int)strlen(text);
 
     lines[0] = text;
-    int len = 0;
     *count = 1;
     //int lineSize = 0;   // Stores current line size, not returned
 
@@ -4854,13 +4854,9 @@ const char **GetTextLines(const char *text, int *count)
             //lineSize = len;
             k++;
             lines[k] = &text[i + 1];     // WARNING: next value is valid?
-            len = 0;
             *count += 1;
         }
-        else len++;
     }
-
-    //lines[*count - 1].size = len;
 
     return lines;
 }
