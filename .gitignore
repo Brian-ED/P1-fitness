@@ -14,10 +14,12 @@
 *.exe
 *.out
 *.pdb
-main
 
 # cmake
 cmake-build-debug
+
+# fun-brian uses a save_data file
+src/fun-brian/save_data
 
 # No idea why, but ".idea" folder was added by Gajoe
 .idea
