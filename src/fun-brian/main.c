@@ -48,63 +48,55 @@ void Save() {
     }
 }
 
-#define LOOP_BUFFER_MAX_LEN 200
-double loopBuffer[LOOP_BUFFER_MAX_LEN] = { 0 };
+void DrawIcon(int icon, Vector2 pos, int pixel_size){
+    GuiDrawIcon(icon, pos.x, pos.y, pixel_size, BLACK);
+}
 
-
-void start_app() {
-    while (1) {
-        DrawNewFrame();
-        if (IsKeyDown(KEY_LEFT_CONTROL)) {
-            if (IsKeyPressed(KEY_S)) { // Save
-                Save();
-            }
-            if (IsKeyDown(KEY_LEFT_SHIFT) && IsKeyPressed(KEY_R)) { // Reset all buttons/text
-                free(main_data);
-                main_data = malloc(FLOATS_LEN*sizeof(double));
-                main_data_size = FLOATS_LEN;
-                memcpy(main_data, default_floats, FLOATS_LEN*sizeof(double));
-            }
+void start_app() {while (1) {
+    DrawNewFrame();
+    if (IsKeyDown(KEY_LEFT_CONTROL)) {
+        if (IsKeyPressed(KEY_S)) { // Save
+            Save();
         }
-// TODO replace buffer, by instead using same array but indexing negative
-        for (int i=0, bl=0; i<main_data_size; i++) {
-            if (bl>=LOOP_BUFFER_MAX_LEN) {
-                TraceLog(LOG_WARNING, "INTERNAL ERROR: buffer overflown.");
-            }
-            if (main_data[i] == SEP){
-                if (loopBuffer[0] == BUTTON_GUI_TYPE) {
-                    Vector2 p = Vector2Divide(GetMousePosition(), GetWindowSize());
-                    float h = loopBuffer[1];
-                    Vector2 pos = {loopBuffer[2], loopBuffer[3]};
-                    Vector2 size = {loopBuffer[4], loopBuffer[5]};
-
-                    if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) && loopBuffer[2]-0.3<p.x && loopBuffer[2]>p.x) {
-                        main_data[i-4]+=GetMouseDelta().x/GetWindowSize().x;
-                    }
-                    DrawButton("Text", loopBuffer[1], InArea(pos, WithSize(loopBuffer[4], loopBuffer[5])));
-                    Vector2 mover_pos = Vector2Multiply(Vector2Subtract(pos, Vector2Scale(size,0.5)),GetWindowSize());
-                    GuiDrawIcon(ICON_CURSOR_MOVE_FILL, mover_pos.x, mover_pos.y, 2, BLACK);
-                    Vector2 icon_size = Vector2Scale(Vector2Invert(GetWindowSize()), RAYGUI_ICON_SIZE);
-                    Vector2 sizer_pos = {
-                        pos.x + size.x/2 - 2*icon_size.x,
-                        pos.y + size.y/2 - 2*icon_size.y,
-                    };
-                    Rectangle sizer_rec = InArea(sizer_pos, icon_size);
-                    sizer_pos = Vector2Multiply(sizer_pos, GetWindowSize());
-
-                    GuiDrawIcon(ICON_CURSOR_SCALE_LEFT_FILL, sizer_pos.x, sizer_pos.y, 2, BLACK);
-                }
-                if (loopBuffer[0] == TITLE_GUI_TYPE) {
-                    DrawTitle("Text", loopBuffer[1], AtPos(loopBuffer[2], loopBuffer[3]));
-                }
-                bl = 0;
-            } else {
-                loopBuffer[bl] = main_data[i];
-                bl++;
-            }
+        if (IsKeyDown(KEY_LEFT_SHIFT) && IsKeyPressed(KEY_R)) { // Reset all buttons/text
+            free(main_data);
+            main_data = malloc(FLOATS_LEN*sizeof(double));
+            main_data_size = FLOATS_LEN;
+            memcpy(main_data, default_floats, FLOATS_LEN*sizeof(double));
         }
     }
-}
+// TODO replace buffer, by instead using same array but indexing negative
+    for (int i=0, bl=0; i<main_data_size; i++) {
+        if (main_data[i] != SEP) continue;
+
+        if (main_data[bl] == BUTTON_GUI_TYPE) {
+            Vector2 p = Vector2Divide(GetMousePosition(), GetWindowSize());
+            float h = main_data[bl+1];
+            Vector2 pos = {main_data[bl+2], main_data[bl+3]};
+            Vector2 size = {main_data[bl+4], main_data[bl+5]};
+
+            if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) && main_data[bl+2]-0.3<p.x && main_data[bl+2]>p.x) {
+                main_data[i-4]+=GetMouseDelta().x/GetWindowSize().x;
+            }
+            DrawButton("Text", main_data[bl+1], InArea(pos, WithSize(main_data[bl+4], main_data[bl+5])));
+            Vector2 mover_pos = Vector2Multiply(Vector2Subtract(pos, Vector2Scale(size,0.5)),GetWindowSize());
+            DrawIcon(ICON_CURSOR_MOVE_FILL, mover_pos, 2);
+            Vector2 icon_size = Vector2Scale(Vector2Invert(GetWindowSize()), RAYGUI_ICON_SIZE);
+            Vector2 sizer_pos = {
+                pos.x + size.x/2 - 2*icon_size.x,
+                pos.y + size.y/2 - 2*icon_size.y,
+            };
+            Rectangle sizer_rec = InArea(sizer_pos, icon_size);
+            sizer_pos = Vector2Multiply(sizer_pos, GetWindowSize());
+
+            DrawIcon(ICON_CURSOR_SCALE_LEFT_FILL, sizer_pos, 2);
+        };
+        if (main_data[bl] == TITLE_GUI_TYPE) {
+            DrawTitle("Text", main_data[bl+1], AtPos(main_data[bl+2], main_data[bl+3]));
+        }
+        bl = i+1;
+    }
+}}
 
 
 int main() {
