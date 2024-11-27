@@ -6,8 +6,6 @@ void scan_program(char *exercise){
     int *text;
     char *name = strcat(exercise, ".prog.txt");
     printf("%s", name);
-    printf("%s\n", name);
-
 
     FILE* ex_prog = fopen(name, "r");
 
