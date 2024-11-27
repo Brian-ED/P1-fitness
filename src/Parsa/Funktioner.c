@@ -109,21 +109,25 @@ void info(){
 int program_days;
 
 void program(){
-  printf("How many times a week are you willing to train.(it has to be between 3-5)");
-  scanf("%d", &program_days);
+  program_days = 0;
+  while (program_days != 3 && program_days != 4 && program_days != 5)
+  {
+    printf("How many times a week are you willing to train.(it has to be between 3-5)");
+    scanf("%d", &program_days);
+    if (program_days != 3 && program_days != 4 && program_days != 5){
+      printf("wrong input, please try again\n");
+    }
+  }
 };
 
 
 
 void needs(){
-   printf("you need %fgram protein daily\n", protein);
   if (gender == 'm')
   {
-    printf("you need %fgram calories daily\n", caloriem);
     calorie = caloriem;
   }
   else if(gender == 'f'){
-    printf("you need %fgram calories daily\n", calorief);
     calorie = calorief;
   }
   else{
@@ -131,7 +135,7 @@ void needs(){
   }
 };
 
-void to_file(node *firstnode, float age, int height, int weight, char gender, float protein, float calorie){
+void to_file(node *firstnode, int age, int height, int weight, char gender, float protein, float calorie){
   FILE* file = fopen("User_Data","w");
   if (file == NULL) {
     printf("Error opening file\n");
@@ -145,11 +149,11 @@ void to_file(node *firstnode, float age, int height, int weight, char gender, fl
    }
   // Write personal details and needs
   fprintf(file, "\nPersonal Information:\n");
-  fprintf(file, "Age: %.f\nHeight: %d cm\nWeight: %d kg\nGender: %c\n\n", age, height, weight, gender); //mærkeligt for age
+  fprintf(file, "Age: %d\nHeight: %d cm\nWeight: %d kg\nGender: %c\n\n", age, height, weight, gender);
 
   fprintf(file, "Nutritional Needs:\n");
-  fprintf(file, "Protein Requirement: %.1f grams/day\n", protein);
-  fprintf(file, "Calorie Requirement: %.1f calories/day\n", calorie);
+  fprintf(file, "Protein Requirement: %.f grams/day\n", protein);
+  fprintf(file, "Calorie Requirement: %.f calories/day\n", calorie);
 }
 
 void free_space(node *firstnode){
