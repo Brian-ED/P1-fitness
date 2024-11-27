@@ -62,7 +62,12 @@ Rectangle InArea(Vector2 position, Vector2 size) {
 void DrawNewEmptyFrame() {
     EndDrawing(); // Ends drawing the last frame
     BeginDrawing(); // Begins drawing the next frame
-    if (WindowShouldClose()) exit(0);
+    if (WindowShouldClose()) {
+        UnloadTexture(background_image);
+        EndDrawing();
+        CloseWindow();
+        exit(0);
+    }
 }
 
 // Draw background with a specific fade, making it semi-transparent
@@ -116,11 +121,11 @@ void DrawTitle(char *title, float text_height_0_to_1, Vector2 position_of_title_
 
     // spacing is the distance between the lines of the title.
     // Multiplied by 0.7 because it turns out to be a big gap otherwise.
-    float spacing = 0.7*text_pixel_height;
+    float spacing = text_pixel_height;
     SetTextLineSpacing(spacing);
 
     Vector2 size_of_title = MeasureTextEx(GetFontDefault(), title, text_pixel_height, 10);
-
+    size_of_title.x = MeasureText(title, text_pixel_height);
     Vector2 position = Vector2Multiply(GetWindowSize(), position_of_title_0_to_1);
     Vector2 text_top_left = {
         position.x - size_of_title.x/2,
