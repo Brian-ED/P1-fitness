@@ -119,18 +119,17 @@ void DrawTitle(char *title, float text_height_0_to_1, Vector2 position_of_title_
     float spacing = 0.7*text_pixel_height;
     SetTextLineSpacing(spacing);
 
-    float width_of_title = MeasureText(title, text_pixel_height);
-    float height_of_title = MeasureTextEx(GetFontDefault(), title, text_pixel_height, 10).y;
+    Vector2 size_of_title = MeasureTextEx(GetFontDefault(), title, text_pixel_height, 10);
 
     Vector2 position = Vector2Multiply(GetWindowSize(), position_of_title_0_to_1);
     Vector2 text_top_left = {
-        position.x - width_of_title/2,
-        position.y - height_of_title/2,
+        position.x - size_of_title.x/2,
+        position.y - size_of_title.y/2,
     };
     // TODO: make border scale, or text scale to be smaller.
     // Currently the border is too thick when window is small and too thin when window is large.
-    DrawRectangle(text_top_left.x-7, text_top_left.y-7, width_of_title+14, height_of_title+14, BLACK);
-    DrawRectangle(text_top_left.x-4, text_top_left.y-4, width_of_title+8, height_of_title+8, WHITE);
+    DrawRectangle(text_top_left.x-7, text_top_left.y-7, size_of_title.x+14, size_of_title.y+14, BLACK);
+    DrawRectangle(text_top_left.x-4, text_top_left.y-4, size_of_title.x+8, size_of_title.y+8, WHITE);
     DrawText(title, text_top_left.x, text_top_left.y, text_pixel_height, BLACK);
 }
 
