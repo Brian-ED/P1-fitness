@@ -105,8 +105,8 @@ void freemyguy(node *firstnode){
   }
 }
 /*Prompts the user for input
-reads the input into a linked list
-prints the input and frees the memory
+reads the input into a linked list and
+prints the input
 */
 void scaningwhy(){
   printf("What is your \"why\", tell us:");

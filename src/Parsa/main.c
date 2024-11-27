@@ -2,15 +2,15 @@
 
 int main() {
   Introduction();
-  //goto ;
-  //why:
-  //why();
-  scaningwhy();
+  node *firstnode = scaningwhy();
   info();
   program();
   needs();
+  to_file(firstnode, age, height, weight, gender, protein, calorie);
+  free_space(firstnode);
   return 0;
 }
+
 
 
 

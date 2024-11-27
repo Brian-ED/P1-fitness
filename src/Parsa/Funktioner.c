@@ -6,42 +6,18 @@ void Introduction() {
   printf("Welcome to a new chapter in your life\n");
   printf("Welcome to (APP name)\n");
 };
-
-/*struct: your_why = fixed-size array for storing some of input
-nextnode = pointer to the next node in the linked list
-this struct enables efficient memory management because of the fixed-sized array
-*/
 typedef struct node {
   char your_why[SIZE_NO_LIMIT];
   struct node *nextnode;
 } node;
 
-/*reading the input that is in the linked list
-Initialization:
-firstnode points to the first node of the list
-currentnode tracks the current node
-index tracks the position in the fixed-sized array
-reading char:
-getchar reads one char at a time and ends at a newline
-creating new node:
-if the list currentnode is empty or the current array is full
-new node is created with malloc
-linking nodes:
-if it is the first node firstnode is the pointer
-if not the previous node's nextnode is linked to the new node
-storing char:
-char is stored in your_why array of the current node and
-index is incremented
-this method allows us to handle inputs of any unlimited length
-without knowing the size in advance
-*/
 node* readinput(){
   node *firstnode = NULL, *currentnode = NULL;
   int index = 0;
   char c;
   while ((c=getchar()) != '\n')
   {
-    if (!currentnode || index == SIZE_NO_LIMIT)
+    if (!currentnode || index == SIZE_NO_LIMIT - 1) //-1 because it was too big and caused issues
     {
       node *node2 = (node *)malloc(sizeof(node));
       if (!node2)
@@ -65,36 +41,20 @@ node* readinput(){
   return firstnode;
 }
 
-/*printing the linked content
-printinput function goes through every node in the linked list
-and for each node, it reads and displays the characters stored
-in its your_why array.
-start at the first node:
-he pointer currentnode is initialized to firstnode, the starting
-point of the linked list.
-process each node:
-For every node, the program loops through the your_why array using
-for (int i = 0; i < SIZE_NO_LIMIT; i++)
-print char:
-putchar(currentnode -> your_why[i]) prints one character at a time from the array.
-move to next node:
-current = current->nextnode updates the pointer to the next node in the list
-this repeats until currentnode beacise NULL(end of the list)
-*/
-
 void printinput(node *firstnode){
   node *currentnode = firstnode;
   while (currentnode)
   {
     for (int i = 0; i < SIZE_NO_LIMIT; i++)
     {
+       if (currentnode->your_why[i] == '\0') break; //null termination - Using %s in fprintf relies on the array being null-terminated. Garbage characters appear when the array is not terminated correctly.
       putchar(currentnode -> your_why[i]);
     }
     currentnode = currentnode -> nextnode;
   }
   putchar('\n');
 }
-//Iteratively frees each node of the linked list.
+
 void freemyguy(node *firstnode){
   node *currentnode = firstnode;
   while (currentnode)
@@ -104,47 +64,33 @@ void freemyguy(node *firstnode){
     free(temp);
   }
 }
-/*Prompts the user for input
-reads the input into a linked list
-prints the input and frees the memory
-*/
-void scaningwhy(){
+
+node* scaningwhy(){
   printf("What is your \"why\", tell us:");
-  node *firstnode = readinput();
-  printf("\nYou entered:\n");
-  printinput(firstnode);
-  freemyguy(firstnode);
+  return readinput();
 }
 
-/*char your_why[250];
 
-void why(){
-  printf("What is your \"why\", tell us:");
-  scanf("%249[^\n]", your_why);
-  fflush(stdin);
-  printf("Wow, how inspiring. We wish you the best of luck\n");
-};*/
-float tmp; //tmp float that is used for memory efficiency
-float age;
+float tmp;
+int age;
 int height;
 int weight;
 char gender;
 float protein;
 float caloriem;
 float calorief;
+float calorie;
 
 void info(){
   printf("We are almost done, please tell us more about your self, in order for us to make a personilized program for you\n");
   printf("Age:");
-  scanf("%f", &age);
+  scanf("%d", &age);
   printf("Height(cm):");
-  //scanf("%f", &height);
   scanf("%f", &tmp);
-  height=(int)tmp;//some may not enter a int as there height. so for efficiency we use a tmp float that we take a int value of
+  height=(int)tmp;
   printf("Weight(kg):");
-  //scanf("%f", &weight);
   scanf("%f", &tmp);
-  weight=(int)tmp;//some may not enter a int as there weight. so for efficiency we use a tmp float that we take a int value of
+  weight=(int)tmp;
   gender = ' ';
   while (gender != 'm' && gender != 'f')
   {
@@ -155,18 +101,9 @@ void info(){
     }
   }
 
-  /*gender1:
-  printf("Gender(m for male, f for female):");
-  scanf(" %c", &gender);
-  if (gender != 'm' && gender != 'f'){
-    printf("wrong input, please try again\n");
-    goto gender1;
-  };
-  */
   protein = weight * 1.7;
   caloriem = 1.5 * 10 * weight + 6.25 * height - 5 * age + 5;
   calorief = 1.5 * 10 * weight + 6.25 * height - 5 * age - 161;
-  //Mifflin-St Jeor formula
 };
 
 int program_days;
@@ -183,11 +120,38 @@ void needs(){
   if (gender == 'm')
   {
     printf("you need %fgram calories daily\n", caloriem);
+    calorie = caloriem;
   }
   else if(gender == 'f'){
     printf("you need %fgram calories daily\n", calorief);
+    calorie = calorief;
   }
   else{
     exit(1);
   }
 };
+
+void to_file(node *firstnode, float age, int height, int weight, char gender, float protein, float calorie){
+  FILE* file = fopen("User_Data","w");
+  if (file == NULL) {
+    printf("Error opening file\n");
+    exit(EXIT_FAILURE);
+    }
+  fprintf(file, "User's Why: ");
+  node *currentnode = firstnode;
+  while (currentnode) {
+    fprintf(file, "%s", currentnode->your_why);
+    currentnode = currentnode->nextnode;
+   }
+  // Write personal details and needs
+  fprintf(file, "\nPersonal Information:\n");
+  fprintf(file, "Age: %.f\nHeight: %d cm\nWeight: %d kg\nGender: %c\n\n", age, height, weight, gender); //mærkeligt for age
+
+  fprintf(file, "Nutritional Needs:\n");
+  fprintf(file, "Protein Requirement: %.1f grams/day\n", protein);
+  fprintf(file, "Calorie Requirement: %.1f calories/day\n", calorie);
+}
+
+void free_space(node *firstnode){
+  freemyguy(firstnode); //frees the memory
+}
