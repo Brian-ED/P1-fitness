@@ -1,38 +1,40 @@
-data ← ⟨8⋄64‿'f'⟩•bit._Cast 256⊸|⌾(128⊸+)@-˜•FBytes "save_data"
-
-buttons‿titles ← ⍉∘>¨ (2∾˜ 1⊸⊑¨)⊸⊔⟜((1⊸↑∾2⊸↓)¨) {1=≠𝕩?𝕩∾¯1;𝕩}¨ ↕∘≠⊸(∾¨) ∾⟜∞⁼¨+`⊸-∘=⟜∞⊸⊔ data
-
 outFile ← "output/main.c"
 defaultFile ← "bqn-default-output.c"
 
+type‿elm ← {
+  data ← ⟨8⋄64‿'f'⟩•bit._Cast 256⊸|⌾(128⊸+)@-˜•FBytes "save_data"
+  (⊑¨⋈1⊸↓¨) (¯1↑˜0=≠)⊸∾¨ ∾⟜∞⁼¨+`⊸-∘=⟜∞⊸⊔ data
+}
+
 outFile •FChars⟜•FChars⍟(¬•file.Exists∘⊣) defaultFile
-
-
 cFChr ← •FChars outFile
 
-buttons {[i,t,x,y,w,h]_𝕣:
-  fmt←"txywh"
-  seach_terms ← ∾⟜"*/"¨ "/*"⊸∾¨ fmt∾⌜•Repr¨i
-  spots ← seach_terms/∘⍷¨<cFChr
-  (("Duplicate comment labels: "∾•Repr)!0=≠)(⥊seach_terms)/˜1<≠¨⥊spots
-  (("Lables missing: "∾•Repr)!0=≠)(⥊seach_terms)/˜0=≠¨⥊spots
-  spots ⊑¨↩ # Guarenteed to be only one spot left for each search term
+{
+  fmt←⟨
+    "txywh" # buttons
+    "txy"   # titles
+    "" # index -1 is the invalid index
+  ⟩
 
-  floatChars ← "eE.¯-π∞"∾'0'+↕10
-  homeName ← ∾('/'⊐˜»∘«){𝔽⊸(↑⋈𝔽⊸↑∘↓)}•path
-
-  ⟨ToNums⟩←•Import homeName •file.At "bqn-libs/strings.bqn"
-  floatsAtSpots ← ⥊(¬·∧`⌾⌽˘˘floatChars∊˜⊢)⊸({' '¨⌾(𝕨⊸/)𝕩}˘˘)⌽˘˘cFChr⊏˜spots-⌜1+↕20
-  floatsAtSpots ({"Some floats invalid"!𝕩≠⊸≡×´𝕨}⊢⥊)⟜ToNums˜↩≢spots
-  •SHow floatsAtSpots
-  •Show 1↓𝕗
+  seach_terms ← ∾⟜"*/"¨ "/*"⊸∾¨ ∾(type⊏fmt)∾⟜•Repr¨¨<¨↕≠elm
+  amounts‿spots ← (≠¨⋈∾) /∘⍷⟜cFChr¨seach_terms
 
   # Time for text replace!!
-
+  floatChars ← "eE.¯-π∞"∾'0'+↕10
+  floats_spreaded ← amounts / •Repr¨ ∾elm
+  newCCode ← ∾{floats_spreaded∾¨˜ ∨`⌾⌽∘¬∘∊⟜floatChars⊸/¨ 𝕩}⌾(spots⍋⊸⊏¯1⊸↓) cFchr ⊔˜ +` cFchr≠⊸↑/⁼spots
+  outFile •FChars newCCode
 }
 
-titles {[i,t,x,y]_𝕣:
-  fmt←"txy"
-#  •Show i  # ⟨ 2 ⟩
+# Old code for reading the floats from a c file
+  #homeName ← ∾('/'⊐˜»∘«){𝔽⊸(↑⋈𝔽⊸↑∘↓)}•path
+  #⟨ToNums⟩←•Import homeName •file.At "bqn-libs/strings.bqn"
+  # floatsAtSpots ← ⥊(¬·∧`⌾⌽˘˘floatChars∊˜⊢)⊸({' '¨⌾(𝕨⊸/)𝕩}˘˘)⌽˘˘cFChr⊏˜spots-⌜1+↕20
+  # floatsAtSpots ({"Some floats invalid"!𝕩≠⊸≡×´𝕨}⊢⥊)⟜ToNums˜↩≢spots
+  # changed ← floatsAtSpots≠1↓𝕗
 
-}
+
+#kap 4: methodology
+#
+#to dzaima: is it undefined behavior to check if the fread output is unreasonably large, and assume it's a directory, and then error?
+#infinity in group left arg gives error
