@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <assert.h>
+#include "log_regression.c"
 
 int main() {
     int n;
