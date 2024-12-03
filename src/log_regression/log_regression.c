@@ -14,7 +14,7 @@ Term log_regression(int n, float *x, float *y) {
     }
 
     Term out = {
-        .coefficient = 1/exp((sumx2*sumy - sumx*sumxy)/(n*sumx2-sumx*sumx)),
+        .coefficient = exp((sumx*sumxy - sumx2*sumy)/(n*sumx2-sumx*sumx)),
         .exponent = (n*sumx2 - sumx*sumx)/(n*sumxy - sumx*sumy)
     };
     return out;
