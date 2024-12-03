@@ -22,9 +22,8 @@ cFChr ← •FChars outFile
 
   # Time for text replace!!
   flChars ← "eE.¯-π∞"∾'0'+↕10
-  newCCode ← {
-    (amounts/•Repr¨∾elm)∾¨˜ ∨`⌾⌽∘¬∘∊⟜flChars⊸/¨ 𝕩
-  }⌾(spots⍋⊸⊏¯1↓(+` cFchr≠⊸↑/⁼spots)⊸⊔) cFchr
+  newFl ← spots⍋⊸⊏amounts/•Repr¨∾elm
+  newCCode ← ∾(newFl∾¨˜∨`⌾⌽∘¬∘∊⟜flChars⊸/¨)⌾(¯1⊸↓) (+`cFchr≠⊸↑/⁼spots)⊸⊔ cFchr
 
   outFile •FChars newCCode
 }
