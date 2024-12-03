@@ -37,7 +37,7 @@ int main_data_size = 0;
 double default_floats[FLOATS_LEN] = {
     SEP,
     0, 0.05, 0.3, 0.733, 0.3, 0.2, SEP, // Button
-    1, 0.05, 0.5, 0.3,                 SEP, // Title
+    1, 0.05, 0.5, 0.3,             SEP, // Title
     SEP,
     0, 0.05, 0.7, 0.733, 0.3, 0.2, SEP, // Button
     SEP,
