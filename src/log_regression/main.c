@@ -9,15 +9,15 @@ int main() {
     printf("Enter the value of number of terms n:\n");
     scanf("%d",&n);
 
-    float x[20];
+    double x[20];
     printf("Enter the values of x:\n");
     for (int i=0; i<=n-1; i++) {
-        scanf("%f",&x[i]);
+        scanf("%lf",&x[i]);
     }
-    float y[20];
+    double y[20];
     printf("Enter the values of y:\n");
     for (int i=0; i<=n-1; i++) {
-        scanf("%f",&y[i]);
+        scanf("%lf",&y[i]);
     }
 
     Term out = log_regression(n, x, y);
