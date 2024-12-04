@@ -2,8 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-// Create proposed workout with our structs of excersises
-
 
 // Defining our input
 char input[150];
