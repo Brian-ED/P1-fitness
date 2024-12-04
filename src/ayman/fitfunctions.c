@@ -24,15 +24,3 @@ int likedworkout(){
         }
     }
 }
-   /* printf("Do you like this workout? yes/no\n");
-    scanf("%s", input);
-    if(!strcmp(input, "yes")) {
-        return 1;
-    } else if(!strcmp(input, "no")) {
-        printf("Which exercise don't you like? \n");
-        scanf("%s",input);
-        return 0;
-    } else{
-        printf("Invalid input, please pick between yes or no\n");
-    }
-*/
