@@ -15,7 +15,7 @@ int main() {
     // Button's text height
     float button_text_height = 0.05;
 
-    // We'll close the window when the button
+    // We'll close the window when the button is pressed
     int button_pressed = 0;
 
     // Main application loop
