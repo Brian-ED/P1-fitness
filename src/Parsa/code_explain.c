@@ -41,7 +41,7 @@ node* readinput(){
   char c;
   while ((c=getchar()) != '\n')
   {
-    if (!currentnode || index == SIZE_NO_LIMIT)
+    if (!currentnode || index == SIZE_NO_LIMIT - 1)//The element of the list starts from 0, there for it is important to minus 1.
     {
       node *node2 = (node *)malloc(sizeof(node));
       if (!node2)
@@ -88,13 +88,14 @@ void printinput(node *firstnode){
   {
     for (int i = 0; i < SIZE_NO_LIMIT; i++)
     {
+      //if (currentnode->your_why[i] == '\0') break; null termination - Using %s in fprintf relies on the array being null-terminated. Garbage characters appear when the array is not terminated correctly.
       putchar(currentnode -> your_why[i]);
     }
     currentnode = currentnode -> nextnode;
   }
   putchar('\n');
 }
-//Iteratively frees each node of the linked list.
+
 void freemyguy(node *firstnode){
   node *currentnode = firstnode;
   while (currentnode)
@@ -108,12 +109,9 @@ void freemyguy(node *firstnode){
 reads the input into a linked list and
 prints the input
 */
-void scaningwhy(){
+node* scaningwhy(){
   printf("What is your \"why\", tell us:");
-  node *firstnode = readinput();
-  printf("\nYou entered:\n");
-  printinput(firstnode);
-  freemyguy(firstnode);
+  return readinput();
 }
 
 /*char your_why[250];
@@ -125,7 +123,7 @@ void why(){
   printf("Wow, how inspiring. We wish you the best of luck\n");
 };*/
 float tmp; //tmp float that is used for memory efficiency
-float age;
+int age;
 int height;
 int weight;
 char gender;
@@ -145,6 +143,8 @@ void info(){
   //scanf("%f", &weight);
   scanf("%f", &tmp);
   weight=(int)tmp;//some may not enter a int as there weight. so for efficiency we use a tmp float that we take a int value of
+  /*I want to make sure that the user put the right input so i use a loop
+  */
   gender = ' ';
   while (gender != 'm' && gender != 'f')
   {
@@ -153,6 +153,17 @@ void info(){
     if (gender != 'm' && gender != 'f'){
       printf("wrong input, please try again\n");
     }
+  }
+
+  /*I want to write the genter as male and female in the
+  user document without using strings, because it can
+  easly go wrong
+  */
+   if (gender == 'm')
+  {
+    strcpy(gender2, "Male");
+  } else{
+    strcpy(gender2, "Female");
   }
 
   /*gender1:
@@ -170,10 +181,18 @@ void info(){
 };
 
 int program_days;
-
+/*I use a loop to make sure the app recived the right input from the user as done before
+*/
 void program(){
-  printf("How many times a week are you willing to train.(it has to be between 3-5)");
-  scanf("%d", &program_days);
+  program_days = 0;
+  while (program_days != 3 && program_days != 4 && program_days != 5)
+  {
+    printf("How many times a week are you willing to train.(it has to be between 3-5)");
+    scanf("%d", &program_days);
+    if (program_days != 3 && program_days != 4 && program_days != 5){
+      printf("wrong input, please try again\n");
+    }
+  }
 };
 
 
@@ -191,3 +210,32 @@ void needs(){
     exit(1);
   }
 };
+
+//I make a txt document where i put important about the user
+void to_file(node *firstnode, int age, int height, int weight, char gender2[7], float protein, float calorie){
+  FILE* file = fopen("User_Data","w");
+  if (file == NULL) {
+    printf("Error opening file\n");
+    exit(EXIT_FAILURE);
+    }
+  fprintf(file, " --- Your Very Own Document ---\n\n\n");
+  fprintf(file, "User's Why: ");
+  node *currentnode = firstnode;
+  while (currentnode) {
+    fprintf(file, "%s", currentnode->your_why);
+    currentnode = currentnode->nextnode;
+   }
+  // Write personal details and needs
+  fprintf(file, "\nPersonal Information:\n");
+  fprintf(file, "Age: %d\nHeight: %d cm\nWeight: %d kg\nGender: %s\n\n", age, height, weight, gender2);
+  fprintf(file, "Training:\n");
+  fprintf(file, "Days: %d\n", program_days);
+
+  fprintf(file, "\nNutritional Needs:\n");
+  fprintf(file, "Protein Requirement: %.f grams/day\n", protein);
+  fprintf(file, "Calorie Requirement: %.f calories/day\n", calorie);
+  fclose(file);
+}
+void free_space(node *firstnode){
+  freemyguy(firstnode); //frees the memory
+}

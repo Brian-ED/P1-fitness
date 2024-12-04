@@ -35,13 +35,16 @@ int main() {
         goto end_program; // TODO: "goto end_program;" ends the program, but when a user comes back, they should be going to the "update weight" question.
 
     start_introduction:
-        printf("Hey! you need to type in your user information!");
-        Introduction();
-        why();
-        info();
-        program();
-        needs();
-        goto the_program_made;
+       Introduction();
+       node *firstnode = scaningwhy();
+       info();
+       program();
+       needs();
+       to_file(firstnode, age, height, weight, gender2, protein, calorie);
+       free_space(firstnode);
+       printf("open the document \"User_Data\" to view relevant data related to your training journey");
+       system("notepad C:\\Users\\parsa\\OneDrive\\Desktop\\P1-fitness\\src\\Parsa\\User_Data");
+       goto the_program_made;
 
     the_program_made:
         goto end_program;
