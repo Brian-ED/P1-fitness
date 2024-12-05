@@ -133,8 +133,8 @@ void DrawTitle(char *title, float text_height_0_to_1, Vector2 position_of_title_
     // spacing is the distance between the lines of the title.
     SetTextLineSpacing(text_pixel_height);
 
-    width_of_title = MeasureTextEx(GetFontDefault(), title, text_pixel_height, 10).y;
-    height_of_title = MeasureText(title, text_pixel_height);
+    float height_of_title = MeasureTextEx(GetFontDefault(), title, text_pixel_height, 10).y;
+    float width_of_title = MeasureText(title, text_pixel_height);
     Vector2 position = Vector2Multiply(GetWindowSize(), position_of_title_0_to_1);
     Vector2 text_top_left = {
         position.x - width_of_title/2,
