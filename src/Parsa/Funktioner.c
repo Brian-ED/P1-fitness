@@ -67,6 +67,7 @@ void freemyguy(node *firstnode){
 
 node* scaningwhy(){
   printf("What is your \"why\", tell us:");
+  fflush(stdin);
   return readinput();
 }
 
