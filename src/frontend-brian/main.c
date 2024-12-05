@@ -5,6 +5,12 @@
 #define BACKGROUND_IMAGE "../../content/workout-images.png"
 #include "frontend.c"
 
+//int DrawCheckbox(float size, char *text, int checked) {
+//    size *= Min(GetWindowSize());
+//    GuiCheckBox(Rectangle bounds, text, &checked);                          // Check Box control, returns true when active
+//    return checked;
+//}
+
 int main() {
 
     // Opens the application window and adds a background.
