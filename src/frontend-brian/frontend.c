@@ -72,20 +72,24 @@ void DrawNewEmptyFrame() {
 
 // Draw background with a specific fade, making it semi-transparent
 void DrawBackgroundWithFade(float fade_0_to_1) {
-    Color whiteFade = Fade(WHITE, fade_0_to_1);
-    Vector2 window_size = GetWindowSize();
 
+    // whiteFade will decide how much the background fades
+    Color whiteFade = Fade(WHITE, fade_0_to_1);
+
+    // move backgrounds at the speed BACKGROUND_SPEED
     background_x += 2 * BACKGROUND_SPEED;
     background_y += 1 * BACKGROUND_SPEED;
+
+    // mod the position of the background so that it's always on the top left of the screen
     background_x = fmodf(background_x, background_image.width);
     background_y = fmodf(background_y, background_image.height);
 
-    float scale = Min(Vector2Divide(window_size, (Vector2){background_image.width, background_image.height}));
+    // scale background when window size is changed
+    float scale = Min(Vector2Divide(GetWindowSize(), AtPos(background_image.width, background_image.height)));
 
-
-    // drawing the image until it fills the entire background of the window
-    for (float i = scale*(background_x-background_image.width); i < window_size.x; i += background_image.width * scale) {
-        for (float j = scale*(background_y-background_image.height); j < window_size.y; j += background_image.height * scale) {
+    // drawing the background_image until it fills the entire background of the window, because the background image is smaller than the window size
+    for (float i = scale*(background_x-background_image.width); i < GetWindowSize().x; i += background_image.width * scale) {
+        for (float j = scale*(background_y-background_image.height); j < GetWindowSize().y; j += background_image.height * scale) {
             // Draw a part of a texture defined by the rectangle texture_source
             DrawTextureEx(background_image, (Vector2){i, j}, 0, scale, whiteFade); // Draw a Texture2D with extended parameters
         }
@@ -106,10 +110,16 @@ void DrawBackgroundWithFade(float fade_0_to_1) {
     fflush(stdout);
 }
 
-// Sets up a new frame to draw on, usually called in a while loop
+// Sets up a new frame to draw on, usually called in a while loop.
+// Background is also drawn with this function.
 void DrawNewFrame() {
+    // First draws an empty frame
     DrawNewEmptyFrame();
+
+    // Then with background raywhite
     ClearBackground(RAYWHITE);
+
+    // Then background with background image but faded a bit
     DrawBackgroundWithFade(0.6);
 }
 
@@ -117,24 +127,23 @@ void DrawNewFrame() {
 void DrawTitle(char *title, float text_height_0_to_1, Vector2 position_of_title_0_to_1) {
 
     // Translate from 0_to_1 units to use pixels instead, which is gotten by multiplying by GetWidnowSize()
+    // Min() is used, so that the text scales to window size by the size that's smallest.
     float text_pixel_height = Min(GetWindowSize())*text_height_0_to_1;
 
     // spacing is the distance between the lines of the title.
-    // Multiplied by 0.7 because it turns out to be a big gap otherwise.
-    float spacing = text_pixel_height;
-    SetTextLineSpacing(spacing);
+    SetTextLineSpacing(text_pixel_height);
 
-    Vector2 size_of_title = MeasureTextEx(GetFontDefault(), title, text_pixel_height, 10);
-    size_of_title.x = MeasureText(title, text_pixel_height);
+    float height_of_title = MeasureTextEx(GetFontDefault(), title, text_pixel_height, 10).y;
+    float width_of_title = MeasureText(title, text_pixel_height);
     Vector2 position = Vector2Multiply(GetWindowSize(), position_of_title_0_to_1);
     Vector2 text_top_left = {
-        position.x - size_of_title.x/2,
-        position.y - size_of_title.y/2,
+        position.x - width_of_title/2,
+        position.y - height_of_title/2,
     };
     // TODO: make border scale, or text scale to be smaller.
     // Currently the border is too thick when window is small and too thin when window is large.
-    DrawRectangle(text_top_left.x-7, text_top_left.y-7, size_of_title.x+14, size_of_title.y+14, BLACK);
-    DrawRectangle(text_top_left.x-4, text_top_left.y-4, size_of_title.x+8, size_of_title.y+8, WHITE);
+    DrawRectangle(text_top_left.x-7, text_top_left.y-7, width_of_title+14, height_of_title+14, BLACK);
+    DrawRectangle(text_top_left.x-4, text_top_left.y-4, width_of_title+8, height_of_title+8, WHITE);
     DrawText(title, text_top_left.x, text_top_left.y, text_pixel_height, BLACK);
 }
 
