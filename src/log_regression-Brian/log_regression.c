@@ -2,7 +2,7 @@ typedef struct {
   double coefficient, exponent;
 } Term;
 
-Term log_regression(int n, double *x, double *y) {
+Term log_regression(int n, double *y, double *x) {
     double sumx=0, sumy=0, sumxy=0, sumx2=0;
 
     for(int i=0; i<=n-1; i++) {
