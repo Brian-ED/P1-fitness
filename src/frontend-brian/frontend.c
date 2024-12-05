@@ -8,27 +8,21 @@
 #define BACKGROUND_SPEED 0.5
 #define FRAMES_PER_SECOND 60
 #define SECONDS_PER_FRAME (1.0/(float)FRAMES_PER_SECOND)
-#define TEXT_LENGTH 30
 
 Texture background_image;
-int debug_mode_grid = false;
+int debug_mode_grid = 0;
 float background_x = 0;
 float background_y = 0;
 
 //------------------------------------------------------------------------------------------
 // Function Definitions
 //------------------------------------------------------------------------------------------
+
+// Returns window size in pixels as a vector
 Vector2 GetWindowSize() {
+    // Vector2 here is the type for the following struct, struct is whatever is in the "{}"
     return (Vector2){GetScreenWidth(), GetScreenHeight()};
 };
-
-Rectangle PosAndSizeToRectangle(Vector2 position, Vector2 size) {
-    return (Rectangle){
-        .x = position.x,
-        .y = position.y,
-        .width = size.x,
-        .height = size.y};
-}
 
 float Min(Vector2 v) {
     if (v.x > v.y) {
@@ -40,7 +34,7 @@ float Min(Vector2 v) {
 
 float Max(Vector2 v) {
     if (v.x < v.y) {
-        return v.y;
+        return v.y; // When getting y from the struct v, use the . notation v.y
     } else {
         return v.x;
     }
@@ -85,13 +79,16 @@ void DrawBackgroundWithFade(float fade_0_to_1) {
     background_y = fmodf(background_y, background_image.height);
 
     // scale background when window size is changed
-    float scale = Min(Vector2Divide(GetWindowSize(), AtPos(background_image.width, background_image.height)));
+    float scale = Min(Vector2Divide(
+        GetWindowSize(),
+        (Vector2){background_image.width, background_image.height}
+    ));
 
     // drawing the background_image until it fills the entire background of the window, because the background image is smaller than the window size
-    for (float i = scale*(background_x-background_image.width); i < GetWindowSize().x; i += background_image.width * scale) {
-        for (float j = scale*(background_y-background_image.height); j < GetWindowSize().y; j += background_image.height * scale) {
+    for (float x = scale*(background_x-background_image.width); x < GetWindowSize().x; x += background_image.width * scale) {
+        for (float y = scale*(background_y-background_image.height); y < GetWindowSize().y; y += background_image.height * scale) {
             // Draw a part of a texture defined by the rectangle texture_source
-            DrawTextureEx(background_image, (Vector2){i, j}, 0, scale, whiteFade); // Draw a Texture2D with extended parameters
+            DrawTextureEx(background_image, AtPos(x, y), 0, scale, whiteFade); // Draw a Texture2D with extended parameters
         }
     }
 
@@ -100,7 +97,7 @@ void DrawBackgroundWithFade(float fade_0_to_1) {
         debug_mode_grid = !debug_mode_grid;
     }
 
-    // Toggle
+    // Draw grid if debug mode is on
     if (debug_mode_grid) {
         DrawFPS(10, 10);
         GuiGrid(InArea(AtPos(0,0), GetWindowSize()), Vector2Scale(GetWindowSize(),0.1), 1, NULL);
@@ -151,7 +148,7 @@ int DrawButton(char *text, float text_height_0_to_1, Rectangle area_0_to_1) {
     Vector2 rec_size = Vector2Multiply(GetWindowSize(), (Vector2){area_0_to_1.width, area_0_to_1.height});
     Vector2 rec_middle = Vector2Multiply(GetWindowSize(), (Vector2){area_0_to_1.x, area_0_to_1.y});
     Vector2 rec_top_left = Vector2Subtract(rec_middle, Vector2Scale(rec_size, 0.5));
-    Rectangle r = PosAndSizeToRectangle(rec_top_left, rec_size);
+    Rectangle r = InArea(rec_top_left, rec_size);
     GuiSetStyle(DEFAULT, TEXT_SIZE, Min(GetWindowSize()) * text_height_0_to_1);
     GuiSetStyle(DEFAULT, TEXT_LINE_SPACING, Min(GetWindowSize())*text_height_0_to_1);
 
