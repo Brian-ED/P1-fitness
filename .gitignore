@@ -17,6 +17,7 @@
 
 # cmake
 cmake-build-debug
+CMakeLists.txt
 
 # fun-brian uses a save_data file
 src/fun-brian/save_data
