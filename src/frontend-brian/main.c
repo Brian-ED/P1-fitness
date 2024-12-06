@@ -1,8 +1,15 @@
 #include <stdio.h>
 #include <math.h>
 
+// below is a file path to the thebackground image, .. means go out of folder, and name of folder means go into folder, seperated by "/"s
 #define BACKGROUND_IMAGE "../../content/workout-images.png"
 #include "frontend.c"
+
+//int DrawCheckbox(float size, char *text, int checked) {
+//    size *= Min(GetWindowSize());
+//    GuiCheckBox(Rectangle bounds, text, &checked);                          // Check Box control, returns true when active
+//    return checked;
+//}
 
 int main() {
 
@@ -15,7 +22,7 @@ int main() {
     // Button's text height
     float button_text_height = 0.05;
 
-    // We'll close the window when the button
+    // We'll close the window when the button is pressed
     int button_pressed = 0;
 
     // Main application loop
@@ -29,7 +36,10 @@ int main() {
 
         // Draw the button and asks if it was pressed,
         // so button_pressed becomes true if button was pressed
-        button_pressed = DrawButton("Type your\nWhy", button_text_height, InArea(AtPos(0.5, 11.0/15.0), WithSize(0.3, 0.2)));
+        button_pressed = DrawButton("Press to begin", button_text_height,
+            InArea(AtPos(0.5, 0.8), WithSize(0.3, 0.2))
+            // same as (Rectangle){.x=0.5, .y=0.8, .width=.3, .height=0.2}
+        );
 
         // If button was pressed, print something
         if (button_pressed) {

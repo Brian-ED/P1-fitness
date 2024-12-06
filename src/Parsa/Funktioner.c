@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#define SIZE_NO_LIMIT 16 //the size of character array in each linked list node
+#define SIZE_NO_LIMIT 16
 
 void Introduction() {
   printf("Welcome to a new chapter in your life\n");
@@ -18,7 +18,7 @@ node* readinput(){
   char c;
   while ((c=getchar()) != '\n')
   {
-    if (!currentnode || index == SIZE_NO_LIMIT - 1) //-1 because it was too big and caused issues
+    if (!currentnode || index == SIZE_NO_LIMIT - 1)
     {
       node *node2 = (node *)malloc(sizeof(node));
       if (!node2)
@@ -48,7 +48,6 @@ void printinput(node *firstnode){
   {
     for (int i = 0; i < SIZE_NO_LIMIT; i++)
     {
-       if (currentnode->your_why[i] == '\0') break; //null termination - Using %s in fprintf relies on the array being null-terminated. Garbage characters appear when the array is not terminated correctly.
       putchar(currentnode -> your_why[i]);
     }
     currentnode = currentnode -> nextnode;
@@ -68,6 +67,7 @@ void freemyguy(node *firstnode){
 
 node* scaningwhy(){
   printf("What is your \"why\", tell us:");
+  fflush(stdin);
   return readinput();
 }
 
