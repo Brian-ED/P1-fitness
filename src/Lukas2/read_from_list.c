@@ -20,14 +20,9 @@ typedef struct {
 
 } Exercise;
 
-int print(int r);
 void resolve_backslash(char text[5000]);
 void resolve_newline(char text[5000]);
-void print_exercises(Exercise exercise);
-int compareByRating(const Exercise* a, const Exercise* b);
-int compareByName(const Exercise* a, const Exercise* b);
-void merge(Exercise arr[], int left, int mid, int right, int (*cmp)(const Exercise*, const Exercise*));
-void mergeSort(Exercise arr[], int left, int right, int (*cmp)(const Exercise*, const Exercise*));
+void print_exercises(Exercise *exercise, int exercise_lenght);
 int compare(const void *s1, const void *s2);
 
 void read_exercises() {
@@ -39,7 +34,6 @@ void read_exercises() {
 
     int exercise_index = 0;
     Exercise exercise[1000] = {0}; // Array of exercises
-    int ex_read;
     while(1){
 
         // Allocate memory for large fields dynamically
@@ -52,7 +46,7 @@ void read_exercises() {
         }
 
         // Read the data from the file
-        if (print(fscanf(exercise_file,
+        if (fscanf(exercise_file,
             "%99[^|] | %99[^|] | %99[^|] | %99[^|] | %99[^|] | %f | %99[^|] | %99[^|] | %99[^|] | %99[^|] | %99[^|] | %99[^|] | %99[^|] | %99[^|] | %99[^|] | %4999[^\n]",
             exercise[exercise_index].name,
             exercise[exercise_index].musclegroup,
@@ -69,15 +63,13 @@ void read_exercises() {
             exercise[exercise_index].alternative_exercises[6],
             exercise[exercise_index].alternative_exercises[7],
             exercise[exercise_index].alternative_exercises[8],
-            exercise[exercise_index].exercise_info)) == 16) {
+            exercise[exercise_index].exercise_info) == 16) {
 
-            print_exercises(exercise[exercise_index]);
-            ex_read++;
+
 
             // Break the loop if fscanf doesn't read all fields
             // Free dynamically allocated memory for each exercise
-            free(exercise[exercise_index].exercise_info);
-        }else{
+        } else {
             break;
         }
 
@@ -87,42 +79,44 @@ void read_exercises() {
             break;
         }
     }
-    printf("%d", ex_read);
+    //print_exercises(exercise, exercise_index);
+    qsort(exercise, exercise_index, sizeof(Exercise), compare);
+    print_exercises(exercise, exercise_index);
+    printf("%d", exercise_index);
     fclose(exercise_file);
 
 }
 
-int print(int r){
-    printf("%d\n",r);
-    return r;
-}
 
 
-void print_exercises(Exercise exercise){
+void print_exercises(Exercise *exercise, int exercise_lenght){
     // Print and free the data
 
-    resolve_backslash(exercise.exercise_info);
 
-    resolve_newline(exercise.exercise_info);
+    for (int i = 0; i < exercise_lenght; i++){
 
+
+        resolve_backslash(exercise[i].exercise_info);
+        resolve_newline(exercise[i].exercise_info);
 
         printf("%s\n%s\n%s\n%s\n%s\n%f\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n",
-            exercise.name,
-            exercise.musclegroup,
-            exercise.equipment,
-            exercise.type,
-            exercise.level,
-            exercise.rating,
-            exercise.alternative_exercises[0],
-            exercise.alternative_exercises[1],
-            exercise.alternative_exercises[2],
-            exercise.alternative_exercises[3],
-            exercise.alternative_exercises[4],
-            exercise.alternative_exercises[5],
-            exercise.alternative_exercises[6],
-            exercise.alternative_exercises[7],
-            exercise.alternative_exercises[8],
-            exercise.exercise_info);
+            exercise[i].name,
+            exercise[i].musclegroup,
+            exercise[i].equipment,
+            exercise[i].type,
+            exercise[i].level,
+            exercise[i].rating,
+            exercise[i].alternative_exercises[0],
+            exercise[i].alternative_exercises[1],
+            exercise[i].alternative_exercises[2],
+            exercise[i].alternative_exercises[3],
+            exercise[i].alternative_exercises[4],
+            exercise[i].alternative_exercises[5],
+            exercise[i].alternative_exercises[6],
+            exercise[i].alternative_exercises[7],
+            exercise[i].alternative_exercises[8],
+            exercise[i].exercise_info);
+    }
 }
 
 
@@ -170,73 +164,27 @@ void resolve_newline(char text[5000]){
     strcpy(text, e);
 }
 
-int compareByRating(const Exercise* a, const Exercise* b) {
-    if (a->rating < b->rating) return -1;
-    if (a->rating > b->rating) return 1;
-    return 0; // Equal ratings
-}
-
-int compareByName(const Exercise* a, const Exercise* b) {
-    return strcmp(a->name, b->name);
-}
-
-int compare(const void *s1, const void *s2)
-{
-//  struct Exercise *e1 = (struct Exercise *)s1;
-//  struct Exercise *e2 = (struct Exercise *)s2;
-//  int gendercompare = strcmp(e1->gender, e2->gender);
-//  if (gendercompare == 0)  /* same gender so sort by id */
-//    return e1->id - e2->id;
-//  else
-//    return -gendercompare;
-}
-
-
-
-void merge(Exercise arr[], int left, int mid, int right, int (*cmp)(const Exercise*, const Exercise*)) {
-    int n1 = mid - left + 1;
-    int n2 = right - mid;
-
-    Exercise* L = (Exercise*)malloc(n1 * sizeof(Exercise));
-    Exercise* R = (Exercise*)malloc(n2 * sizeof(Exercise));
-
-    for (int i = 0; i < n1; i++) L[i] = arr[left + i];
-    for (int i = 0; i < n2; i++) R[i] = arr[mid + 1 + i];
-
-    int i = 0, j = 0, k = left;
-    while (i < n1 && j < n2) {
-        if (cmp(&L[i], &R[j]) <= 0) {
-            arr[k] = L[i];
-            i++;
+int compare(const void *s1, const void *s2){
+    Exercise *e1 = (Exercise *)s1;
+    Exercise *e2 = (Exercise *)s2;
+    int type_compare = strcmp(e1->type, e2->type);
+    if (type_compare == 0) {
+        int musclegroup_compare = strcmp(e1->musclegroup, e2->musclegroup);
+        if (musclegroup_compare != 0) {
+            return musclegroup_compare;
         } else {
-            arr[k] = R[j];
-            j++;
+            int level_compare = strcmp(e1->level, e2->level);
+            if (level_compare != 0) {
+                return level_compare;
+            } else {
+                if (e1->rating < e2->rating) return -1;
+                if (e1->rating > e2->rating) return 1;
+                if (e1->rating == e2->rating) {
+                    int name_compare = strcmp(e1->name, e2->name);
+                    return name_compare;
+                }
+            }
         }
-        k++;
     }
-
-    while (i < n1) {
-        arr[k] = L[i];
-        i++;
-        k++;
-    }
-    while (j < n2) {
-        arr[k] = R[j];
-        j++;
-        k++;
-    }
-
-    free(L);
-    free(R);
-}
-
-void mergeSort(Exercise arr[], int left, int right, int (*cmp)(const Exercise*, const Exercise*)) {
-    if (left < right) {
-        int mid = left + (right - left) / 2;
-
-        mergeSort(arr, left, mid, cmp);
-        mergeSort(arr, mid + 1, right, cmp);
-
-        merge(arr, left, mid, right, cmp);
-    }
+    return type_compare;
 }
