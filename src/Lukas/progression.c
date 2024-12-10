@@ -58,7 +58,7 @@ void calculate_new_weight(char *filename, progression last_weight[], int *new_we
     int new_weight_lower = floor(last_weight[0].weight*1.1);
     int new_weight_upper = floor(last_weight[0].weight*1.2);
 
-    int new_reps = 0;
+    int new_repsNew = 0;
 
     for (int i = 8; i <= 12; i++){
         int count = 0;
@@ -68,18 +68,18 @@ void calculate_new_weight(char *filename, progression last_weight[], int *new_we
             }
         }
         if (count == 4){
-            new_reps = i + 1;
+            new_repsNew = i + 1;
         }
     }
 
-    if (new_reps < last_weight[0].sets[0]){
+    if (new_repsNew < last_weight[0].sets[0]){
         *new_reps = last_weight[0].sets[0];
-    } else if (new_reps > 12){
+    } else if (new_repsNew > 12){
         *new_reps = 8;
         printf("You have reached your maximum reps for this exercise, and you must therefore choose a new weight.\n");
         printf("As a recommendation you should chose a weight that lies between: %d kg and %d kg.\n",new_weight_lower, new_weight_upper);
         scanf("%d", new_weight);
-    } else *new_reps = new_reps;
+    } else *new_reps = new_repsNew;
 
 fclose(file);
 }
