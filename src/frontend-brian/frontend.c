@@ -52,6 +52,35 @@ Rectangle InArea(Vector2 position, Vector2 size) {
     return (Rectangle){position.x, position.y, size.x, size.y};
 }
 
+Rectangle ScaleArea(Rectangle area, Vector2 scale) {
+    return (Rectangle){
+        scale.x*area.x,
+        scale.y*area.y,
+        scale.x*area.width,
+        scale.y*area.height,
+    };
+}
+
+Rectangle ResizeArea(Rectangle area, Vector2 scale) {
+    return (Rectangle){
+        area.x,
+        area.y,
+        area.width,
+        area.height,
+    };
+}
+
+Rectangle AreaToRaylibRec(Rectangle area) {
+    Rectangle retArea = ScaleArea(area, GetWindowSize());
+    retArea.x -= retArea.width /2; // Moving to top left
+    retArea.y -= retArea.height/2; // Moving to top left
+    return retArea;
+}
+
+Vector2 SizeOfArea(Rectangle area) {
+    return WithSize(area.width, area.height);
+}
+
 // Sets up a new frame without a background
 void DrawNewEmptyFrame() {
     EndDrawing(); // Ends drawing the last frame
@@ -65,10 +94,10 @@ void DrawNewEmptyFrame() {
 }
 
 // Draw background with a specific fade, making it semi-transparent
-void DrawBackgroundWithFade(float fade_0_to_1) {
+void DrawBackgroundWithFade(float fade_0to1) {
 
     // whiteFade will decide how much the background fades
-    Color whiteFade = Fade(WHITE, fade_0_to_1);
+    Color whiteFade = Fade(WHITE, fade_0to1);
 
     // move backgrounds at the speed BACKGROUND_SPEED
     background_x += 2 * BACKGROUND_SPEED;
@@ -81,7 +110,7 @@ void DrawBackgroundWithFade(float fade_0_to_1) {
     // scale background when window size is changed
     float scale = Min(Vector2Divide(
         GetWindowSize(),
-        (Vector2){background_image.width, background_image.height}
+        WithSize(background_image.width, background_image.height)
     ));
 
     // drawing the background_image until it fills the entire background of the window, because the background image is smaller than the window size
@@ -120,39 +149,50 @@ void DrawNewFrame() {
     DrawBackgroundWithFade(0.6);
 }
 
-// Draw text on a white background with a black border.
-void DrawTitle(char *title, float text_height_0_to_1, Vector2 position_of_title_0_to_1) {
+// Draw a white box with black background
+void DrawBox(Rectangle area) {
+    Rectangle black = AreaToRaylibRec(area);
+    Rectangle white = black;
 
-    // Translate from 0_to_1 units to use pixels instead, which is gotten by multiplying by GetWidnowSize()
+    float border_scale = 0.05*Min(SizeOfArea(white));
+    white.x      += border_scale/2;
+    white.y      += border_scale/2;
+    white.width  -= border_scale;
+    white.height -= border_scale;
+
+    // TODO: make border scale, or text scale to be smaller.
+    // Currently the border is too thick when window is small and too thin when window is large.
+    DrawRectangle(black.x, black.y, black.width, black.height, BLACK);
+    DrawRectangle(white.x, white.y, white.width, white.height, WHITE);
+}
+
+// Draw text on a white background with a black border.
+void DrawTitle(char *title, float text_height_0to1, Vector2 position_of_title_0to1) {
+
+    // Translate from 0to1 units to use pixels instead, which is gotten by multiplying by GetWidnowSize()
     // Min() is used, so that the text scales to window size by the size that's smallest.
-    float text_pixel_height = Min(GetWindowSize())*text_height_0_to_1;
+    float text_pixel_height = Min(GetWindowSize())*text_height_0to1;
 
     // spacing is the distance between the lines of the title.
     SetTextLineSpacing(text_pixel_height);
 
-    float height_of_title = MeasureTextEx(GetFontDefault(), title, text_pixel_height, 10).y;
-    float width_of_title = MeasureText(title, text_pixel_height);
-    Vector2 position = Vector2Multiply(GetWindowSize(), position_of_title_0_to_1);
-    Vector2 text_top_left = {
-        position.x - width_of_title/2,
-        position.y - height_of_title/2,
+    Vector2 title_size = {
+        MeasureText(title, text_pixel_height),
+        MeasureTextEx(GetFontDefault(), title, text_pixel_height, 10).y
     };
-    // TODO: make border scale, or text scale to be smaller.
-    // Currently the border is too thick when window is small and too thin when window is large.
-    DrawRectangle(text_top_left.x-7, text_top_left.y-7, width_of_title+14, height_of_title+14, BLACK);
-    DrawRectangle(text_top_left.x-4, text_top_left.y-4, width_of_title+8, height_of_title+8, WHITE);
+    DrawBox(InArea(position_of_title_0to1, Vector2Divide(title_size, GetWindowSize())));
+
+    Vector2 position = Vector2Multiply(GetWindowSize(), position_of_title_0to1);
+    Vector2 text_top_left = Vector2Subtract(position, Vector2Scale(title_size,0.5));
     DrawText(title, text_top_left.x, text_top_left.y, text_pixel_height, BLACK);
 }
 
-int DrawButton(char *text, float text_height_0_to_1, Rectangle area_0_to_1) {
-    Vector2 rec_size = Vector2Multiply(GetWindowSize(), (Vector2){area_0_to_1.width, area_0_to_1.height});
-    Vector2 rec_middle = Vector2Multiply(GetWindowSize(), (Vector2){area_0_to_1.x, area_0_to_1.y});
-    Vector2 rec_top_left = Vector2Subtract(rec_middle, Vector2Scale(rec_size, 0.5));
-    Rectangle r = InArea(rec_top_left, rec_size);
-    GuiSetStyle(DEFAULT, TEXT_SIZE, Min(GetWindowSize()) * text_height_0_to_1);
-    GuiSetStyle(DEFAULT, TEXT_LINE_SPACING, Min(GetWindowSize())*text_height_0_to_1);
+int DrawButton(char *text, float text_height_0to1, Rectangle area_0to1) {
+    Rectangle area = AreaToRaylibRec(area_0to1);
+    GuiSetStyle(DEFAULT, TEXT_SIZE, Min(GetWindowSize()) * text_height_0to1);
+    GuiSetStyle(DEFAULT, TEXT_LINE_SPACING, Min(GetWindowSize())*text_height_0to1);
 
-    return GuiButton(r, text);
+    return GuiButton(area, text);
 }
 
 //------------------------------------------------------------------------------------
