@@ -2,14 +2,77 @@
 #include <stdlib.h>
 #include <math.h>
 #include "src/Parsa/Funktioner.c"
+#include "src/Jonas/progression.c"
 
 // #define BACKGROUND_IMAGE "content/workout-images.png"
 // #include "src/frontend-brian/frontend.c"
 
+void update_weight() {/*TODO*/}
+void GetStats() {/*TODO*/}
+void CreateProgressiveOverloadProgram() {/*TODO*/}
+void WaitingOnInputFromUser() {/*TODO*/}
+void IfUserNeedsGuidanceShowDescription() {/*TODO*/}
+void ProgramRecievesInput() {/*TODO*/}
+void ShowUserTheirStats() {/*TODO*/}
+void LikeOrDislikeCertainExercises() {/*TODO*/}
+void HowManyDaysAWeek() {/*TODO*/}
+
+// This function marks when the workout program is setup and complete for the rest of the app's runtime.
+// Only a restart can make it back here.
+void TakesStatsAndCreateAProgressiveOverloadProgram() {
+    GetStats();
+    CreateProgressiveOverloadProgram();
+
+    WaitingOnInputFromUser();
+    IfUserNeedsGuidanceShowDescription();
+    ProgramRecievesInput();
+    ShowUserTheirStats();
+    ShowUserTheirStats();
+    CreateProgressiveOverloadProgram();
+    exit(0);
+}
+
+void ChangeAmountOfDaysOrPreferredExercises() {
+    printf("If you want to change days working out and exercies, input [D].");
+    printf("If you just want to change exercies, input [E]");
+    // TODO handle inputs other than E and D.
+    char answer;
+    scanf("%c", &answer);
+    if (answer == 'D' || answer == 'd') {
+        HowManyDaysAWeek();
+    } else {
+        LikeOrDislikeCertainExercises();
+    }
+}
+
+void AskUserIfTheyWantToChangeExercises() {
+    printf("Would you like to change workout program or exercises? [Y] for yes, [N] for no.\n");
+    char answer;
+    scanf("%c", &answer);
+    if (answer == 'Y' || answer == 'y') {
+        ChangeAmountOfDaysOrPreferredExercises();
+    } else {
+        TakesStatsAndCreateAProgressiveOverloadProgram();
+    }
+}
+
+void UpdateWeight() {
+    // TODO
+};
+
+
 // User has been in the application before, so we say welcome back.
 void welcome_back() {
-    printf("Welcome back!");
-    // TODO: Program ends here, but when a user comes back, they should be going to the "update weight" question.
+    char answer;
+
+    printf("Welcome back!\n");
+
+    printf("Do you want to update weight? [Y] for yes, [N] for no.\n");
+    scanf("%c", &answer);
+    if (answer == 'Y' || answer == 'y') {
+        UpdateWeight();
+    }
+    AskUserIfTheyWantToChangeExercises();
 }
 
 void the_program_made() {
