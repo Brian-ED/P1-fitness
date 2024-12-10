@@ -26,7 +26,7 @@ void start_introduction() {
     info();
     program();
     needs();
-    to_file(firstnode, age, height, weight, gender2, protein, calorie);
+    to_file(firstnode, age, height, weight, gender, protein, calorie);
     free_space(firstnode);
     printf("open the document \"User_Data\" to view relevant data related to your training journey");
     system("notepad User_Data");
