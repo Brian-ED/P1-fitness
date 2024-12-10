@@ -16,7 +16,8 @@ node* readinput(){
   node *firstnode = NULL, *currentnode = NULL;
   int index = 0;
   char c;
-  while ((c=getchar()) != '\n')
+  while ((c=getchar()) == '\n') {} // Clearing newlines still present in stdin
+  while ((c=getchar()) != '\n' && c != EOF)
   {
     if (!currentnode || index == SIZE_NO_LIMIT - 1)
     {
