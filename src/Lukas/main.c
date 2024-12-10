@@ -7,7 +7,7 @@ void scan_prog(char *exercise);
 
 int main(void){
 
-    char exercise[80] = "bench press";
+    char exercise[80] = "rows";
 
     scan_prog(exercise);
 
