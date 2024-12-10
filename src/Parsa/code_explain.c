@@ -212,19 +212,19 @@ void needs(){
 };
 
 //I make a txt document where i put important about the user
-void to_file(node *firstnode, int age, int height, int weight, char gender2[7], float protein, float calorie){
+void to_file(node *firstnode, int age, int height, int weight, char gender, float protein, float calorie){
   FILE* file = fopen("User_Data","w");
   if (file == NULL) {
     printf("Error opening file\n");
     exit(EXIT_FAILURE);
-    }
+  }
   fprintf(file, " --- Your Very Own Document ---\n\n\n");
   fprintf(file, "User's Why: ");
   node *currentnode = firstnode;
   while (currentnode) {
     fprintf(file, "%s", currentnode->your_why);
     currentnode = currentnode->nextnode;
-   }
+  }
   // Write personal details and needs
   fprintf(file, "\nPersonal Information:\n");
   fprintf(file, "Age: %d\nHeight: %d cm\nWeight: %d kg\nGender: %s\n\n", age, height, weight, gender2);

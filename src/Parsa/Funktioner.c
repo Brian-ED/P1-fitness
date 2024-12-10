@@ -16,7 +16,8 @@ node* readinput(){
   node *firstnode = NULL, *currentnode = NULL;
   int index = 0;
   char c;
-  while ((c=getchar()) != '\n')
+  while ((c=getchar()) == '\n') {} // Clearing newlines still present in stdin
+  while ((c=getchar()) != '\n' && c != EOF)
   {
     if (!currentnode || index == SIZE_NO_LIMIT - 1)
     {
@@ -77,7 +78,6 @@ int age;
 int height;
 int weight;
 char gender;
-char gender2[7];
 float protein;
 float caloriem;
 float calorief;
@@ -101,12 +101,6 @@ void info(){
     if (gender != 'm' && gender != 'f'){
       printf("wrong input, please try again\n");
     }
-  }
-  if (gender == 'm')
-  {
-    strcpy(gender2, "Male");
-  } else{
-    strcpy(gender2, "Female");
   }
   protein = weight * 1.7;
   caloriem = 1.5 * 10 * weight + 6.25 * height - 5 * age + 5;
@@ -142,7 +136,7 @@ void needs(){
   }
 };
 
-void to_file(node *firstnode, int age, int height, int weight, char gender2[7], float protein, float calorie){
+void to_file(node *firstnode, int age, int height, int weight, char gender, float protein, float calorie){
   FILE* file = fopen("User_Data","w");
   if (file == NULL) {
     printf("Error opening file\n");
@@ -157,7 +151,7 @@ void to_file(node *firstnode, int age, int height, int weight, char gender2[7], 
    }
   // Write personal details and needs
   fprintf(file, "\nPersonal Information:\n");
-  fprintf(file, "Age: %d\nHeight: %d cm\nWeight: %d kg\nGender: %s\n\n", age, height, weight, gender2);
+  fprintf(file, "Age: %d\nHeight: %d cm\nWeight: %d kg\nGender: %s\n\n", age, height, weight, gender=='m'? "Male" : "Female");
   fprintf(file, "Training:\n");
   fprintf(file, "Days: %d\n", program_days);
 
