@@ -4,7 +4,20 @@
 #include "src/Parsa/Funktioner.c"
 #include "src/Lukas/progression.c"
 #include "src/welcome_back/welcome_back.c"
-#include "src/terminal-funcs.c"
+#include "src/terminal_funcs-Brian/terminal-funcs.c"
+
+// TODO
+void SaveProgramToWorkoutFile() {}
+void WriteChangedWorkoutToFile() {}
+int DoesUserWantToAddNewWeight() {return 0;}
+int SaveUserOptionsToFile() {return 0;}
+void AskForCalculateCaloryIntake() {}
+void ShowProgressionViaDataIfEnoughWorkoutsSavedInData() {}
+void GetDate() {}
+void ReadInDataFile() {}
+void DoEachSet() {}
+void SaveRepsToWorkoutFile() {}
+void EndApp() {}
 
 #define DEBUG 1
 // #define BACKGROUND_IMAGE "content/workout-images.png"
@@ -32,7 +45,7 @@ void FLOW_ReadInDataFileAndGetDate() {
 }
 
 void FLOW_DoesUserWantToStartAWorkoutSession() {
-    if (UserWantsToStartAWorkoutSession()) {
+    if (DoesUserWantToStartAWorkoutSession()) {
         FLOW_ReadInDataFileAndGetDate();
     } else {
         FLOW_EndApp();
@@ -46,12 +59,12 @@ void FLOW_ShowProgressionViaDataIfEnoughWorkoutsSavedInData() {
 
 void FLOW_AskForWeightAndCalculateCaloryIntake() {
     AskForWeight();
-    CalculateCaloryIntake();
+    AskForCalculateCaloryIntake();
     FLOW_ShowProgressionViaDataIfEnoughWorkoutsSavedInData();
 }
 
 void FLOW_DoesUserWantToAddNewWeight() {
-    if (UserWantsToAddNewWeight()) {
+    if (DoesUserWantToAddNewWeight()) {
         FLOW_AskForWeightAndCalculateCaloryIntake();
     } else {
         FLOW_ShowProgressionViaDataIfEnoughWorkoutsSavedInData();
