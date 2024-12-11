@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <time.h>
+
 #include "src/Parsa/Funktioner.c"
 #include "src/Lukas/progression.c"
 #include "src/welcome_back/welcome_back.c"
@@ -13,11 +15,17 @@ int DoesUserWantToAddNewWeight() {return 0;}
 void SaveUserOptionsToFile() {}
 void CalculateCaloryIntake() {} // Parsa
 void ShowProgressionViaDataIfEnoughWorkoutsSavedInData() {}
-void GetDate() {}
 void ReadInDataFile() {}
 void DoEachSet() {}
 void SaveRepsToWorkoutFile() {}
 void EndApp() {}
+
+int d = 15;   // Day   1-31
+int m = 5;    // Month 1-12
+int y = 2013; // Year
+
+d += m < 3 ? y-- : y - 2;
+int weekday = (23*m/9 + d + 4 + y/4- y/100 + y/400)%7;
 
 #define DEBUG 1
 // #define BACKGROUND_IMAGE "content/workout-images.png"
