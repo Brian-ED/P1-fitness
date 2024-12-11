@@ -7,11 +7,11 @@
 #include "src/terminal_funcs-Brian/terminal-funcs.c"
 
 // TODO
-void SaveProgramToWorkoutFile() {}
-void WriteChangedWorkoutToFile() {}
+void SaveProgramToWorkoutFile() {} // Parsa
+void WriteChangedWorkoutToFile() {} // Lukas
 int DoesUserWantToAddNewWeight() {return 0;}
 int SaveUserOptionsToFile() {return 0;}
-void CalculateCaloryIntake() {}
+void CalculateCaloryIntake() {} // Parsa
 void ShowProgressionViaDataIfEnoughWorkoutsSavedInData() {}
 void GetDate() {}
 void ReadInDataFile() {}
