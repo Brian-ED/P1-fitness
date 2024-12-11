@@ -134,7 +134,7 @@ void FLOW_AskUserIfTheyWantToChangeOptionsAndOrWorkout() {
 }
 
 void FLOW_DoesDataFileExist(){
-    if (DataFileExists()) {
+    if (DoesDataFileExist()) {
         FLOW_AskUserIfTheyWantToChangeOptionsAndOrWorkout();
     } else {
         FLOW_DisplayIntroduction();

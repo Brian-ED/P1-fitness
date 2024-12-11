@@ -14,8 +14,8 @@ void CreateDefaultProgram() {
 }
 
 // Only cross platform way to check if file exists, according to https://stackoverflow.com/a/29510380
-int DataFileExists() {
-  FILE *file = fopen("sample.txt","r+");
+int DoesDataFileExist() {
+  FILE *file = fopen("User_Data","r+");
   if(file != NULL) {
     fclose(file);
   }
