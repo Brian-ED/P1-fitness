@@ -67,7 +67,7 @@ void FLOW_ShowAndAskOptions() {
     FLOW_SaveUserOptionsToFile();
 }
 
-void FLOW_DoesUserWantToChangeOptions() {
+void FLOW_DoesUserWantToChangeOptions() {
     if (DoesUserWantToChangeOptions()) {
         FLOW_ShowAndAskOptions();
     } else {
@@ -93,12 +93,9 @@ void FLOW_DoesUserWantToChangeWorkout() {
     }
 }
 
-void FLOW_DoesUserWantToChangeWorkout() {
-    if (DoesUserWantToChangeWorkout()) {
-        FLOW_ChangeWorkoutViaAskingUserQuestions();
-    } else {
-        FLOW_DoesUserWantToChangeOptions();
-    }
+void FLOW_SaveProgramToWorkoutFile() {
+    SaveProgramToWorkoutFile();
+    FLOW_DoesUserWantToChangeWorkout();
 }
 
 void FLOW_CreateDefaultProgram() {
@@ -108,12 +105,7 @@ void FLOW_CreateDefaultProgram() {
 
 void FLOW_DisplayIntroduction() {
     DisplayIntroductionMessage();
-    FLOW_CreateDefaultProgram()
-}
-
-void FLOW_SaveProgramToWorkoutFile() {
-    SaveProgramToWorkoutFile();
-    FLOW_DoesUserWantToChangeWorkout();
+    FLOW_CreateDefaultProgram();
 }
 
 void FLOW_AskUserIfTheyWantToChangeOptionsAndOrWorkout() {
