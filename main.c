@@ -11,7 +11,7 @@ void SaveProgramToWorkoutFile() {}
 void WriteChangedWorkoutToFile() {}
 int DoesUserWantToAddNewWeight() {return 0;}
 int SaveUserOptionsToFile() {return 0;}
-void AskForCalculateCaloryIntake() {}
+void CalculateCaloryIntake() {}
 void ShowProgressionViaDataIfEnoughWorkoutsSavedInData() {}
 void GetDate() {}
 void ReadInDataFile() {}
@@ -59,7 +59,7 @@ void FLOW_ShowProgressionViaDataIfEnoughWorkoutsSavedInData() {
 
 void FLOW_AskForWeightAndCalculateCaloryIntake() {
     AskForWeight();
-    AskForCalculateCaloryIntake();
+    CalculateCaloryIntake();
     FLOW_ShowProgressionViaDataIfEnoughWorkoutsSavedInData();
 }
 

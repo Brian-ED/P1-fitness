@@ -22,15 +22,29 @@ int DataFileExists() {
   return file != NULL;
 }
 
+int DoesUserWantToChangeDaysPerWeek() {
+    char m[3] = "";
+    printf("Do you want to change the amount of workout days per week? Please type 'yes' or 'no'");
+    scanf("%s", m);
+
+    if (!strcmp(m, "yes")) {
+        return 1;
+    }
+    if (!strcmp(m, "no")) {
+        return 0;
+    }
+    printf("Not valid answer");
+    exit(1);
+}
+
 void ChangeWorkoutViaAskingQuestions() {
 
     if (DoesUserWantToChangeDaysPerWeek()) {
-    }
         // How many days a week
         program(); // Also calculates calories needed and protein goals
-        // LikeOrDislikeCertainExercises();
-
+    }
     if (change_exercises_or_not()) {
+        // LikeOrDislikeCertainExercises();
     }
 }
 
@@ -71,20 +85,6 @@ int DoesUserWantToChangeOptions(void) {
     exit(1);
 }
 
-int DoesUserWantToChangeDaysPerWeek() {
-    char m[3] = "";
-    printf("Do you want to change the amount of workout days per week? Please type 'yes' or 'no'");
-    scanf("%s", m);
-
-    if (!strcmp(m, "yes")) {
-        return 1;
-    }
-    if (!strcmp(m, "no")) {
-        return 0;
-    }
-    printf("Not valid answer");
-    exit(1);
-}
 
 int DoesUserWantToStartAWorkoutSession(void) {
     char m[3] = "";
