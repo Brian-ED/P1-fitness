@@ -10,7 +10,7 @@
 void SaveProgramToWorkoutFile() {} // Parsa
 void WriteChangedWorkoutToFile() {} // Lukas
 int DoesUserWantToAddNewWeight() {return 0;}
-int SaveUserOptionsToFile() {return 0;}
+void SaveUserOptionsToFile() {}
 void CalculateCaloryIntake() {} // Parsa
 void ShowProgressionViaDataIfEnoughWorkoutsSavedInData() {}
 void GetDate() {}
