@@ -44,7 +44,7 @@ node* readinput(){
   int index = 0;
   char c;
   while ((c=getchar()) == '\n') {} // Clearing newlines still present in stdin
-  while ((c=getchar()) != '\n' && c != EOF) {
+  do {
     if (!currentnode || index == SIZE_NO_LIMIT - 1) //The element of the list starts from 0, there for it is important to minus 1.
     {
       node *node2 = (node *)malloc(sizeof(node));
@@ -65,7 +65,7 @@ node* readinput(){
       index = 0;
     }
     currentnode -> your_why[index++] = c;
-  }
+  } while ((c=getchar()) != '\n' && c != EOF);
   return firstnode;
 }
 
