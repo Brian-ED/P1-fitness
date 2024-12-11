@@ -6,7 +6,7 @@
 //the size of character array in each linked list node
 #define SIZE_NO_LIMIT 16
 
-void Introduction() {
+void DisplayIntroductionMessage() {
   printf("Welcome to a new chapter in your life\n");
   printf("Welcome to (APP name)\n");
 };
@@ -123,8 +123,6 @@ int height;
 int weight;
 char gender;
 float protein;
-float caloriem;
-float calorief;
 float calorie;
 void info(){
   printf("We are almost done, please tell us more about your self, in order for us to make a personilized program for you\n");
@@ -150,8 +148,14 @@ void info(){
   protein = weight * 1.7;
 
   //Mifflin-St Jeor formula
-  caloriem = 1.5 * 10 * weight + 6.25 * height - 5 * age + 5;
-  calorief = 1.5 * 10 * weight + 6.25 * height - 5 * age - 161;
+  if (gender == 'm') {
+    calorie = -5*age + 5;
+  } else if (gender == 'f'){
+    calorie = -5*age - 161;
+  } else {
+    exit(1);
+  }
+  calorie += 1.5*10*weight + 6.25*height
 };
 
 int program_days;
@@ -168,21 +172,6 @@ void program(){
     if (program_days != 3 && program_days != 4 && program_days != 5){
       printf("wrong input, please try again\n");
     }
-  }
-};
-
-
-
-void needs(){
-  if (gender == 'm')
-  {
-    calorie = caloriem;
-  }
-  else if(gender == 'f'){
-    calorie = calorief;
-  }
-  else{
-    exit(1);
   }
 };
 
@@ -213,4 +202,36 @@ void to_file(node *firstnode, int age, int height, int weight, char gender, floa
 }
 void free_space(node *firstnode){
   freemyguy(firstnode); //frees the memory
+}
+
+void ShowAndAskAndSaveUserOptions() {
+  node *firstnode = scaningwhy();
+  info();
+  to_file(firstnode, age, height, weight, gender, protein, calorie);
+  free_space(firstnode);
+  printf("open the document \"User_Data\" to view relevant data related to your training journey\n");
+  system("notepad User_Data");
+}
+
+void ChangeWorkoutViaAskingQuestions() {
+
+    // How many days a week
+    program(); // Also calculates calories needed and protein goals
+
+    // TODO more questions
+}
+
+void CreateDefaultProgram() {
+  age = 20;
+  height = 180;
+  weight = 70;
+  gender = 'm';
+  protein = weight*1.7;
+  calorie = 1.5*10*weight + 6.25*height - 5*age + 5;
+  program_days = 4;
+  node *firstnode = NULL; // First node is the "Why" string
+
+  to_file(firstnode, age, height, weight, gender, protein, calorie);
+
+  free_space(firstnode);
 }
