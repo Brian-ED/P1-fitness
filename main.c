@@ -4,6 +4,7 @@
 #include "src/Parsa/Funktioner.c"
 #include "src/Lukas/progression.c"
 #include "src/welcome_back/welcome_back.c"
+#include "src/terminal-funcs.c"
 
 #define DEBUG 1
 // #define BACKGROUND_IMAGE "content/workout-images.png"
