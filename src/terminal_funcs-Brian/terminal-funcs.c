@@ -76,6 +76,10 @@ void ChangeWorkoutViaAskingQuestions() {
     }
 }
 
+void EndApp() {
+    printf("App closing...\n");
+}
+
 void AskForWeight(void) {
     printf("What is your current weight(kg)? :");
     scanf("%d",&weight);

@@ -15,9 +15,8 @@ void SaveUserOptionsToFile() {}
 void CalculateCaloryIntake() {} // Parsa
 void ShowProgressionViaDataIfEnoughWorkoutsSavedInData() {}
 void ReadInDataFile() {}
-void DoEachSet() {}
+void DoEachSet() {} // Lukas
 void SaveRepsToWorkoutFile() {}
-void EndApp() {}
 
 #define DEBUG 1
 // #define BACKGROUND_IMAGE "content/workout-images.png"
