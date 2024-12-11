@@ -10,5 +10,13 @@
 int main(void) {
     GetDate();
     printf("Day %d, Week %lf.\n", day_of_the_week, week_number);
+    ReadInDataFile();
+
+//    printf("%d\n", age);
+//    printf("%d\n", height);
+//    printf("%d\n", weight);
+//    printf("%c\n", gender);
+//    printf("%f\n", protein);
+//    printf("%f\n", calorie);
     return 0;
 }

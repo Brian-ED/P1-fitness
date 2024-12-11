@@ -132,3 +132,61 @@ int DoesUserWantToStartAWorkoutSession(void) {
     printf("Not valid answer\n");
     exit(1);
 }
+
+void ReadInDataFile() {
+    char *why;
+    char genderText[8];
+    int days;
+
+    FILE *file = fopen("User_Data", "r+");
+    if (file == NULL) {
+        printf("Error opening file");
+        exit(1);
+    }
+    fscanf(file, " --- Your Very Own Document ---\n");
+    fscanf(file, "\n");
+    fscanf(file, "\n");
+    fscanf(file, "User's Why: ");
+
+    node *firstnode = NULL, *currentnode = NULL;
+    int index = 0;
+    char c;
+    while ((c=fgetc(file)) == '\n') {} // Clearing newlines still present in stdin
+    do {
+        if (!currentnode || index == SIZE_NO_LIMIT - 1) { //The element of the list starts from 0, there for it is important to minus 1.
+            node *node2 = (node *)malloc(sizeof(node));
+            if (!node2) {
+                printf("Can't allocate memory");
+                exit(EXIT_FAILURE);
+            }
+            node2 -> nextnode = NULL;
+            if (!firstnode) {
+                firstnode = node2;
+            } else {
+                currentnode -> nextnode = node2;
+            }
+            currentnode = node2;
+            index = 0;
+        }
+        currentnode -> your_why[index++] = c;
+    } while ((c=fgetc(file)) != '\n' && c != EOF);
+
+    fscanf(file, "Personal Information:\n");
+    fscanf(file, "Age: %d\n", &age);
+    fscanf(file, "Height: %d cm\n", &height);
+    fscanf(file, "Weight: %d kg\n", &weight);
+    fscanf(file, "Gender: %s\n", genderText);
+    fscanf(file, "\n");
+    fscanf(file, "Training:\n");
+    fscanf(file, "Days: %d\n", &days);
+    fscanf(file, "\n");
+    fscanf(file, "Nutritional Needs:\n");
+    fscanf(file, "Protein Requirement: %f grams/day\n", &protein);
+    fscanf(file, "Calorie Requirement: %f calories/day\n", &calorie);
+    if (!strcmp(genderText, "Male")) {
+        gender = 'm';
+    } else if (!strcmp(genderText, "Female")) {
+        gender = 'f';
+    }
+}
+
