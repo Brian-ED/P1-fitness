@@ -11,7 +11,6 @@
 // TODO
 void SaveProgramToWorkoutFile() {} // Parsa
 void WriteChangedWorkoutToFile() {} // Lukas
-int DoesUserWantToAddNewWeight() {return 0;}
 void SaveUserOptionsToFile() {}
 void CalculateCaloryIntake() {} // Parsa
 void ShowProgressionViaDataIfEnoughWorkoutsSavedInData() {}
@@ -19,13 +18,6 @@ void ReadInDataFile() {}
 void DoEachSet() {}
 void SaveRepsToWorkoutFile() {}
 void EndApp() {}
-
-int d = 15;   // Day   1-31
-int m = 5;    // Month 1-12
-int y = 2013; // Year
-
-d += m < 3 ? y-- : y - 2;
-int weekday = (23*m/9 + d + 4 + y/4- y/100 + y/400)%7;
 
 #define DEBUG 1
 // #define BACKGROUND_IMAGE "content/workout-images.png"

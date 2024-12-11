@@ -46,7 +46,22 @@ int DoesUserWantToChangeDaysPerWeek() {
     if (!strcmp(m, "no")) {
         return 0;
     }
-    printf("Not valid answer");
+    printf("Not valid answer\n");
+    exit(1);
+}
+
+int DoesUserWantToAddNewWeight() {
+    char m[3] = "";
+    printf("Would you like to measure weight today? Please type 'yes' or 'no'");
+    scanf("%s", m);
+
+    if (!strcmp(m, "yes")) {
+        return 1;
+    }
+    if (!strcmp(m, "no")) {
+        return 0;
+    }
+    printf("Not valid answer\n");
     exit(1);
 }
 
@@ -78,7 +93,7 @@ int DoesUserWantToChangeWorkout(void) {
         return 0;
     }
 
-    printf("Not valid answer");
+    printf("Not valid answer\n");
     exit(1);
 }
 
@@ -94,7 +109,7 @@ int DoesUserWantToChangeOptions(void) {
         return 0;
     }
 
-    printf("Not valid answer");
+    printf("Not valid answer\n");
     exit(1);
 }
 
@@ -110,6 +125,6 @@ int DoesUserWantToStartAWorkoutSession(void) {
     if (!strcmp(m, "no")) {
         return 0;
     }
-    printf("Not valid answer");
+    printf("Not valid answer\n");
     exit(1);
 }
