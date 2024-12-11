@@ -155,7 +155,7 @@ void info(){
   } else {
     exit(1);
   }
-  calorie += 1.5*10*weight + 6.25*height
+  calorie += 1.5*10*weight + 6.25*height;
 };
 
 int program_days;
@@ -234,4 +234,13 @@ void CreateDefaultProgram() {
   to_file(firstnode, age, height, weight, gender, protein, calorie);
 
   free_space(firstnode);
+}
+
+// Only cross platform way to check if file exists, according to https://stackoverflow.com/a/29510380
+int DataFileExists() {
+  FILE *file = fopen("sample.txt","r+");
+  if(file != NULL) {
+    fclose(file);
+  }
+  return file != NULL;
 }
