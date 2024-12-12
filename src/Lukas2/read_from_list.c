@@ -4,6 +4,7 @@
 
 #define STR_SIZE 100
 #define BUF_SIZE 65536
+#define ALTERNATIVE_EXERCISES_MAX 9
 
 typedef struct {
     char name[STR_SIZE];
@@ -12,7 +13,7 @@ typedef struct {
     char type[STR_SIZE];
     char level[STR_SIZE];
     float rating;
-    char alternative_exercises[9][STR_SIZE];
+    char alternative_exercises[ALTERNATIVE_EXERCISES_MAX][STR_SIZE];
     char* exercise_info;     // Pointer for dynamic allocation
 } Exercise;
 typedef struct {
@@ -361,23 +362,15 @@ Exercise_index get_index_from_list(Exercise *exercise, char musclegroup[STR_SIZE
 }
 
 void clean_struct(Exercise *exercise, int exercise_lenght){
-
-    for ( int i = 0; i < exercise_lenght; i++){
-            delete_spaces(exercise[i].name);
-            delete_spaces(exercise[i].musclegroup);
-            delete_spaces(exercise[i].equipment);
-            delete_spaces(exercise[i].type);
-            delete_spaces(exercise[i].level);
-            delete_spaces(exercise[i].alternative_exercises[0]);
-            delete_spaces(exercise[i].alternative_exercises[1]);
-            delete_spaces(exercise[i].alternative_exercises[2]);
-            delete_spaces(exercise[i].alternative_exercises[3]);
-            delete_spaces(exercise[i].alternative_exercises[4]);
-            delete_spaces(exercise[i].alternative_exercises[5]);
-            delete_spaces(exercise[i].alternative_exercises[6]);
-            delete_spaces(exercise[i].alternative_exercises[7]);
-            delete_spaces(exercise[i].alternative_exercises[8]);
-
+    for (int i=0; i<exercise_lenght; i++){
+        delete_spaces(exercise[i].name);
+        delete_spaces(exercise[i].musclegroup);
+        delete_spaces(exercise[i].equipment);
+        delete_spaces(exercise[i].type);
+        delete_spaces(exercise[i].level);
+        for (int j=0; j<ALTERNATIVE_EXERCISES_MAX; j++) {
+            delete_spaces(exercise[i].alternative_exercises[j]);
+        }
     }
 }
 
