@@ -8,8 +8,6 @@
 //#include "Create_workout_program copy.c"
 int main(void){
 
-
-
     // const int MAX_EXERCISES = 1000;
     //Exercise exercises[MAX_EXERCISES];
     //int count = readExercises("dddd.txt", exercises, MAX_EXERCISES);
@@ -25,7 +23,7 @@ int main(void){
     read_exercises();
 
     char word[100] = "strength           ";
-   
+
     delete_spaces(word);
 
 //    printf("\n%sa\n",word);

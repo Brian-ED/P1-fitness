@@ -222,7 +222,7 @@ void add_rec_program() {
 
 //fullbody: 2x chest 2x back 2x legs
 //Upperbody: 2x Chest 1x shoulders 2x back 1x triceps
-//Lowerbody: 
+//Lowerbody:
 
 
 
