@@ -21,8 +21,14 @@ int main(void){
     //writeExercisesToFile1("output_exercises_names.txt", exercises, count);
     //add_rec_program();
     //scan_exercises();
+
     read_exercises();
-    
+
+    char word[100] = "strength           ";
+   
+    delete_spaces(word);
+
+//    printf("\n%sa\n",word);
 
 
     return 0;

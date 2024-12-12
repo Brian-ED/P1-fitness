@@ -3,7 +3,7 @@
 #include "progression.c"
 
 int main(void){
-    char exercise[80] = "rows";
+    char exercise[80] = "squats";
     scan_prog(exercise);
     return 0;
 }
