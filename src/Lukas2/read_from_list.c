@@ -161,20 +161,22 @@ void read_exercises() {
 
     read_workout_program();
     clean_struct(exercise, exercise_index);
-    print_exercises(exercise, exercise_index);
+    //print_exercises(exercise, exercise_index);
     int new_exercise_index = change_exercise(exercise[396], exercise);
     filter_exercises_by_type(exercise, &exercise_index);
-    qsort(exercise, exercise_index, sizeof(Exercise), compare);
+    Exercise *filtered_exercises = (Exercise *)malloc(exercise_index*sizeof(Exercise));
+    memcpy(filtered_exercises, exercise, exercise_index*sizeof(Exercise));
+    free(exercise);
+
+    qsort(filtered_exercises, exercise_index, sizeof(Exercise), compare);
     fclose(exercise_file);
     char musclegroup_names[30][STR_SIZE] = {0};
     char equipment_names[30][STR_SIZE] = {0};
     char type_names[30][STR_SIZE] = {0};
     char level_names[30][STR_SIZE] = {0};
-
-    get_category_names_exercises(exercise, exercise_index, musclegroup_names, equipment_names, type_names, level_names);
+    get_category_names_exercises(filtered_exercises, exercise_index, musclegroup_names, equipment_names, type_names, level_names);
     char MG[STR_SIZE] = "Quadriceps";
-    Exercise_index index = get_index_from_list(exercise, MG, exercise_index);
-
+    Exercise_index index = get_index_from_list(filtered_exercises, MG, exercise_index);
 }
 
 void print_exercises(Exercise *exercise, int exercise_lenght){
@@ -339,9 +341,10 @@ void filter_exercises_by_type(Exercise *exercise, int *exercise_lenght) {
     char filter_word[STR_SIZE] = "Strength";
     for (int i = 0; i < *exercise_lenght; i++) {
         if (!strcmp(exercise[i].type, filter_word)) {
-
             exercise[index_count_list] = exercise[i];
             index_count_list++;
+        } else {
+            free(exercise[i].exercise_info);
         }
     }
     *exercise_lenght = index_count_list;
@@ -351,11 +354,16 @@ Exercise_index get_index_from_list(Exercise *exercise, char musclegroup[STR_SIZE
 
     Exercise_index index;
 
-    for (int i = 0; i < exercise_lenght; i++){
+    int i;
+    for (i = 0; i < exercise_lenght; i++){
         if(!strcmp(exercise[i].musclegroup, musclegroup)){
             index.i1 = i;
             break;
         }
+    }
+    if (i == exercise_lenght) {
+        perror("get_index_from_list: index not found\n");
+        exit(EXIT_FAILURE);
     }
     for (int j = index.i1; j < exercise_lenght; j++){
         if(strcmp(exercise[j].musclegroup, musclegroup)){
