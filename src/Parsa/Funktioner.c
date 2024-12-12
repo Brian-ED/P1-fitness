@@ -6,6 +6,14 @@
 //the size of character array in each linked list node
 #define SIZE_NO_LIMIT 16
 
+int age;
+int height;
+int weight;
+char gender;
+float protein;
+float calorie;
+int program_days;
+
 void DisplayIntroductionMessage() {
   printf("Welcome to a new chapter in your life\n");
   printf("Welcome to (APP name)\n");
@@ -118,12 +126,18 @@ node* scaningwhy(){
   return readinput();
 }
 
-int age;
-int height;
-int weight;
-char gender;
-float protein;
-float calorie;
+void CalculateCaloryIntake() {
+  //Mifflin-St Jeor formula
+  if (gender == 'm') {
+    calorie = -5*age + 5;
+  } else if (gender == 'f'){
+    calorie = -5*age - 161;
+  } else {
+    exit(1);
+  }
+  calorie += 1.5*10*weight + 6.25*height;
+}
+
 void info(){
   printf("We are almost done, please tell us more about your self, in order for us to make a personilized program for you\n");
   printf("Age:");
@@ -146,19 +160,8 @@ void info(){
     }
   }
   protein = weight * 1.7;
-
-  //Mifflin-St Jeor formula
-  if (gender == 'm') {
-    calorie = -5*age + 5;
-  } else if (gender == 'f'){
-    calorie = -5*age - 161;
-  } else {
-    exit(1);
-  }
-  calorie += 1.5*10*weight + 6.25*height;
+  CalculateCaloryIntake();
 };
-
-int program_days;
 
 /* I use a loop to make sure the app recived the right
  * input from the user as done before

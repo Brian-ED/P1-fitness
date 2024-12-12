@@ -11,7 +11,6 @@
 // TODO
 void SaveProgramToWorkoutFile() {} // Parsa
 void WriteChangedWorkoutToFile() {} // Lukas
-void CalculateCaloryIntake() {} // Parsa
 void ShowProgressionViaDataIfEnoughWorkoutsSavedInData() {} // Jonas
 void DoEachSet() {} // Lukas
 void SaveRepsToWorkoutFile() {} // Lukas
