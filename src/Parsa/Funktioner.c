@@ -44,7 +44,7 @@ node* readinput(){
   int index = 0;
   char c;
   while ((c=getchar()) == '\n') {} // Clearing newlines still present in stdin
-  while ((c=getchar()) != '\n' && c != EOF) {
+  do {
     if (!currentnode || index == SIZE_NO_LIMIT - 1) //The element of the list starts from 0, there for it is important to minus 1.
     {
       node *node2 = (node *)malloc(sizeof(node));
@@ -65,7 +65,7 @@ node* readinput(){
       index = 0;
     }
     currentnode -> your_why[index++] = c;
-  }
+  } while ((c=getchar()) != '\n' && c != EOF);
   return firstnode;
 }
 
@@ -155,7 +155,7 @@ void info(){
   } else {
     exit(1);
   }
-  calorie += 1.5*10*weight + 6.25*height
+  calorie += 1.5*10*weight + 6.25*height;
 };
 
 int program_days;
@@ -211,27 +211,4 @@ void ShowAndAskAndSaveUserOptions() {
   free_space(firstnode);
   printf("open the document \"User_Data\" to view relevant data related to your training journey\n");
   system("notepad User_Data");
-}
-
-void ChangeWorkoutViaAskingQuestions() {
-
-    // How many days a week
-    program(); // Also calculates calories needed and protein goals
-
-    // TODO more questions
-}
-
-void CreateDefaultProgram() {
-  age = 20;
-  height = 180;
-  weight = 70;
-  gender = 'm';
-  protein = weight*1.7;
-  calorie = 1.5*10*weight + 6.25*height - 5*age + 5;
-  program_days = 4;
-  node *firstnode = NULL; // First node is the "Why" string
-
-  to_file(firstnode, age, height, weight, gender, protein, calorie);
-
-  free_space(firstnode);
 }

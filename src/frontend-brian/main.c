@@ -7,7 +7,7 @@
 
 int DrawCheckbox(Vector2 pos, char *text, int checked) {
     float size = 0.05*Min(GetWindowSize());
-    bool checkedBool = checked;
+    int checkedBool = checked;
     GuiCheckBox((Rectangle){pos.x, pos.y, size, size}, text, &checkedBool);                          // Check Box control, returns true when active
     return checkedBool;
 }
