@@ -1,9 +1,12 @@
 #include <assert.h>
 #include <stdio.h>
 #include <time.h>
+#include <stdlib.h>
+#include "../utils.c"
 #include "../Parsa/Funktioner.c"
 #include "../Lukas/progression.c"
-#include "../welcome_back/welcome_back.c"
+#include "../Lukas2/read_from_list.c"
+#include "../welcome_back-Jonas/welcome_back.c"
 #include "terminal-funcs.c"
 
 

@@ -28,34 +28,51 @@ typedef struct{
     int amount_of_sets[7][12];
 } Workout_Program;
 
-void read_workout_program(){
-    FILE* workout_file = fopen("workouts.txt", "r");
+Workout_Program workout_program; // Array of exercises
 
-    if (workout_file == NULL) {
-        perror("Error opening file\n");
-        return;
-    }
+void SaveProgramToWorkoutFile() {
+    FILE *workout_file = openSafe("workout_plan.txt", "w");
 
-    Workout_Program workout_program; // Array of exercises
-
-    fscanf(workout_file, "%99[^|] | %d | %d | %d | %d | %d | %d | %d | %d |",
-    workout_program.workoutname,
-    &workout_program.amount_of_workouts,
-    &workout_program.amount_of_exercises[0],
-    &workout_program.amount_of_exercises[1],
-    &workout_program.amount_of_exercises[2],
-    &workout_program.amount_of_exercises[3],
-    &workout_program.amount_of_exercises[4],
-    &workout_program.amount_of_exercises[5],
-    &workout_program.amount_of_exercises[6]
+    fprintf(workout_file, "%s | %d | %d | %d | %d | %d | %d | %d | %d |",
+        workout_program.workoutname,
+        workout_program.amount_of_workouts,
+        workout_program.amount_of_exercises[0],
+        workout_program.amount_of_exercises[1],
+        workout_program.amount_of_exercises[2],
+        workout_program.amount_of_exercises[3],
+        workout_program.amount_of_exercises[4],
+        workout_program.amount_of_exercises[5],
+        workout_program.amount_of_exercises[6]
     );
     for (int i = 0; i < workout_program.amount_of_workouts; i++){
-
         for (int j = 0; j < workout_program.amount_of_exercises[i]; j++){
-            fscanf(workout_file, "%99[^|] |", workout_program.exercise_name[i][j]);
-            fscanf(workout_file, "%d |", &workout_program.amount_of_sets[i][j]);
-            //printf("%s", workout_program.exercise_name[i][j]);
-            //printf("%d", workout_program.amount_of_sets[i][j]);
+            fprintf(workout_file, "%s | %d\n",
+                workout_program.exercise_name[i][j],
+                workout_program.amount_of_sets[i][j]);
+        }
+    }
+}
+
+void read_workout_program(){
+    FILE *workout_file = openSafe("workout_plan.txt", "r");
+
+    fscanf(workout_file, "%99[^|] | %d | %d | %d | %d | %d | %d | %d | %d |",
+        workout_program.workoutname,
+        &workout_program.amount_of_workouts,
+        &workout_program.amount_of_exercises[0],
+        &workout_program.amount_of_exercises[1],
+        &workout_program.amount_of_exercises[2],
+        &workout_program.amount_of_exercises[3],
+        &workout_program.amount_of_exercises[4],
+        &workout_program.amount_of_exercises[5],
+        &workout_program.amount_of_exercises[6]
+    );
+    for (int i = 0; i < workout_program.amount_of_workouts; i++){
+        for (int j = 0; j < workout_program.amount_of_exercises[i]; j++){
+            fscanf(workout_file, "%99[^|] | %d\n",
+                workout_program.exercise_name[i][j],
+                &workout_program.amount_of_sets[i][j]
+            );
         }
     }
 }
@@ -395,8 +412,6 @@ int change_exercise(int exercise_to_change, Exercise *exercise, int *alt_count, 
     } else {
         next_exercise_index = exercise_to_change+1;
     }
-    printf("AAAA: %d, %d\n", index_from_list.i1,index_from_list.i2);
-    printf("AAAA: %d, %d\n", next_exercise_index,exercise_to_change);
 
     (*alt_count)++;
     if (*alt_count >= ALTERNATIVE_EXERCISES_MAX || exercise[exercise_to_change].alternative_exercises[*alt_count][0] == '-') {

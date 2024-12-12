@@ -13,27 +13,41 @@ void GetDate(void) {
 }
 
 void CreateDefaultProgram() {
-  age = 20;
-  height = 180;
-  weight = 70;
-  gender = 'm';
-  protein = weight*1.7;
-  calorie = 1.5*10*weight + 6.25*height - 5*age + 5;
-  program_days = 4;
-  node *firstnode = NULL; // First node is the "Why" string
+    age = 20;
+    height = 180;
+    weight = 70;
+    gender = 'm';
+    protein = weight*1.7;
+    calorie = 1.5*10*weight + 6.25*height - 5*age + 5;
+    program_days = 4;
+    node *firstnode = NULL; // First node is the "Why" string
 
-  to_file(firstnode, age, height, weight, gender, protein, calorie);
+    to_file(firstnode, age, height, weight, gender, protein, calorie);
 
-  user_why = firstnode;
+    char *workout_filename = "workout_plan.txt";
+    char *workout_default_filename = "workout_plan_default.txt";
+    FILE *workout_file = fopen(workout_filename, "r+");
+    if (workout_file == NULL) {
+        copyFile(workout_default_filename, workout_filename);
+        workout_file = openSafe(workout_filename, "r");
+    }
+
+    user_why = firstnode;
 }
 
 // Only cross platform way to check if file exists, according to https://stackoverflow.com/a/29510380
 int DoesDataFileExist() {
-  FILE *file = fopen("User_Data","r+");
-  if(file != NULL) {
+    FILE *file;
+
+    file = fopen("User_Data","r+");
+    if (file == NULL) return 0;
     fclose(file);
-  }
-  return file != NULL;
+
+    file = fopen("workout_plan.txt","r+");
+    if(file == NULL) return 0;
+    fclose(file);
+
+    return 1;
 }
 
 int DoesUserWantToChangeDaysPerWeek() {

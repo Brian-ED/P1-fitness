@@ -3,13 +3,14 @@
 #include <math.h>
 #include <time.h>
 
+#include "src/utils.c"
+#include "src/Lukas2/read_from_list.c"
 #include "src/Parsa/Funktioner.c"
 #include "src/Lukas/progression.c"
-#include "src/welcome_back/welcome_back.c"
+#include "src/welcome_back-Jonas/welcome_back.c"
 #include "src/terminal_funcs-Brian/terminal-funcs.c"
 
 // TODO
-void SaveProgramToWorkoutFile() {} // Parsa
 void ShowProgressionViaDataIfEnoughWorkoutsSavedInData() {} // Jonas
 void DoEachSet() {} // Lukas
 void SaveRepsToWorkoutFile() {} // Lukas

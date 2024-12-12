@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include "Funktioner.c"
+#include "../utils.c"
 
 int main() {
   DisplayIntroductionMessage();
