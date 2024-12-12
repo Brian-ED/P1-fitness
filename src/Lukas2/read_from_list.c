@@ -209,7 +209,7 @@ void print_exercises(Exercise *exercise, int exercise_lenght){
 void resolve_backslash(char *text){
     int a_index = 0;
     int e_index = 0;
-    while (e[e_index]) {
+    while (text[e_index]) {
         if (text[e_index]=='\\' && text[e_index + 1]=='n') {
             text[a_index] = '\n';
             e_index++;
