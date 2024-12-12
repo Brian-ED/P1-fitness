@@ -409,7 +409,7 @@ int change_exercise(int exercise_to_change, Exercise *exercise, int *alt_count, 
     }
 
     (*alt_count)++;
-    if (*alt_count >= 9 || exercise[exercise_to_change].alternative_exercises[*alt_count][0] == '-') {
+    if (*alt_count >= ALTERNATIVE_EXERCISES_MAX || exercise[exercise_to_change].alternative_exercises[*alt_count][0] == '-') {
         *alt_count = 0;
         return next_exercise_index;
     }
