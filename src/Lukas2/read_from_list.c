@@ -410,7 +410,7 @@ int change_exercise(Exercise exercise_to_change, Exercise *exercise){
     }
     return new_exercise_index;
 }
-#include <stdlib.h>
+
 int find_exercise_in_struct(Exercise *exercise, char exercise_name[STR_SIZE]){
     int exercise_index;
 
