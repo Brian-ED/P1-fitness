@@ -141,6 +141,10 @@ void SaveUserOptionsToFile() {
     to_file(user_why, age, height, weight, gender, protein, calorie);
 }
 
+void WriteChangedWorkoutToFile() {
+    read_exercises();
+} // Lukas
+
 void ReadInDataFile() {
     char *why;
     char genderText[8];

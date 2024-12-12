@@ -10,7 +10,6 @@
 
 // TODO
 void SaveProgramToWorkoutFile() {} // Parsa
-void WriteChangedWorkoutToFile() {} // Lukas
 void ShowProgressionViaDataIfEnoughWorkoutsSavedInData() {} // Jonas
 void DoEachSet() {} // Lukas
 void SaveRepsToWorkoutFile() {} // Lukas
