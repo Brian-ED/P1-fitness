@@ -223,29 +223,23 @@ void resolve_backslash(char *text){
 }
 
 void resolve_newline(char *text){
-    char e[5000];
-    strcpy(e,text);
     int a_index = 0;
     int e_index = 0;
     int char_count = 0;
-    while (e[e_index]) {
-        if (char_count > 130 && e[e_index]==' ') {
-            e[a_index] = '\n';
+    while (text[e_index]) {
+        if (char_count > 130 && text[e_index]==' ') {
+            text[a_index] = '\n';
             char_count = 0;
         } else {
-            if (e[e_index]=='\n') {
+            if (text[e_index]=='\n') {
                 char_count = 0;
             }
-            e[a_index] = e[e_index];
+            text[a_index] = text[e_index];
             char_count++;
         }
         a_index++;
         e_index++;
     }
-    a_index = 0;
-    e_index = 0;
-    char_count = 0;
-    strcpy(text, e);
 }
 
 int compare(const void *s1, const void *s2){
