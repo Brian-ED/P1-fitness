@@ -7,7 +7,6 @@
 #define MAX_EXERCISES 12
 #define MAX_SETS 12
 #define MAX_DAYS 5
-
 typedef struct {
     char name[STR_SIZE];
     char musclegroup[STR_SIZE];
@@ -21,7 +20,6 @@ typedef struct {
 typedef struct {
     int i1, i2;
 } Exercise_index;
-
 
 void resolve_backslash(char text[5000]);
 void resolve_newline(char text[5000]);
@@ -37,6 +35,7 @@ int find_exercise_in_struct(Exercise *exercise, char exercise_name[STR_SIZE]);
 
 void read_exercises() {
     FILE* exercise_file = fopen("out copy.txt", "r");
+
     if (exercise_file == NULL) {
         perror("Error opening file");
         return;
@@ -65,7 +64,6 @@ void read_exercises() {
             exercise[exercise_index].level,
             &exercise[exercise_index].rating,
             exercise[exercise_index].alternative_exercises[0],
-            exercise[exercise_index].alternative_exercises[0],
             exercise[exercise_index].alternative_exercises[1],
             exercise[exercise_index].alternative_exercises[2],
             exercise[exercise_index].alternative_exercises[3],
@@ -90,16 +88,13 @@ void read_exercises() {
             break;
         }
     }
-    //print_exercises(exercise, exercise_index);
 
 
     clean_struct(exercise, exercise_index);
-
+    print_exercises(exercise, exercise_index);
     int new_exercise_index = change_exercise(exercise[396], exercise);
-    //printf("\n%d\n",exercise_index);
     filter_exercises_by_type(exercise, &exercise_index);
     qsort(exercise, exercise_index, sizeof(Exercise), compare);
-    //print_exercises(exercise, exercise_index);
     fclose(exercise_file);
     char musclegroup_names[30][STR_SIZE] = {0};
     char equipment_names[30][STR_SIZE] = {0};
@@ -109,8 +104,6 @@ void read_exercises() {
     get_category_names_exercises(exercise, exercise_index, musclegroup_names, equipment_names, type_names, level_names);
     char MG[STR_SIZE] = "Quadriceps";
     Exercise_index index = get_index_from_list(exercise, MG, exercise_index);
-    //printf("\n%d\n", index.i1);
-    //printf("\n%d\n", index.i2);
     for (int i = index.i1; i < index.i2; i++) {
         //printf("%s\n", exercise[i].name);
     }
