@@ -70,8 +70,8 @@ void filter_exercises_by_type(Exercise *exercise, int *exercise_lenght);
 Exercise_index get_index_from_list(Exercise *exercise, char musclegroup[STR_SIZE], int exercise_lenght);
 void delete_spaces(char str[]);
 void clean_struct(Exercise *exercise, int exercise_lenght);
-int change_exercise(Exercise exercise_to_change, Exercise *exercise);
-int find_exercise_in_struct(Exercise *exercise, char exercise_name[STR_SIZE]);
+int change_exercise(int exercise_to_change, Exercise *exercise, int *alt_count, int exercise_lenght);
+int find_exercise_in_struct(Exercise *exercise, int exercise_len, char exercise_name[STR_SIZE], int defaultIndex);
 
 // count_lines implementation found at https://stackoverflow.com/a/70708991
 int count_lines(FILE* file)
@@ -162,8 +162,6 @@ void read_exercises() {
 
     read_workout_program();
     clean_struct(exercise, exercise_index);
-    //print_exercises(exercise, exercise_index);
-    int new_exercise_index = change_exercise(exercise[396], exercise);
     filter_exercises_by_type(exercise, &exercise_index);
     Exercise *filtered_exercises = (Exercise *)malloc(exercise_index*sizeof(Exercise));
     memcpy(filtered_exercises, exercise, exercise_index*sizeof(Exercise));
@@ -178,6 +176,29 @@ void read_exercises() {
     get_category_names_exercises(filtered_exercises, exercise_index, musclegroup_names, equipment_names, type_names, level_names);
     char MG[STR_SIZE] = "Quadriceps";
     Exercise_index index = get_index_from_list(filtered_exercises, MG, exercise_index);
+
+    printf("%d\n", index.i1);
+    printf("%d\n", index.i2);
+
+    int at_count = 0;
+    printf("%s\n",filtered_exercises[200].name);
+    int new_exercise_index = change_exercise(300, filtered_exercises, &at_count, exercise_index);
+    printf("%s\n",filtered_exercises[new_exercise_index].name);
+    printf("%d\n", new_exercise_index);
+
+    new_exercise_index = change_exercise(300, filtered_exercises, &at_count, new_exercise_index);
+    printf("%s\n",filtered_exercises[new_exercise_index].name);
+    printf("%d\n", new_exercise_index);
+
+    new_exercise_index = change_exercise(300, filtered_exercises, &at_count, new_exercise_index);
+    printf("%s\n",filtered_exercises[new_exercise_index].name);
+    printf("%d\n", new_exercise_index);
+
+    new_exercise_index = change_exercise(300, filtered_exercises, &at_count, new_exercise_index);
+    printf("%s\n",filtered_exercises[new_exercise_index].name);
+    printf("%d\n", new_exercise_index);
+
+
 }
 
 void print_exercises(Exercise *exercise, int exercise_lenght){
@@ -308,7 +329,6 @@ void get_category_names_exercises(Exercise *exercise, int exercise_lenght, char 
             strcpy(type_names[type_names_index], temp_type);
             type_names_index++;
         }
-
         in_list = 1;
         for (int i = 0; i < level_names_index; i++) {
             if (!strcmp(level_names[i], temp_level))
@@ -380,28 +400,30 @@ void delete_spaces(char str[]){
     str[i+1] = '\0';
 }
 
-int change_exercise(Exercise exercise_to_change, Exercise *exercise){
-
-    int new_exercise;
-    int new_exercise_index;
-
-    for (int i = 0; i < 9; i++){
-        if (exercise_to_change.alternative_exercises[i][0] != '-'){
-            new_exercise_index = find_exercise_in_struct(exercise, exercise_to_change.alternative_exercises[i]);
-            break;
-        }
+int change_exercise(int exercise_to_change, Exercise *exercise, int *alt_count, int exercise_lenght){
+    Exercise_index index_from_list = get_index_from_list(exercise, exercise[exercise_to_change].musclegroup, exercise_lenght);
+    int next_exercise_index = exercise_to_change+1;
+    if (exercise_to_change+1 >= index_from_list.i2) {
+        next_exercise_index = index_from_list.i1;
+        return index_from_list.i1;
     }
-    return new_exercise_index;
+
+    (*alt_count)++;
+    if (*alt_count >= 9 || exercise[exercise_to_change].alternative_exercises[*alt_count][0] == '-') {
+        *alt_count = 0;
+        return next_exercise_index;
+    }
+
+    return find_exercise_in_struct(exercise, exercise_lenght, exercise[exercise_to_change].alternative_exercises[*alt_count], exercise_to_change+1);
 }
 
-int find_exercise_in_struct(Exercise *exercise, char exercise_name[STR_SIZE]){
-    int exercise_index;
-
-    for (exercise_index = 0; exercise_index < 900; exercise_index++){
-        if (!strcmp(exercise[exercise_index].name, exercise_name)){
-            break;
-        }
+int find_exercise_in_struct(Exercise *exercise, int exercise_len, char exercise_name[STR_SIZE], int default_index){
+    int exercise_index = 0;
+    while (exercise_index < exercise_len && strcmp(exercise[exercise_index].name, exercise_name)) {
         exercise_index++;
+    }
+    if (exercise_index == exercise_len) {
+        return default_index;
     }
     return exercise_index;
 }
