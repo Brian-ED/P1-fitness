@@ -60,8 +60,8 @@ void read_workout_program(){
 }
 
 
-void resolve_backslash(char text[5000]);
-void resolve_newline(char text[5000]);
+void resolve_backslash(char text);
+void resolve_newline(char text);
 void print_exercises(Exercise *exercise, int exercise_lenght);
 int compare(const void *s1, const void *s2);
 void get_category_names_exercises(Exercise *exercise, int exercise_lenght, char musclegroup_names[30][STR_SIZE], char equipment_names[30][STR_SIZE], char type_names[30][STR_SIZE], char level_names[30][STR_SIZE]);
@@ -203,7 +203,7 @@ void print_exercises(Exercise *exercise, int exercise_lenght){
     }
 }
 
-void resolve_backslash(char text[5000]){
+void resolve_backslash(char text){
     char e[5000];
     strcpy(e,text);
     int a_index = 0;
@@ -222,7 +222,7 @@ void resolve_backslash(char text[5000]){
     strcpy(text, e);
 }
 
-void resolve_newline(char text[5000]){
+void resolve_newline(char text){
     char e[5000];
     strcpy(e,text);
     int a_index = 0;
