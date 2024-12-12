@@ -33,6 +33,33 @@ void clean_struct(Exercise *exercise, int exercise_lenght);
 int change_exercise(Exercise exercise_to_change, Exercise *exercise);
 int find_exercise_in_struct(Exercise *exercise, char exercise_name[STR_SIZE]);
 
+#include <stdio.h>
+
+#define BUF_SIZE 65536
+
+// count_lines implementation found at https://stackoverflow.com/a/70708991
+int count_lines(FILE* file)
+{
+    char buf[BUF_SIZE];
+    int counter = 0;
+    for(;;)
+    {
+        size_t res = fread(buf, 1, BUF_SIZE, file);
+        if (ferror(file))
+            return -1;
+
+        int i;
+        for(i = 0; i < res; i++)
+            if (buf[i] == '\n')
+                counter++;
+
+        if (feof(file))
+            break;
+    }
+    rewind(file);
+    return counter;
+}
+
 void read_exercises() {
     FILE* exercise_file = fopen("out copy.txt", "r");
 
@@ -41,21 +68,28 @@ void read_exercises() {
         return;
     }
 
-    int exercise_index = 0;
-    Exercise exercise[1000] = {0}; // Array of exercises
-    while(1) {
+    int exerciseCount = count_lines(exercise_file);
+
+    Exercise *exercise = (Exercise *)malloc(exerciseCount*sizeof(Exercise)); // Array of exercises
+    if (exercise == NULL) {
+        perror("Memory allocation failed");
+        exit(EXIT_FAILURE);
+    }
+
+    int exercise_index;
+    for (exercise_index = 0; exercise_index < exerciseCount; exercise_index++) {
+        printf("%d\n",exercise_index);
 
         // Allocate memory for large fields dynamically
-        exercise[exercise_index].exercise_info = calloc(5000, sizeof(char));
+        char *exercise_info = calloc(5000, sizeof(char));
 
         // Ensure malloc succeeded
-        if (!exercise[exercise_index].exercise_info) {
+        if (!exercise_info) {
             perror("Memory allocation failed");
             exit(EXIT_FAILURE);
         }
 
-        // Read the data from the file
-        if (fscanf(exercise_file,
+        int amount_of_successful_readings = fscanf(exercise_file,
             "%99[^|] | %99[^|] | %99[^|] | %99[^|] | %99[^|] | %f | %99[^|] | %99[^|] | %99[^|] | %99[^|] | %99[^|] | %99[^|] | %99[^|] | %99[^|] | %99[^|] | %4999[^\n]\n",
             exercise[exercise_index].name,
             exercise[exercise_index].musclegroup,
@@ -72,24 +106,26 @@ void read_exercises() {
             exercise[exercise_index].alternative_exercises[6],
             exercise[exercise_index].alternative_exercises[7],
             exercise[exercise_index].alternative_exercises[8],
-            exercise[exercise_index].exercise_info) == 16) {
+            exercise_info
+        );
 
-
-
-            // Break the loop if fscanf doesn't read all fields
-            // Free dynamically allocated memory for each exercise
-        } else {
-            break;
+        if (amount_of_successful_readings != 16) {
+            printf("reading excercises from file unsuccessful\n");
+            exit(EXIT_FAILURE);
         }
 
-        exercise_index++;
-        if (exercise_index >= 1000) {
-            printf("Maximum number of exercises reached.\n");
-            break;
+        // Optimize the size of exercise_info
+        int exercise_info_length = strlen(exercise_info);
+        char *new_exercise_info = (char *)malloc((exercise_info_length+1)*sizeof(char));
+        free(exercise_info);
+
+        if (new_exercise_info == NULL) {
+            perror("Memory allocation failed");
+            exit(EXIT_FAILURE);
         }
+
+        exercise[exercise_index].exercise_info = new_exercise_info;
     }
-
-
     clean_struct(exercise, exercise_index);
     print_exercises(exercise, exercise_index);
     int new_exercise_index = change_exercise(exercise[396], exercise);
