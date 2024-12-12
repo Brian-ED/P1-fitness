@@ -1,6 +1,4 @@
-name | amount of workouts pr week | amount of exercises for workouts 1 |
-amount of exercises for workouts 2 | amount of exercises for workouts 3 | amount of exercises for workouts 4 |
-amount of exercises for workouts 5 |
+name | amount of workouts pr week | amount of exercises for workouts 1 | amount of exercises for workouts 2 | amount of exercises for workouts 3 | amount of exercises for workouts 4 | amount of exercises for workouts 5 |
 amount of exercises for workouts 6 |
 amount of exercises for workouts 7 |
 name of workout 1 exercise 1 |
