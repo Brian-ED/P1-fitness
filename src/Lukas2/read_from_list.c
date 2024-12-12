@@ -42,19 +42,16 @@ int count_lines(FILE* file)
 {
     char buf[BUF_SIZE];
     int counter = 0;
-    for(;;)
-    {
+
+    while (!feof(file)) {
         size_t res = fread(buf, 1, BUF_SIZE, file);
         if (ferror(file))
             return -1;
 
-        int i;
-        for(i = 0; i < res; i++)
+        for(int i = 0; i < res; i++)
             if (buf[i] == '\n')
                 counter++;
 
-        if (feof(file))
-            break;
     }
     rewind(file);
     return counter;
