@@ -21,7 +21,7 @@ typedef enum Type {OlympicWeightlifting, Plyometrics, Powerlifting, Strength, St
 typedef enum Equipment {Bands, FoamRoll, Barbell, Kettlebells, BodyOnly, Machine, Cable, MedicineBall, Dumbbell, None, EZCurlBar, Other, ExerciseBall, Unknown}Equipment;
 
 typedef struct Exercise{
-    char name[STR_SIZE]; 
+    char name[STR_SIZE];
     char musclegroup[STR_SIZE];
     Equipment equipment;
     Type type;

@@ -8,7 +8,7 @@ char input[150];
 
 //
 int likedworkout(){
-    while (1) { 
+    while (1) {
         printf("Do you like this workout? yes/no\n");
         scanf("%s", input);
         if (strcmp(input, "yes") == 0) {
