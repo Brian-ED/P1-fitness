@@ -3,10 +3,8 @@
 #include <string.h>
 
 #define STR_SIZE 100
-#define LONG_STR_SIZE 5000
-#define MAX_EXERCISES 12
-#define MAX_SETS 12
-#define MAX_DAYS 5
+#define BUF_SIZE 65536
+
 typedef struct {
     char name[STR_SIZE];
     char musclegroup[STR_SIZE];
@@ -50,7 +48,6 @@ void read_workout_program(){
     &workout_program.amount_of_exercises[5],
     &workout_program.amount_of_exercises[6]
     );
-    int count = 0;
     for (int i = 0; i < workout_program.amount_of_workouts; i++){
 
         for (int j = 0; j < workout_program.amount_of_exercises[i]; j++){
@@ -58,11 +55,8 @@ void read_workout_program(){
             fscanf(workout_file, "%d |", &workout_program.amount_of_sets[i][j]);
             //printf("%s", workout_program.exercise_name[i][j]);
             //printf("%d", workout_program.amount_of_sets[i][j]);
-        count++;
         }
     }
-
-    exit(0);
 }
 
 
@@ -77,10 +71,6 @@ void delete_spaces(char str[]);
 void clean_struct(Exercise *exercise, int exercise_lenght);
 int change_exercise(Exercise exercise_to_change, Exercise *exercise);
 int find_exercise_in_struct(Exercise *exercise, char exercise_name[STR_SIZE]);
-
-#include <stdio.h>
-
-#define BUF_SIZE 65536
 
 // count_lines implementation found at https://stackoverflow.com/a/70708991
 int count_lines(FILE* file)
