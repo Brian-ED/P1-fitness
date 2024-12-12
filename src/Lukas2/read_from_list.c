@@ -375,14 +375,9 @@ void clean_struct(Exercise *exercise, int exercise_lenght){
 }
 
 void delete_spaces(char str[]){
-    int len = strlen(str);
-
-    for (int i = len-1; i > 0; i--){
-        if (str[i] != ' '){
-            str[i+1] = '\0';
-            break;
-        }
-    }
+    int i = strlen(str)-1;
+    while (i>0 && str[i]==' ') {i--;}
+    str[i+1] = '\0';
 }
 
 int change_exercise(Exercise exercise_to_change, Exercise *exercise){
