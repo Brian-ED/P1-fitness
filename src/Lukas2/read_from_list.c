@@ -242,29 +242,24 @@ void resolve_newline(char *text){
     }
 }
 
+int intcmp(int x, int y) {
+    return (x > y) - (x < y);
+}
+
 int compare(const void *s1, const void *s2){
     Exercise *e1 = (Exercise *)s1;
     Exercise *e2 = (Exercise *)s2;
-    int type_compare = strcmp(e1->type, e2->type);
-    if (type_compare == 0) {
-        int musclegroup_compare = strcmp(e1->musclegroup, e2->musclegroup);
-        if (musclegroup_compare != 0) {
-            return musclegroup_compare;
-        } else {
-            int level_compare = strcmp(e1->level, e2->level);
-            if (level_compare != 0) {
-                return level_compare;
-            } else {
-                if (e1->rating < e2->rating) return -1;
-                if (e1->rating > e2->rating) return 1;
-                if (e1->rating == e2->rating) {
-                    int name_compare = strcmp(e1->name, e2->name);
-                    return name_compare;
-                }
-            }
-        }
-    }
-    return type_compare;
+    int type_compare        = strcmp(e1->type       , e2->type       );
+    int musclegroup_compare = strcmp(e1->musclegroup, e2->musclegroup);
+    int level_compare       = strcmp(e1->level      , e2->level      );
+    int rating_compare      = intcmp(e1->rating     , e2->rating     );
+    int name_compare        = strcmp(e1->name       , e2->name       );
+    if (type_compare        != 0) return type_compare;
+    if (musclegroup_compare != 0) return musclegroup_compare;
+    if (level_compare       != 0) return level_compare;
+    if (rating_compare      != 0) return rating_compare;
+    if (name_compare        != 0) return name_compare;
+    return 0;
 }
 
 void get_category_names_exercises(Exercise *exercise, int exercise_lenght, char musclegroup_names[30][STR_SIZE], char equipment_names[30][STR_SIZE], char type_names[30][STR_SIZE], char level_names[30][STR_SIZE]){
