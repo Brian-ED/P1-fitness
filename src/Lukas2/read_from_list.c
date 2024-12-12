@@ -21,6 +21,51 @@ typedef struct {
     int i1, i2;
 } Exercise_index;
 
+typedef struct{
+    char workoutname[STR_SIZE];
+    int amount_of_workouts;
+    int amount_of_exercises[7];
+    char exercise_name[7][12][STR_SIZE];
+    int amount_of_sets[7][12];
+} Workout_Program;
+
+void read_workout_program(){
+    FILE* workout_file = fopen("workouts.txt", "r");
+
+    if (workout_file == NULL) {
+        perror("Error opening file\n");
+        return;
+    }
+
+    Workout_Program workout_program; // Array of exercises
+
+    fscanf(workout_file, "%99[^|] | %d | %d | %d | %d | %d | %d | %d | %d |",
+    workout_program.workoutname,
+    &workout_program.amount_of_workouts,
+    &workout_program.amount_of_exercises[0],
+    &workout_program.amount_of_exercises[1],
+    &workout_program.amount_of_exercises[2],
+    &workout_program.amount_of_exercises[3],
+    &workout_program.amount_of_exercises[4],
+    &workout_program.amount_of_exercises[5],
+    &workout_program.amount_of_exercises[6]
+    );
+    int count = 0;
+    for (int i = 0; i < workout_program.amount_of_workouts; i++){
+
+        for (int j = 0; j < workout_program.amount_of_exercises[i]; j++){
+            fscanf(workout_file, "%99[^|] |", workout_program.exercise_name[i][j]);
+            fscanf(workout_file, "%d |", &workout_program.amount_of_sets[i][j]);
+            //printf("%s", workout_program.exercise_name[i][j]);
+            //printf("%d", workout_program.amount_of_sets[i][j]);
+        count++;
+        }
+    }
+
+    exit(0);
+}
+
+
 void resolve_backslash(char text[5000]);
 void resolve_newline(char text[5000]);
 void print_exercises(Exercise *exercise, int exercise_lenght);
@@ -78,7 +123,6 @@ void read_exercises() {
 
     int exercise_index;
     for (exercise_index = 0; exercise_index < exerciseCount; exercise_index++) {
-        printf("%d\n",exercise_index);
 
         // Allocate memory for large fields dynamically
         char *exercise_info = calloc(5000, sizeof(char));
@@ -126,6 +170,8 @@ void read_exercises() {
 
         exercise[exercise_index].exercise_info = new_exercise_info;
     }
+
+    read_workout_program();
     clean_struct(exercise, exercise_index);
     print_exercises(exercise, exercise_index);
     int new_exercise_index = change_exercise(exercise[396], exercise);
@@ -140,13 +186,7 @@ void read_exercises() {
     get_category_names_exercises(exercise, exercise_index, musclegroup_names, equipment_names, type_names, level_names);
     char MG[STR_SIZE] = "Quadriceps";
     Exercise_index index = get_index_from_list(exercise, MG, exercise_index);
-    for (int i = index.i1; i < index.i2; i++) {
-        //printf("%s\n", exercise[i].name);
-    }
-    //printf("\n%s\n",exercise[8].name);
-    
-    //printf("\n%s\n",exercise[new_exercise_index].name);
-    printf("done\n");
+
 }
 
 void print_exercises(Exercise *exercise, int exercise_lenght){
@@ -302,11 +342,6 @@ void get_category_names_exercises(Exercise *exercise, int exercise_lenght, char 
             level_names_index++;
         }
     }
-    //for (int i = 0; i < musclegroup_names_index; i++) {
-    //    printf("%s\n", musclegroup_names[i]);
-    //    int len = strlen(musclegroup_names[i]);
-    //    printf("%d\n", len);
-    //}
 
 }
 
@@ -386,25 +421,17 @@ int change_exercise(Exercise exercise_to_change, Exercise *exercise){
             break;
         }
     }
-    //get_index_from_list
     return new_exercise_index;
 }
 #include <stdlib.h>
 int find_exercise_in_struct(Exercise *exercise, char exercise_name[STR_SIZE]){
     int exercise_index;
 
-    FILE *file = fopen("out.txt", "w+");
-
     for (exercise_index = 0; exercise_index < 900; exercise_index++){
-        fprintf(file, "|%s|%s|\n", exercise[exercise_index].name, exercise_name);
         if (!strcmp(exercise[exercise_index].name, exercise_name)){
-            //printf("\n%s %s\n", exercise[exercise_index].name, exercise_name);
-            printf("hit\n");
             break;
         }
         exercise_index++;
-//        printf("\n%d", exercise_index);
     }
-//    printf("\n%d", exercise_index);
     return exercise_index;
 }
