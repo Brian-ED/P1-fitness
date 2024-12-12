@@ -203,12 +203,9 @@ void to_file(node *firstnode, int age, int height, int weight, char gender, floa
 void free_space(node *firstnode){
   freemyguy(firstnode); //frees the memory
 }
-
 void ShowAndAskAndSaveUserOptions() {
   node *firstnode = scaningwhy();
   info();
-  to_file(firstnode, age, height, weight, gender, protein, calorie);
-  free_space(firstnode);
   printf("open the document \"User_Data\" to view relevant data related to your training journey\n");
   system("notepad User_Data");
 }

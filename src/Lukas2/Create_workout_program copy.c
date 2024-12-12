@@ -16,7 +16,7 @@ typedef struct {
 int readExercises(const char *filename, Exercise exercises[], int maxExercises) {
     FILE *file = fopen(filename, "r");
     if (!file) {
-        perror("Error opening file");
+        perror("Error opening file\n");
         return -1;
     }
 

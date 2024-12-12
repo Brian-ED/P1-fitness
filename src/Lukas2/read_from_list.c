@@ -38,7 +38,7 @@ int find_exercise_in_struct(Exercise *exercise, char exercise_name[STR_SIZE]);
 void read_exercises() {
     FILE* exercise_file = fopen("out copy.txt", "r");
     if (exercise_file == NULL) {
-        perror("Error opening file");
+        perror("Error opening file\n");
         return;
     }
 

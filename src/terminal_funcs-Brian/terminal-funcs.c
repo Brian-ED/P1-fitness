@@ -2,6 +2,7 @@
 
 double week_number = -1;
 int day_of_the_week = -1; // 0 is Monday, 1 is Tuesday etc and 6 is sunday.
+node *user_why;
 
 void GetDate(void) {
     time_t t = time(NULL);
@@ -23,7 +24,7 @@ void CreateDefaultProgram() {
 
   to_file(firstnode, age, height, weight, gender, protein, calorie);
 
-  free_space(firstnode);
+  user_why = firstnode;
 }
 
 // Only cross platform way to check if file exists, according to https://stackoverflow.com/a/29510380
@@ -77,6 +78,9 @@ void ChangeWorkoutViaAskingQuestions() {
 }
 
 void EndApp() {
+    if (NULL != user_why) {
+        free_space(user_why);
+    }
     printf("App closing...\n");
 }
 
@@ -131,6 +135,10 @@ int DoesUserWantToStartAWorkoutSession(void) {
     }
     printf("Not valid answer\n");
     exit(1);
+}
+
+void SaveUserOptionsToFile() {
+    to_file(user_why, age, height, weight, gender, protein, calorie);
 }
 
 void ReadInDataFile() {
@@ -188,5 +196,9 @@ void ReadInDataFile() {
     } else if (!strcmp(genderText, "Female")) {
         gender = 'f';
     }
+    if (user_why != NULL) {
+        free_space(user_why);
+    }
+    user_why = firstnode;
 }
 
