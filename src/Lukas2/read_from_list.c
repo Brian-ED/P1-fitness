@@ -207,22 +207,19 @@ void print_exercises(Exercise *exercise, int exercise_lenght){
 }
 
 void resolve_backslash(char *text){
-    char e[5000];
-    strcpy(e,text);
     int a_index = 0;
     int e_index = 0;
     while (e[e_index]) {
-        if (e[e_index]=='\\' && e[e_index + 1]=='n') {
-            e[a_index] = '\n';
+        if (text[e_index]=='\\' && text[e_index + 1]=='n') {
+            text[a_index] = '\n';
             e_index++;
         } else {
-            e[a_index] = e[e_index];
+            text[a_index] = text[e_index];
         }
         a_index++;
         e_index++;
     }
-    e[a_index] = '\0';
-    strcpy(text, e);
+    text[a_index] = '\0';
 }
 
 void resolve_newline(char *text){
