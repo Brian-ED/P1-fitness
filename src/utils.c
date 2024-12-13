@@ -1,19 +1,20 @@
 #include <stdio.h>
+#include <assert.h>
 #define BUF_SIZE 65536
 
 FILE *openSafe(char *filename, char *mode) {
     if (filename == NULL) {
         printf("ERROR: openSafe: filename was NULL pointer\n");
-        exit(EXIT_FAILURE);
+        assert(1);
     }
     if (mode == NULL) {
         printf("ERROR: openSafe: mode was NULL pointer\n");
-        exit(EXIT_FAILURE);
+        assert(1);
     }
     FILE *file = fopen(filename, mode);
     if (file == NULL) {
         printf("ERROR: openSafe: Cannot find file %s\n", filename);
-        exit(EXIT_FAILURE);
+        assert(1);
     }
     return file;
 }
@@ -21,11 +22,11 @@ FILE *openSafe(char *filename, char *mode) {
 FILE *openCreate(char *filename, char *mode) {
     if (filename == NULL) {
         printf("ERROR: openSafe: filename was NULL pointer\n");
-        exit(EXIT_FAILURE);
+        assert(1);
     }
     if (mode == NULL) {
         printf("ERROR: openSafe: mode was NULL pointer\n");
-        exit(EXIT_FAILURE);
+        assert(1);
     }
     FILE *file = fopen(filename, mode);
     if (file != NULL) return file;
@@ -34,8 +35,8 @@ FILE *openCreate(char *filename, char *mode) {
 
     file = fopen(filename, mode);
     if (file == NULL) {
-        printf("ERROR: openSafe: Cannot find file %s\n", filename);
-        exit(EXIT_FAILURE);
+        printf("ERROR: openCreate: Cannot find file %s\n", filename);
+        assert(1);
     }
     return file;
 }
@@ -60,7 +61,8 @@ int count_lines(FILE* file)
     while (!feof(file)) {
         size_t res = fread(buf, 1, BUF_SIZE, file);
         if (ferror(file))
-            return -1;
+            printf("ERROR: count_lines: cannot read file\n");
+            assert(1);
 
         for(int i = 0; i < res; i++)
             if (buf[i] == '\n')
