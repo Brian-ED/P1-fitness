@@ -4,6 +4,7 @@
 #include <time.h>
 
 #include "src/utils.c"
+#include "src/Lukas/progression.c"
 #include "src/Lukas2/read_from_list.c"
 #include "src/Parsa/Funktioner.c"
 #include "src/Lukas/progression.c"
@@ -20,32 +21,32 @@ void SaveRepsToWorkoutFile() {} // Lukas
 // #include "src/frontend-brian/frontend.c"
 
 void FLOW_EndApp() {
-    if (DEBUG) {printf("EndApp\n");}
+    if (DEBUG) {printf("DEBUG: EndApp\n");}
     EndApp();
     exit(0);
 }
 
 void FLOW_SaveRepsToWorkoutFile() {
-    if (DEBUG) {printf("SaveRepsToWorkoutFile\n");}
+    if (DEBUG) {printf("DEBUG: SaveRepsToWorkoutFile\n");}
     SaveRepsToWorkoutFile();
     FLOW_EndApp();
 }
 
 void FLOW_DoEachSet() {
-    if (DEBUG) {printf("DoEachSet\n");}
+    if (DEBUG) {printf("DEBUG: DoEachSet\n");}
     DoEachSet();
     FLOW_SaveRepsToWorkoutFile();
 }
 
 void FLOW_ReadInDataFileAndGetDate() {
-    if (DEBUG) {printf("ReadInDataFileAndGetDate\n");}
+    if (DEBUG) {printf("DEBUG: ReadInDataFileAndGetDate\n");}
     ReadInDataFile();
     GetDate();
     FLOW_DoEachSet();
 }
 
 void FLOW_DoesUserWantToStartAWorkoutSession() {
-    if (DEBUG) {printf("DoesUserWantToStartAWorkoutSession\n");}
+    if (DEBUG) {printf("DEBUG: DoesUserWantToStartAWorkoutSession\n");}
     if (DoesUserWantToStartAWorkoutSession()) {
         FLOW_ReadInDataFileAndGetDate();
     } else {
@@ -54,20 +55,20 @@ void FLOW_DoesUserWantToStartAWorkoutSession() {
 }
 
 void FLOW_ShowProgressionViaDataIfEnoughWorkoutsSavedInData() {
-    if (DEBUG) {printf("ShowProgressionViaDataIfEnoughWorkoutsSavedInData\n");}
+    if (DEBUG) {printf("DEBUG: ShowProgressionViaDataIfEnoughWorkoutsSavedInData\n");}
     ShowProgressionViaDataIfEnoughWorkoutsSavedInData();
     FLOW_DoesUserWantToStartAWorkoutSession();
 }
 
 void FLOW_AskForWeightAndCalculateCaloryIntake() {
-    if (DEBUG) {printf("AskForWeightAndCalculateCaloryIntake\n");}
+    if (DEBUG) {printf("DEBUG: AskForWeightAndCalculateCaloryIntake\n");}
     AskForWeight();
     CalculateCaloryIntake();
     FLOW_ShowProgressionViaDataIfEnoughWorkoutsSavedInData();
 }
 
 void FLOW_DoesUserWantToAddNewWeight() {
-    if (DEBUG) {printf("DoesUserWantToAddNewWeight\n");}
+    if (DEBUG) {printf("DEBUG: DoesUserWantToAddNewWeight\n");}
     if (DoesUserWantToAddNewWeight()) {
         FLOW_AskForWeightAndCalculateCaloryIntake();
     } else {
@@ -76,19 +77,19 @@ void FLOW_DoesUserWantToAddNewWeight() {
 }
 
 void FLOW_SaveUserOptionsToFile() {
-    if (DEBUG) {printf("SaveUserOptionsToFile\n");}
+    if (DEBUG) {printf("DEBUG: SaveUserOptionsToFile\n");}
     SaveUserOptionsToFile();
     FLOW_DoesUserWantToAddNewWeight();
 }
 
 void FLOW_ShowAndAskOptions() {
-    if (DEBUG) {printf("ShowAndAskOptions\n");}
+    if (DEBUG) {printf("DEBUG: ShowAndAskOptions\n");}
     ShowAndAskAndSaveUserOptions();
     FLOW_SaveUserOptionsToFile();
 }
 
 void FLOW_DoesUserWantToChangeOptions() {
-    if (DEBUG) {printf("DoesUserWantToChangeOptions\n");}
+    if (DEBUG) {printf("DEBUG: DoesUserWantToChangeOptions\n");}
     if (DoesUserWantToChangeOptions()) {
         FLOW_ShowAndAskOptions();
     } else {
@@ -97,19 +98,19 @@ void FLOW_DoesUserWantToChangeOptions() {
 }
 
 void FLOW_WriteChangedWorkoutToFile() {
-    if (DEBUG) {printf("WriteChangedWorkoutToFile\n");}
+    if (DEBUG) {printf("DEBUG: WriteChangedWorkoutToFile\n");}
     WriteChangedWorkoutToFile();
     FLOW_DoesUserWantToChangeOptions();
 }
 
 void FLOW_ChangeWorkoutViaAskingUserQuestions() {
-    if (DEBUG) {printf("ChangeWorkoutViaAskingUserQuestions\n");}
+    if (DEBUG) {printf("DEBUG: ChangeWorkoutViaAskingUserQuestions\n");}
     ChangeWorkoutViaAskingQuestions();
     FLOW_WriteChangedWorkoutToFile();
 }
 
 void FLOW_DoesUserWantToChangeWorkout() {
-    if (DEBUG) {printf("DoesUserWantToChangeWorkout\n");}
+    if (DEBUG) {printf("DEBUG: DoesUserWantToChangeWorkout\n");}
     if (DoesUserWantToChangeWorkout()) {
         FLOW_ChangeWorkoutViaAskingUserQuestions();
     } else {
@@ -118,25 +119,25 @@ void FLOW_DoesUserWantToChangeWorkout() {
 }
 
 void FLOW_SaveProgramToWorkoutFile() {
-    if (DEBUG) {printf("SaveProgramToWorkoutFile\n");}
+    if (DEBUG) {printf("DEBUG: SaveProgramToWorkoutFile\n");}
     SaveProgramToWorkoutFile();
     FLOW_DoesUserWantToChangeWorkout();
 }
 
 void FLOW_CreateDefaultProgram() {
-    if (DEBUG) {printf("CreateDefaultProgram\n");}
+    if (DEBUG) {printf("DEBUG: CreateDefaultProgram\n");}
     CreateDefaultProgram();
     FLOW_SaveProgramToWorkoutFile();
 }
 
 void FLOW_DisplayIntroduction() {
-    if (DEBUG) {printf("DisplayIntroduction\n");}
+    if (DEBUG) {printf("DEBUG: DisplayIntroduction\n");}
     DisplayIntroductionMessage();
     FLOW_CreateDefaultProgram();
 }
 
 void FLOW_AskUserIfTheyWantToChangeOptionsAndOrWorkout() {
-    if (DEBUG) {printf("AskUserIfTheyWantToChangeOptionsAndOrWorkout\n");}
+    if (DEBUG) {printf("DEBUG: AskUserIfTheyWantToChangeOptionsAndOrWorkout\n");}
     // User has been in the application before, so we say welcome back.
     show_welcome_back();
 
@@ -148,7 +149,7 @@ void FLOW_AskUserIfTheyWantToChangeOptionsAndOrWorkout() {
 }
 
 void FLOW_DoesDataFileExist() {
-    if (DEBUG) {printf("DoesDataFileExist\n");}
+    if (DEBUG) {printf("DEBUG: DoesDataFileExist\n");}
     if (DoesDataFileExist()) {
         FLOW_AskUserIfTheyWantToChangeOptionsAndOrWorkout();
     } else {
@@ -157,7 +158,7 @@ void FLOW_DoesDataFileExist() {
 }
 
 void FLOW_start_app() {
-    if (DEBUG) {printf("start_app\n");}
+    if (DEBUG) {printf("DEBUG: start_app\n");}
     FLOW_DoesDataFileExist();
 }
 
