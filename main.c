@@ -4,6 +4,7 @@
 #include <time.h>
 
 #include "src/utils.c"
+#include "src/log_regression-Brian/log_regression.c"
 #include "src/Lukas/progression.c"
 #include "src/Lukas2/read_from_list.c"
 #include "src/Parsa/Funktioner.c"
