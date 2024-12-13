@@ -1,3 +1,5 @@
+// NOTE: "Lukas/progression.c" must be included before including this file
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -53,7 +55,7 @@ void SaveProgramToWorkoutFile() {
     }
 }
 
-void read_workout_program(){
+void read_workout_program() {
     FILE *workout_file = openSafe("workout_plan.txt", "r");
 
     fscanf(workout_file, "%99[^|] | %d | %d | %d | %d | %d | %d | %d | %d |",
@@ -431,4 +433,21 @@ int find_exercise_in_struct(Exercise *exercise, int exercise_len, char exercise_
         return default_index;
     }
     return exercise_index;
+}
+
+void DoEachSet() {
+    read_workout_program();
+    printf("Now doing workout: \"%s\"\n",workout_program.workoutname);
+
+    for (int i=0; i<workout_program.amount_of_workouts; i++) {
+        for (int j=0; j<12; j++) {
+            int amount_of_sets = workout_program.amount_of_sets[i][j];
+            char *name = workout_program.exercise_name[i][j];
+            // TODO: This will be implemented when scan_prog is redesigned.
+            //   for (int k; k<amount_of_sets; k++) {
+            //
+            //   }
+            scan_prog(name);
+        }
+    }
 }
