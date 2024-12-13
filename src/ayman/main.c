@@ -3,8 +3,7 @@
 #include "fitfunctions.c"
 
 int main (void) {
-printf("%d", likedworkout());
-
-return 0;
+    printf("%d", likedworkout());
+    return 0;
 }
 

@@ -15,7 +15,7 @@ int main(void) {
     scanf("%s", inv_filename);
     inventoryp = fopen(inv_filename, "rb");
     if (!inventoryp) {
-        perror("Error opening file");
+        perror("Error opening file\n");
         return 1;
     }
 

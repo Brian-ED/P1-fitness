@@ -20,32 +20,10 @@ int UserWantsToChangeOptionsAndOrWorkout(){
     return yes == '1';
 }
 
-int change_days_a_week_or_not(){
-    char yes;
-    printf("Do you want to change how many days you can work out a week?\n");
-    printf("Type 1 for yes.\nType 0 for no\n");
-    while ((yes = getchar()) == '\n') {}
-    return yes == '1';
-}
-
 int change_exercises_or_not(){
     char yes;
     printf("Do you want to change exercises?\n");
     printf("Type 1 for yes.\nType 0 for no\n");
     while ((yes = getchar()) == '\n') {}
     return yes == '1';
-}
-
-// Temporary function
-void HowManyDaysAWeek() {
-    printf("How many days a week?");
-}
-
-void ChangeWorkoutViaAskingQuestions() {
-    if (change_days_a_week_or_not()) {
-        HowManyDaysAWeek();
-    }
-    if (change_exercises_or_not()) {
-        LikeOrDislikeCertainExercises();
-    }
 }

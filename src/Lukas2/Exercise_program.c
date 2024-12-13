@@ -11,7 +11,7 @@
 
 
 
-//create workoutprogram with different different amount of days, exercises and sets:
+//create workoutprogram with different amount of days, exercises and sets:
 
 //ask user if he wants to use a recommended workoutprogram or create a costum workout
 
