@@ -1,5 +1,8 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <math.h>
+#include "../utils.c"
+#include "../log_regression-Brian/log_regression.c"
 #include "progression.c"
 
 int main(void){
