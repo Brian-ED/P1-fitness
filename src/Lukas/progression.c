@@ -81,7 +81,7 @@ void calculate_new_weight(char *filename, progression last_weight[], int *new_we
         scanf("%d", new_weight);
     } else *new_reps = new_repsNew;
 
-fclose(file);
+    fclose(file);
 }
 
 void new_progression(char *filename, progression new_weight_data[], progression last_weight[], int new_weight, int new_reps){
