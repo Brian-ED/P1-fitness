@@ -6,14 +6,6 @@
 //the size of character array in each linked list node
 #define SIZE_NO_LIMIT 16
 
-int age;
-int height;
-int weight;
-char gender;
-float protein;
-float calorie;
-int program_days;
-
 void DisplayIntroductionMessage() {
   printf("Welcome to a new chapter in your life\n");
   printf("Welcome to (APP name)\n");

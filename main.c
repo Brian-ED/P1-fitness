@@ -3,6 +3,16 @@
 #include <math.h>
 #include <time.h>
 
+int week_number = -1;
+int day_of_the_week = -1;
+int age;
+int height;
+int weight;
+char gender;
+float protein;
+float calorie;
+int program_days;
+
 #include "src/utils.c"
 #include "src/log_regression-Brian/log_regression.c"
 #include "src/Lukas/progression.c"
