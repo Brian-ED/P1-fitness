@@ -2,53 +2,137 @@
 #include <stdlib.h>
 #include <math.h>
 #include "src/Parsa/Funktioner.c"
+#include "src/Lukas/progression.c"
+#include "src/welcome_back/welcome_back.c"
+#include "src/terminal-funcs.c"
 
-// BRIAN: to include frontend you can uncomment the import below "THIS"
-// It also defines background. The code errors if you don't include the background.
-#include "src/frontend-brian/frontend.c"
-
-// THIS:
+#define DEBUG 1
 // #define BACKGROUND_IMAGE "content/workout-images.png"
 // #include "src/frontend-brian/frontend.c"
 
+void FLOW_EndApp() {
+    EndApp();
+    exit(0);
+}
+
+void FLOW_SaveRepsToWorkoutFile() {
+    SaveRepsToWorkoutFile();
+    FLOW_EndApp();
+}
+
+void FLOW_DoEachSet() {
+    DoEachSet();
+    FLOW_SaveRepsToWorkoutFile();
+}
+
+void FLOW_ReadInDataFileAndGetDate() {
+    ReadInDataFile();
+    GetDate();
+    FLOW_DoEachSet();
+}
+
+void FLOW_DoesUserWantToStartAWorkoutSession() {
+    if (UserWantsToStartAWorkoutSession()) {
+        FLOW_ReadInDataFileAndGetDate();
+    } else {
+        FLOW_EndApp();
+    }
+}
+
+void FLOW_ShowProgressionViaDataIfEnoughWorkoutsSavedInData() {
+    ShowProgressionViaDataIfEnoughWorkoutsSavedInData();
+    FLOW_DoesUserWantToStartAWorkoutSession();
+}
+
+void FLOW_AskForWeightAndCalculateCaloryIntake() {
+    AskForWeight();
+    CalculateCaloryIntake();
+    FLOW_ShowProgressionViaDataIfEnoughWorkoutsSavedInData();
+}
+
+void FLOW_DoesUserWantToAddNewWeight() {
+    if (UserWantsToAddNewWeight()) {
+        FLOW_AskForWeightAndCalculateCaloryIntake();
+    } else {
+        FLOW_ShowProgressionViaDataIfEnoughWorkoutsSavedInData();
+    }
+}
+
+void FLOW_SaveUserOptionsToFile() {
+    SaveUserOptionsToFile();
+    FLOW_DoesUserWantToAddNewWeight();
+}
+
+void FLOW_ShowAndAskOptions() {
+    ShowAndAskAndSaveUserOptions();
+    FLOW_SaveUserOptionsToFile();
+}
+
+void FLOW_DoesUserWantToChangeOptions() {
+    if (DoesUserWantToChangeOptions()) {
+        FLOW_ShowAndAskOptions();
+    } else {
+        FLOW_DoesUserWantToAddNewWeight();
+    }
+}
+
+void FLOW_WriteChangedWorkoutToFile() {
+    WriteChangedWorkoutToFile();
+    FLOW_DoesUserWantToChangeOptions();
+}
+
+void FLOW_ChangeWorkoutViaAskingUserQuestions() {
+    ChangeWorkoutViaAskingQuestions();
+    FLOW_WriteChangedWorkoutToFile();
+}
+
+void FLOW_DoesUserWantToChangeWorkout() {
+    if (DoesUserWantToChangeWorkout()) {
+        FLOW_ChangeWorkoutViaAskingUserQuestions();
+    } else {
+        FLOW_DoesUserWantToChangeOptions();
+    }
+}
+
+void FLOW_SaveProgramToWorkoutFile() {
+    SaveProgramToWorkoutFile();
+    FLOW_DoesUserWantToChangeWorkout();
+}
+
+void FLOW_CreateDefaultProgram() {
+    CreateDefaultProgram();
+    FLOW_SaveProgramToWorkoutFile();
+}
+
+void FLOW_DisplayIntroduction() {
+    DisplayIntroductionMessage();
+    FLOW_CreateDefaultProgram();
+}
+
+void FLOW_AskUserIfTheyWantToChangeOptionsAndOrWorkout() {
+    // User has been in the application before, so we say welcome back.
+    show_welcome_back();
+
+    if (UserWantsToChangeOptionsAndOrWorkout()) {
+        FLOW_DoesUserWantToChangeWorkout();
+    } else {
+        FLOW_DoesUserWantToAddNewWeight();
+    }
+}
+
+void FLOW_DoesDataFileExist(){
+    if (DataFileExists()) {
+        FLOW_AskUserIfTheyWantToChangeOptionsAndOrWorkout();
+    } else {
+        FLOW_DisplayIntroduction();
+    }
+}
+
+void FLOW_start_app() {
+    FLOW_DoesDataFileExist();
+}
+
 int main() {
-    char answer;
-
-    // This is a "Label" named start_app.
-    // This means that if you run "goto start_app;",
-    // we jump to this line and continue running code.
-    start_app:
-        printf("Welcome, have you opened the app before?\n");
-        printf("Type [Y] for yes, [N] for no:\n");
-        scanf("%c", &answer);
-
-        if (answer == 'y' || answer == 'Y') {
-            goto welcome_back;
-        } else if (answer == 'n' || answer == 'N') {
-            goto start_introduction;
-        } else {
-            goto start_app; // starting over
-        }
-
-    welcome_back: // User has been in the application before, so we say welcome back.
-        printf("Welcome back!");
-        goto end_program; // TODO: "goto end_program;" ends the program, but when a user comes back, they should be going to the "update weight" question.
-
-    start_introduction:
-       Introduction();
-       node *firstnode = scaningwhy();
-       info();
-       program();
-       needs();
-       to_file(firstnode, age, height, weight, gender2, protein, calorie);
-       free_space(firstnode);
-       printf("open the document \"User_Data\" to view relevant data related to your training journey");
-       system("notepad C:\\Users\\parsa\\OneDrive\\Desktop\\P1-fitness\\src\\Parsa\\User_Data");
-       goto the_program_made;
-
-    the_program_made:
-        goto end_program;
-
-    end_program:
-        return 0;
+    FLOW_start_app();
+    return 0;
 }

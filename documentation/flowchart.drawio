@@ -1,0 +1,272 @@
+<mxfile host="65bd71144e">
+    <diagram id="Gj91PurLYx6kdeHO8avD" name="Page-1">
+        <mxGraphModel dx="280" dy="199" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" background="#ffffff" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="17" value="" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="1" source="10" target="11" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="10" value="Start app." style="rounded=1;whiteSpace=wrap;html=1;arcSize=49;fillColor=#d5e8d4;strokeColor=#82b366;" parent="1" vertex="1">
+                    <mxGeometry x="520" y="40" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="13" value="" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="1" source="11" target="12" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="410" y="175"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="23" value="No" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="13" vertex="1" connectable="0">
+                    <mxGeometry x="-0.7055" y="-3" relative="1" as="geometry">
+                        <mxPoint x="3" y="2" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="15" value="" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="1" source="11" target="117" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="740" y="230" as="targetPoint"/>
+                        <Array as="points"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="25" value="Yes" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="15" vertex="1" connectable="0">
+                    <mxGeometry x="-0.8222" y="3" relative="1" as="geometry">
+                        <mxPoint x="3" y="2" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="11" value="Does data file &lt;br&gt;exist?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1" vertex="1">
+                    <mxGeometry x="500" y="130" width="160" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="27" value="" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="1" source="12" target="101" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="12" value="Display&lt;br&gt;a introduction." style="rounded=0;whiteSpace=wrap;html=1;fillColor=#eeeeee;strokeColor=#36393d;fontStyle=0" parent="1" vertex="1">
+                    <mxGeometry x="360" y="200" width="100" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="28" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="1" source="18" target="33" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="580" y="330" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="580" y="280"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="51" value="Yes" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="28" vertex="1" connectable="0">
+                    <mxGeometry x="-0.6666" relative="1" as="geometry">
+                        <mxPoint x="13" y="-1" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="50" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="1" source="18" target="59" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="52" value="No" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="50" vertex="1" connectable="0">
+                    <mxGeometry x="-0.8387" y="-1" relative="1" as="geometry">
+                        <mxPoint y="-1" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="18" value="Ask&lt;br&gt;user: &quot;Do you want to&lt;br&gt;change options and/or workout?&quot;" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1" vertex="1">
+                    <mxGeometry x="750" y="236" width="160" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="109" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="1" source="26" target="110" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="690" y="759.9999999999998" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="26" value="Show and ask options." style="whiteSpace=wrap;html=1;rounded=0;fillColor=#eeeeee;strokeColor=#36393d;" parent="1" vertex="1">
+                    <mxGeometry x="350" y="598" width="100" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="34" value="" style="edgeStyle=orthogonalEdgeStyle;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="94" target="33" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="36" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="1" source="33" target="35" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="37" value="Yes" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="36" vertex="1" connectable="0">
+                    <mxGeometry x="-0.7472" y="2" relative="1" as="geometry">
+                        <mxPoint x="-3" y="6" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="41" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" parent="1" source="33" target="39" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="690" y="371"/>
+                            <mxPoint x="690" y="615"/>
+                        </Array>
+                        <mxPoint x="657.0909090909092" y="369" as="sourcePoint"/>
+                        <mxPoint x="655.636363636364" y="616" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="43" value="No" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="41" vertex="1" connectable="0">
+                    <mxGeometry x="-0.804" relative="1" as="geometry">
+                        <mxPoint x="-18" y="-1" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="33" value="Does user want to&lt;br&gt;change workout?" style="rhombus;whiteSpace=wrap;html=1;rounded=0;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1" vertex="1">
+                    <mxGeometry x="500" y="326" width="160" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="98" value="" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="1" source="35" target="97" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="116" value="" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="1" source="35" target="97" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="35" value="Change workout via asking user questions." style="rounded=0;whiteSpace=wrap;html=1;fillColor=#eeeeee;strokeColor=#36393d;" parent="1" vertex="1">
+                    <mxGeometry x="530" y="446" width="100" height="48" as="geometry"/>
+                </mxCell>
+                <mxCell id="45" value="" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" parent="1" source="39" target="26" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="460" y="630" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="46" value="Yes" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="45" vertex="1" connectable="0">
+                    <mxGeometry x="-0.3885" relative="1" as="geometry">
+                        <mxPoint x="1" y="-1" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="105" value="" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.501;exitY=1.008;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="39" target="59" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="730" y="520" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="580" y="692"/>
+                            <mxPoint x="720" y="692"/>
+                            <mxPoint x="720" y="515"/>
+                        </Array>
+                        <mxPoint x="580" y="664" as="sourcePoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="106" value="No" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="105" vertex="1" connectable="0">
+                    <mxGeometry x="-0.5702" y="-3" relative="1" as="geometry">
+                        <mxPoint x="-50" y="-25" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="39" value="Does user want to&lt;br&gt;change options?" style="rhombus;whiteSpace=wrap;html=1;rounded=0;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1" vertex="1">
+                    <mxGeometry x="500" y="570" width="160" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="69" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="1" source="55" target="77" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="940" y="640" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="55" value="Ask for weight and calculate calory intake." style="whiteSpace=wrap;html=1;fillColor=#eeeeee;strokeColor=#36393d;" parent="1" vertex="1">
+                    <mxGeometry x="780" y="630" width="100" height="48" as="geometry"/>
+                </mxCell>
+                <mxCell id="61" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="1" source="59" target="55" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="62" value="Yes" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="61" vertex="1" connectable="0">
+                    <mxGeometry x="-0.8408" y="4" relative="1" as="geometry">
+                        <mxPoint x="-5" y="5" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="66" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="1" source="59" target="77" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="1000" y="600" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="81" value="No" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="66" vertex="1" connectable="0">
+                    <mxGeometry x="-0.8356" y="1" relative="1" as="geometry">
+                        <mxPoint x="7" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="59" value="Does user want to&lt;br&gt;add new weight." style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1" vertex="1">
+                    <mxGeometry x="750" y="470" width="160" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="73" value="" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="1" source="70" target="107" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="1180" y="425" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="76" value="Yes" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="73" vertex="1" connectable="0">
+                    <mxGeometry x="-0.7514" y="1" relative="1" as="geometry">
+                        <mxPoint x="1" y="-7" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="85" style="edgeStyle=orthogonalEdgeStyle;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="70" target="75" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="1320" y="515"/>
+                            <mxPoint x="1320" y="70"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="86" value="No" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="85" vertex="1" connectable="0">
+                    <mxGeometry x="-0.9455" y="-3" relative="1" as="geometry">
+                        <mxPoint y="-2" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="70" value="Does user&lt;br&gt;want to start a workout session?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1" vertex="1">
+                    <mxGeometry x="1100" y="470" width="160" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="75" value="End app." style="rounded=1;whiteSpace=wrap;html=1;arcSize=49;fillColor=#f8cecc;strokeColor=#b85450;" parent="1" vertex="1">
+                    <mxGeometry x="1120" y="40" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="80" value="" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="1" source="77" target="70" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="77" value="Show progression via data if enough workouts saved in data." style="whiteSpace=wrap;html=1;fillColor=#eeeeee;strokeColor=#36393d;" parent="1" vertex="1">
+                    <mxGeometry x="951" y="484" width="100" height="62" as="geometry"/>
+                </mxCell>
+                <mxCell id="90" value="" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="1" source="107" target="89" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="1180" y="365" as="sourcePoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="92" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="1" source="89" target="103" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="1181" y="190" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="89" value="Do each of the sets, display set info, wait till user says they're done, ask user how many reps they did." style="whiteSpace=wrap;html=1;rounded=0;fillColor=#eeeeee;strokeColor=#36393d;" parent="1" vertex="1">
+                    <mxGeometry x="1130" y="232" width="100" height="106" as="geometry"/>
+                </mxCell>
+                <mxCell id="93" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="1" source="103" target="75" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="1181" y="130" as="sourcePoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="94" value="save program&lt;br&gt;to workout file." style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fillColor=#e1d5e7;strokeColor=#9673a6;size=9.500000000000114;" parent="1" vertex="1">
+                    <mxGeometry x="355" y="354" width="110" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="99" value="" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="1" source="97" target="39" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="97" value="Write changed &lt;br&gt;workout to file." style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fillColor=#e1d5e7;strokeColor=#9673a6;size=11;" parent="1" vertex="1">
+                    <mxGeometry x="525" y="510" width="110" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="102" value="" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="1" source="101" target="94" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="101" value="Create default program." style="rounded=0;whiteSpace=wrap;html=1;fillColor=#eeeeee;strokeColor=#36393d;" parent="1" vertex="1">
+                    <mxGeometry x="360" y="277" width="100" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="103" value="Save reps to a workout file." style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fillColor=#e1d5e7;strokeColor=#9673a6;size=10.000000000000227;" parent="1" vertex="1">
+                    <mxGeometry x="1125" y="148" width="110" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="107" value="Read in data file and get date." style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fillColor=#e1d5e7;strokeColor=#9673a6;size=10.000000000000227;" parent="1" vertex="1">
+                    <mxGeometry x="1125" y="386" width="110" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="111" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" parent="1" source="110" target="59" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="720" y="693"/>
+                            <mxPoint x="720" y="515"/>
+                        </Array>
+                        <mxPoint x="460" y="680" as="sourcePoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="110" value="save user options&lt;br&gt;to save file." style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fillColor=#e1d5e7;strokeColor=#9673a6;size=11;" parent="1" vertex="1">
+                    <mxGeometry x="345" y="675" width="110" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="118" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="117" target="18">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="117" value="Display welcome back" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#eeeeee;strokeColor=#36393d;fontStyle=0" vertex="1" parent="1">
+                    <mxGeometry x="780" y="157.5" width="100" height="35" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

@@ -17,9 +17,13 @@
 
 # cmake
 cmake-build-debug
+CMakeLists.txt
 
 # fun-brian uses a save_data file
 src/fun-brian/save_data
+
+# drawio output png
+flowchart.png
 
 # No idea why, but ".idea" folder was added by Gajoe
 .idea
