@@ -168,8 +168,7 @@ void read_exercises() {
     free(exercise);
 
     qsort(filtered_exercises, exercise_index, sizeof(Exercise), compare);
-    get_category_names_exercises(filtered_exercises, exercise_index, filtered_exercises.musclegroup, filtered_exercises.equipment, filtered_exercises.type, filtered_exercises.level);
-    
+
     fclose(exercise_file);
 
     int at_count = 0;
@@ -268,7 +267,9 @@ int compare(const void *s1, const void *s2){
     if ((c=strcmp(e1->musclegroup, e2->musclegroup)) != 0) return c;
     if ((c=strcmp(e1->level      , e2->level      )) != 0) return c;
     if ((c=intcmp(e1->rating     , e2->rating     )) != 0) return c;
-    if ((c=strcmp(e1->name       , e2->name       )) != 0) return c;  return 0;
+    if ((c=strcmp(e1->name       , e2->name       )) != 0) return c;
+    return 0;
+}
 void get_category_names_exercises(Exercise *exercise, int exercise_length, char musclegroup_names[30][STR_SIZE], char equipment_names[30][STR_SIZE], char type_names[30][STR_SIZE], char level_names[30][STR_SIZE]){
 
     int musclegroup_names_index = 0;
@@ -324,7 +325,6 @@ void get_category_names_exercises(Exercise *exercise, int exercise_length, char 
             level_names_index++;
         }
     }
-
 }
 
 void filter_exercises_by_type(Exercise *exercise, int *exercise_length) {
