@@ -408,7 +408,7 @@ int find_exercise_in_struct(Exercise *exercise, int exercise_length, char exerci
     while (exercise_index < exercise_length && strcmp(exercise[exercise_index].name, exercise_name)) {
         exercise_index++;
     }
-    if (exercise_index == exercise_len) {
+    if (exercise_index == exercise_length) {
         return default_index;
     }
     return exercise_index;
