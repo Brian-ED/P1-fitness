@@ -1,7 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
+#include "src/include_me_in_mains.c"
 
 #define STR_SIZE 50
 #define LONG_STR_SIZE 5000

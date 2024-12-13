@@ -1,17 +1,4 @@
-#include <stdlib.h>
-
-int week_number = -1;
-int day_of_the_week = -1;
-int age;
-int height;
-int weight;
-char gender;
-float protein;
-float calorie;
-int program_days;
-
-#include "Funktioner.c"
-#include "../utils.c"
+#include "../include_me_in_mains.c"
 
 int main() {
   DisplayIntroductionMessage();
