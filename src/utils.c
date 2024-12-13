@@ -60,9 +60,10 @@ int count_lines(FILE* file)
 
     while (!feof(file)) {
         size_t res = fread(buf, 1, BUF_SIZE, file);
-        if (ferror(file))
+        if (ferror(file)) {
             printf("ERROR: count_lines: cannot read file\n");
             assert(1);
+        }
 
         for(int i = 0; i < res; i++)
             if (buf[i] == '\n')
