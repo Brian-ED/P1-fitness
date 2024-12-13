@@ -79,18 +79,19 @@ void read_workout_program() {
 }
 
 // Purpose unknown
-//void get_category_names_exercises(Exercise *exercise, int exercise_lenght, char musclegroup_names[30][STR_SIZE], char equipment_names[30][STR_SIZE], char type_names[30][STR_SIZE], char level_names[30][STR_SIZE]);
+//void get_category_names_exercises(Exercise *exercise, int exercise_length, char musclegroup_names[30][STR_SIZE], char equipment_names[30][STR_SIZE], char type_names[30][STR_SIZE], char level_names[30][STR_SIZE]);
 
 void resolve_backslash(char *text);
 void resolve_newline(char *text);
-void print_exercises(Exercise *exercise, int exercise_lenght);
+void print_exercises(Exercise *exercise, int exercise_length);
 int compare(const void *s1, const void *s2);
-void filter_exercises_by_type(Exercise *exercise, int *exercise_lenght);
-Exercise_index get_index_from_list(Exercise *exercise, char musclegroup[STR_SIZE], int exercise_lenght);
+void filter_exercises_by_type(Exercise *exercise, int *exercise_length);
+Exercise_index get_index_from_list(Exercise *exercise, char musclegroup[STR_SIZE], int exercise_length);
 void delete_spaces(char str[]);
-void clean_struct(Exercise *exercise, int exercise_lenght);
-int change_exercise(int exercise_to_change, Exercise *exercise, int *alt_count, int exercise_lenght);
-int find_exercise_in_struct(Exercise *exercise, int exercise_len, char exercise_name[STR_SIZE], int defaultIndex);
+void clean_struct(Exercise *exercise, int exercise_length);
+int change_exercise(int exercise_to_change, Exercise *exercise, int *alt_count, int exercise_length);
+int find_exercise_in_struct(Exercise *exercise, int exercise_length, char exercise_name[STR_SIZE], int defaultIndex);
+
 
 void read_exercises() {
     FILE* exercise_file = fopen("out copy.txt", "r");
@@ -167,6 +168,8 @@ void read_exercises() {
     free(exercise);
 
     qsort(filtered_exercises, exercise_index, sizeof(Exercise), compare);
+    get_category_names_exercises(filtered_exercises, exercise_index, filtered_exercises.musclegroup, filtered_exercises.equipment, filtered_exercises.type, filtered_exercises.level);
+    
     fclose(exercise_file);
 
     int at_count = 0;
@@ -190,9 +193,9 @@ void read_exercises() {
 
 }
 
-void print_exercises(Exercise *exercise, int exercise_lenght){
+void print_exercises(Exercise *exercise, int exercise_length){
     // Print and free the data
-    for (int i = 0; i < exercise_lenght; i++){
+    for (int i = 0; i < exercise_length; i++){
 
         resolve_backslash(exercise[i].exercise_info);
         resolve_newline(exercise[i].exercise_info);
@@ -265,73 +268,70 @@ int compare(const void *s1, const void *s2){
     if ((c=strcmp(e1->musclegroup, e2->musclegroup)) != 0) return c;
     if ((c=strcmp(e1->level      , e2->level      )) != 0) return c;
     if ((c=intcmp(e1->rating     , e2->rating     )) != 0) return c;
-    if ((c=strcmp(e1->name       , e2->name       )) != 0) return c;
-    return 0;
+    if ((c=strcmp(e1->name       , e2->name       )) != 0) return c;  return 0;
+void get_category_names_exercises(Exercise *exercise, int exercise_length, char musclegroup_names[30][STR_SIZE], char equipment_names[30][STR_SIZE], char type_names[30][STR_SIZE], char level_names[30][STR_SIZE]){
+
+    int musclegroup_names_index = 0;
+    int equipment_names_index = 0;
+    int type_names_index = 0;
+    int level_names_index = 0;
+    int list_count;
+
+
+    for (list_count = 0; list_count < exercise_length; list_count++) {
+
+        char *temp_musclegroup = exercise[list_count].musclegroup;
+        char *temp_equipment = exercise[list_count].equipment;
+        char *temp_type = exercise[list_count].type;
+        char *temp_level = exercise[list_count].level;
+
+        int in_list = 1;
+        for (int i = 0; i < musclegroup_names_index; i++) {
+            if (!strcmp(musclegroup_names[i], temp_musclegroup))
+                in_list = 0;
+        }
+        if (in_list == 1) {
+            strcpy(musclegroup_names[musclegroup_names_index], temp_musclegroup);
+            musclegroup_names_index++;
+        }
+
+        in_list = 1;
+        for (int i = 0; i < equipment_names_index; i++) {
+            if (!strcmp(equipment_names[i], temp_equipment))
+                in_list = 0;
+        }
+        if (in_list == 1) {
+            strcpy(equipment_names[equipment_names_index], temp_equipment);
+            equipment_names_index++;
+        }
+
+        in_list = 1;
+        for (int i = 0; i < type_names_index; i++) {
+            if (!strcmp(type_names[i], temp_type))
+                in_list = 0;
+        }
+        if (in_list == 1) {
+            strcpy(type_names[type_names_index], temp_type);
+            type_names_index++;
+        }
+        in_list = 1;
+        for (int i = 0; i < level_names_index; i++) {
+            if (!strcmp(level_names[i], temp_level))
+                in_list = 0;
+        }
+        if (in_list == 1) {
+            strcpy(level_names[level_names_index], temp_level);
+            level_names_index++;
+        }
+    }
+
 }
 
-//void get_category_names_exercises(Exercise *exercise, int exercise_lenght, char musclegroup_names[30][STR_SIZE], char equipment_names[30][STR_SIZE], char type_names[30][STR_SIZE], char level_names[30][STR_SIZE]){
-//
-//    int musclegroup_names_index = 0;
-//    int equipment_names_index = 0;
-//    int type_names_index = 0;
-//    int level_names_index = 0;
-//    int list_count;
-//
-//
-//    for (list_count = 0; list_count < exercise_lenght; list_count++) {
-//
-//        char *temp_musclegroup = exercise[list_count].musclegroup;
-//        char *temp_equipment = exercise[list_count].equipment;
-//        char *temp_type = exercise[list_count].type;
-//        char *temp_level = exercise[list_count].level;
-//
-//        int in_list = 1;
-//        for (int i = 0; i < musclegroup_names_index; i++) {
-//            if (!strcmp(musclegroup_names[i], temp_musclegroup))
-//                in_list = 0;
-//        }
-//        if (in_list == 1) {
-//            strcpy(musclegroup_names[musclegroup_names_index], temp_musclegroup);
-//            musclegroup_names_index++;
-//        }
-//
-//        in_list = 1;
-//        for (int i = 0; i < equipment_names_index; i++) {
-//            if (!strcmp(equipment_names[i], temp_equipment))
-//                in_list = 0;
-//        }
-//        if (in_list == 1) {
-//            strcpy(equipment_names[equipment_names_index], temp_equipment);
-//            equipment_names_index++;
-//        }
-//
-//        in_list = 1;
-//        for (int i = 0; i < type_names_index; i++) {
-//            if (!strcmp(type_names[i], temp_type))
-//                in_list = 0;
-//        }
-//        if (in_list == 1) {
-//            strcpy(type_names[type_names_index], temp_type);
-//            type_names_index++;
-//        }
-//        in_list = 1;
-//        for (int i = 0; i < level_names_index; i++) {
-//            if (!strcmp(level_names[i], temp_level))
-//                in_list = 0;
-//        }
-//        if (in_list == 1) {
-//            strcpy(level_names[level_names_index], temp_level);
-//            level_names_index++;
-//        }
-//    }
-//
-//}
-
-void filter_exercises_by_type(Exercise *exercise, int *exercise_lenght) {
+void filter_exercises_by_type(Exercise *exercise, int *exercise_length) {
 
     int index_count_list = 0;
     char filter_word[STR_SIZE] = "Strength";
-    for (int i = 0; i < *exercise_lenght; i++) {
+    for (int i = 0; i < *exercise_length; i++) {
         if (!strcmp(exercise[i].type, filter_word)) {
             exercise[index_count_list] = exercise[i];
             index_count_list++;
@@ -339,25 +339,25 @@ void filter_exercises_by_type(Exercise *exercise, int *exercise_lenght) {
             free(exercise[i].exercise_info);
         }
     }
-    *exercise_lenght = index_count_list;
+    *exercise_length = index_count_list;
 }
 
-Exercise_index get_index_from_list(Exercise *exercise, char musclegroup[STR_SIZE], int exercise_lenght){
+Exercise_index get_index_from_list(Exercise *exercise, char musclegroup[STR_SIZE], int exercise_length){
 
     Exercise_index index;
 
     int i;
-    for (i = 0; i < exercise_lenght; i++){
+    for (i = 0; i < exercise_length; i++){
         if(!strcmp(exercise[i].musclegroup, musclegroup)){
             index.i1 = i;
             break;
         }
     }
-    if (i == exercise_lenght) {
+    if (i == exercise_length) {
         perror("get_index_from_list: index not found\n");
         exit(EXIT_FAILURE);
     }
-    for (int j = index.i1; j < exercise_lenght; j++){
+    for (int j = index.i1; j < exercise_length; j++){
         if(strcmp(exercise[j].musclegroup, musclegroup)){
             index.i2 = j;
             break;
@@ -366,8 +366,8 @@ Exercise_index get_index_from_list(Exercise *exercise, char musclegroup[STR_SIZE
     return index;
 }
 
-void clean_struct(Exercise *exercise, int exercise_lenght){
-    for (int i=0; i<exercise_lenght; i++){
+void clean_struct(Exercise *exercise, int exercise_length){
+    for (int i=0; i<exercise_length; i++){
         delete_spaces(exercise[i].name);
         delete_spaces(exercise[i].musclegroup);
         delete_spaces(exercise[i].equipment);
@@ -385,9 +385,9 @@ void delete_spaces(char str[]){
     str[i+1] = '\0';
 }
 
-int change_exercise(int exercise_to_change, Exercise *exercise, int *alt_count, int exercise_lenght){
+int change_exercise(int exercise_to_change, Exercise *exercise, int *alt_count, int exercise_length){
     int next_exercise_index;
-    Exercise_index index_from_list = get_index_from_list(exercise, exercise[exercise_to_change].musclegroup, exercise_lenght);
+    Exercise_index index_from_list = get_index_from_list(exercise, exercise[exercise_to_change].musclegroup, exercise_length);
     if (exercise_to_change+1 >= index_from_list.i2) {
         next_exercise_index = index_from_list.i1;
     } else {
@@ -400,12 +400,12 @@ int change_exercise(int exercise_to_change, Exercise *exercise, int *alt_count, 
         return next_exercise_index;
     }
 
-    return find_exercise_in_struct(exercise, exercise_lenght, exercise[exercise_to_change].alternative_exercises[*alt_count], next_exercise_index);
+    return find_exercise_in_struct(exercise, exercise_length, exercise[exercise_to_change].alternative_exercises[*alt_count], next_exercise_index);
 }
 
-int find_exercise_in_struct(Exercise *exercise, int exercise_len, char exercise_name[STR_SIZE], int default_index){
+int find_exercise_in_struct(Exercise *exercise, int exercise_length, char exercise_name[STR_SIZE], int default_index){
     int exercise_index = 0;
-    while (exercise_index < exercise_len && strcmp(exercise[exercise_index].name, exercise_name)) {
+    while (exercise_index < exercise_length && strcmp(exercise[exercise_index].name, exercise_name)) {
         exercise_index++;
     }
     if (exercise_index == exercise_len) {
