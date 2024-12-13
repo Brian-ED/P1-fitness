@@ -5,7 +5,6 @@
 #include <string.h>
 
 #define STR_SIZE 100
-#define BUF_SIZE 65536
 #define ALTERNATIVE_EXERCISES_MAX 9
 
 typedef struct {
@@ -92,26 +91,6 @@ void delete_spaces(char str[]);
 void clean_struct(Exercise *exercise, int exercise_lenght);
 int change_exercise(int exercise_to_change, Exercise *exercise, int *alt_count, int exercise_lenght);
 int find_exercise_in_struct(Exercise *exercise, int exercise_len, char exercise_name[STR_SIZE], int defaultIndex);
-
-// count_lines implementation found at https://stackoverflow.com/a/70708991
-int count_lines(FILE* file)
-{
-    char buf[BUF_SIZE];
-    int counter = 0;
-
-    while (!feof(file)) {
-        size_t res = fread(buf, 1, BUF_SIZE, file);
-        if (ferror(file))
-            return -1;
-
-        for(int i = 0; i < res; i++)
-            if (buf[i] == '\n')
-                counter++;
-
-    }
-    rewind(file);
-    return counter;
-}
 
 void read_exercises() {
     FILE* exercise_file = fopen("out copy.txt", "r");
