@@ -7,14 +7,11 @@
 #include "src/Lukas/progression.c"
 #include "src/Lukas2/read_from_list.c"
 #include "src/Parsa/Funktioner.c"
-#include "src/Lukas/progression.c"
 #include "src/welcome_back-Jonas/welcome_back.c"
 #include "src/terminal_funcs-Brian/terminal-funcs.c"
 
 // TODO
 void ShowProgressionViaDataIfEnoughWorkoutsSavedInData() {} // Jonas
-void DoEachSet() {} // Lukas
-void SaveRepsToWorkoutFile() {} // Lukas
 
 #define DEBUG 1
 // #define BACKGROUND_IMAGE "content/workout-images.png"
@@ -28,7 +25,7 @@ void FLOW_EndApp() {
 
 void FLOW_SaveRepsToWorkoutFile() {
     if (DEBUG) {printf("DEBUG: SaveRepsToWorkoutFile\n");}
-    SaveRepsToWorkoutFile();
+    // SaveRepsToWorkoutFile(); Not neccessary since DoEachSet() currently saves as it goes.
     FLOW_EndApp();
 }
 
