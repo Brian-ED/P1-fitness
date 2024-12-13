@@ -8,35 +8,6 @@ typedef struct {
 }progression;
 
 // calculate next suggested progression for user
-progression calculate_new_weight(char *filename, int *new_weight, int *new_reps);
-
-// write new progression to txt file
-progression new_progression(char *filename, progression last_weight, int new_weight, int new_reps);
-
-void scan_prog(char *exercise){
-    int text;
-    char *name = strcat(exercise, ".prog.txt");
-    printf("%s", name);
-    printf("%s\n", name);
-
-    FILE* ex_prog = fopen(name, "r");
-    int new_weight = 0;
-    int new_reps = 0;
-
-    if(ex_prog == NULL){
-        ex_prog = fopen(name, "ab+");
-        new_reps = 8;
-        printf("please enter a starting weight: ");
-        scanf("%d", &new_weight);
-    }
-
-    progression last_weight = calculate_new_weight(name, &new_weight, &new_reps);
-
-    progression new_weight_data = new_progression(name, last_weight, new_weight, new_reps);
-
-    fclose(ex_prog);
-}
-
 progression calculate_new_weight(char *filename, int *new_weight, int *new_reps){
     progression last_weight;
 
@@ -91,6 +62,7 @@ progression calculate_new_weight(char *filename, int *new_weight, int *new_reps)
     return last_weight;
 }
 
+// write new progression to txt file
 progression new_progression(char *filename, progression last_weight, int new_weight, int new_reps){
     progression new_weight_data = { 0 };
 
@@ -119,4 +91,28 @@ progression new_progression(char *filename, progression last_weight, int new_wei
                                          new_weight_data.sets[2],
                                          new_weight_data.sets[3]);
     return new_weight_data;
+}
+
+void scan_prog(char *exercise){
+    int text;
+    char *name = strcat(exercise, ".prog.txt");
+    printf("%s", name);
+    printf("%s\n", name);
+
+    FILE* ex_prog = fopen(name, "r");
+    int new_weight = 0;
+    int new_reps = 0;
+
+    if(ex_prog == NULL){
+        ex_prog = fopen(name, "ab+");
+        new_reps = 8;
+        printf("please enter a starting weight: ");
+        scanf("%d", &new_weight);
+    }
+
+    progression last_weight = calculate_new_weight(name, &new_weight, &new_reps);
+
+    progression new_weight_data = new_progression(name, last_weight, new_weight, new_reps);
+
+    fclose(ex_prog);
 }
