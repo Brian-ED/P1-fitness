@@ -1,4 +1,4 @@
-typedef struct {
+typedef struct Term {
   double coefficient, exponent;
 } Term;
 

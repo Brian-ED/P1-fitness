@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "../utils.c"
+#include "../Lukas/progression.c"
 #include "read_from_list.c"
 
 int main(void){
