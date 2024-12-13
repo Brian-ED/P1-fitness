@@ -15,14 +15,15 @@ progression calculate_new_weight(char *filename, int *new_weight, int *new_reps)
     double x[300], y[300];
     int n = 0;
     FILE *file = fopen(filename, "r");
-    while (fscanf(file, "%d %d %d %d %d %d",
-            &last_weight.week,
-            &last_weight.weight,
-            &last_weight.sets[0],
-            &last_weight.sets[1],
-            &last_weight.sets[2],
-            &last_weight.sets[3]) == 6
-    ) {
+    while (fscanf(
+        file, "%d %d %d %d %d %d",
+        &last_weight.week,
+        &last_weight.weight,
+        &last_weight.sets[0],
+        &last_weight.sets[1],
+        &last_weight.sets[2],
+        &last_weight.sets[3]
+    ) == 6 ) {
         x[n] = last_weight.week; // TODO: use actual weeks
         y[n] = last_weight.weight;
         n++;
