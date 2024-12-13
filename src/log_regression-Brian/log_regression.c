@@ -18,5 +18,7 @@ Term log_regression(int n, double *x, double *y) {
         .coefficient = num/(n*sumxy - sumx*sumy),
         .exponent = exp((sumx*sumxy - sumx2*sumy)/num)
     };
+
     return out;
+
 }

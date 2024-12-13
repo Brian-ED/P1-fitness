@@ -1,7 +1,5 @@
 #define WEEKS_TO_SECONDS (60.0*60.0*24.0*7.0)
 
-double week_number = -1;
-int day_of_the_week = -1; // 0 is Monday, 1 is Tuesday etc and 6 is sunday.
 node *user_why;
 
 void GetDate(void) {
