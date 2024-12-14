@@ -28,6 +28,12 @@ typedef struct{
     char exercise_name[7][12][STR_SIZE];
     int amount_of_sets[7][12];
 } Workout_Program;
+typedef struct {
+    int  week;
+    int  amount_of_sets;
+    int  weight;
+    int  sets[6];
+}progression1;
 
 Workout_Program workout_program; // Array of exercises
 
@@ -54,10 +60,10 @@ void SaveProgramToWorkoutFile() {
     }
 }
 
-void read_workout_program() {
-    FILE *workout_file = openSafe("workout_plan.txt", "r");
+void read_workout_program(char workout_name[STR_SIZE]) {
+    FILE *workout_file = openSafe(workout_name, "r");
 
-    fscanf(workout_file, "%99[^|] | %d | %d | %d | %d | %d | %d | %d | %d |",
+    fscanf(workout_file, "%99[^|] | %d | %d | %d | %d | %d | %d | %d | %d |\n",
         workout_program.workoutname,
         &workout_program.amount_of_workouts,
         &workout_program.amount_of_exercises[0],
@@ -160,7 +166,8 @@ void read_exercises() {
         exercise[exercise_index].exercise_info = new_exercise_info;
     }
 
-    read_workout_program();
+
+    //read_workout_program();
     clean_struct(exercise, exercise_index);
     filter_exercises_by_type(exercise, &exercise_index);
     Exercise *filtered_exercises = (Exercise *)malloc(exercise_index*sizeof(Exercise));
@@ -413,23 +420,184 @@ int find_exercise_in_struct(Exercise *exercise, int exercise_length, char exerci
     }
     return exercise_index;
 }
-void create_workout_program(){
 
 
+// calculate next suggested progression for user
+progression1 calculate_new_weight1(char *filename, int *new_weight, int *new_reps, int *new_sets){
+    progression1 last_weight;
+    // Reads in data from exercise file
+    double x[300], y[300];
+    int n = 0;
+    FILE *file = fopen(filename, "r");
+    while (fscanf(
+        file, "%d %d %d %d %d %d %d %d %d",
+        &last_weight.week,
+        &last_weight.amount_of_sets,
+        &last_weight.weight,
+        &last_weight.sets[0],
+        &last_weight.sets[1],
+        &last_weight.sets[2],
+        &last_weight.sets[3],
+        &last_weight.sets[4],
+        &last_weight.sets[5]
+    ) == 9 ) {
+        x[n] = last_weight.week; // TODO: use actual weeks
+        y[n] = last_weight.weight;
+        n++;
+    }
+    //printf("%lf\n",x[0]);
+    //printf("%lf\n",y[0]);
+    int new_weight_rec= 0;
+    //if (n > 3){
+    //    Term t = log_regression(n, x, y);
+    //    printf("aa: %lf\n",t.coefficient);
+    //    new_weight_rec = 0.5+t.coefficient*log(t.exponent*(last_weight.week+1));
+    //    printf("aa: %lf\n",t.exponent);
+    //}
+
+    *new_sets = last_weight.amount_of_sets;
+    *new_weight = last_weight.weight;
+
+    int new_weight_lower = 0.5+last_weight.weight*1.1;
+    int new_weight_upper = 0.5+last_weight.weight*1.2;
+
+    int new_repsNew = 0;
+
+    for (int i = 8; i <= 12; i++){
+        int count = 0;
+        for (int j = 0; j < last_weight.amount_of_sets; j++){
+            if (last_weight.sets[j] >= i){
+                count++;
+            }
+        }
+        if (count == 4){
+            new_repsNew = i + 1;
+        }
+    }
+
+    if (new_repsNew < last_weight.sets[0]){
+        *new_reps = last_weight.sets[0];
+    } else if (new_repsNew > 12){
+        *new_reps = 8;
+        printf("You have reached your maximum reps for this exercise, and you must therefore choose a new weight.\n");
+        printf("As a recommendation you should chose a weight that lies between: %d kg and %d kg. The recomended weight is now: %d\n",new_weight_lower, new_weight_upper, new_weight_rec);
+        scanf("%d", new_weight);
+    } else *new_reps = new_repsNew;
+
+    fclose(file);
+    return last_weight;
+}
+
+// write new progression to txt file
+progression1 new_progression1(char *filename, progression1 last_weight, int new_weight, int new_reps, int new_sets){
+    progression1 new_weight_data = { 0 };
+    FILE *file = fopen(filename, "a");
+
+    for (int i = 0; i < 6; i++){
+        new_weight_data.sets[i] = 0;
+    }
+
+    printf("The target sets are %d, the target reps are %d and the target weight is %d kg\n", new_sets, new_reps, new_weight);
+
+
+    for (int i = 0; i < new_sets; i++){
+        printf("please enter the amount of reps you have taken for set 1: (target: %d | last time: %d)\n", new_reps, last_weight.sets[i]);
+        scanf("%d", &new_weight_data.sets[i]);
+    }
+
+    // TODO: use weeks gotten from GetDate
+    new_weight_data.week = week_number;
+    new_weight_data.amount_of_sets = new_sets;
+    new_weight_data.weight = new_weight;
+
+    fprintf(file, "%d %d %d %d %d %d %d %d %d\n", new_weight_data.week,
+                                        new_weight_data.amount_of_sets,
+                                         new_weight_data.weight,
+                                         new_weight_data.sets[0],
+                                         new_weight_data.sets[1],
+                                         new_weight_data.sets[2],
+                                         new_weight_data.sets[3],
+                                         new_weight_data.sets[4],
+                                         new_weight_data.sets[5]);
+    return new_weight_data;
+}
+
+void scan_prog1(char *exercise, int sets){
+    int text;
+    printf("your current exercise is: %s", exercise);
+    char *name = strcat(exercise, ".prog.txt");
+    char location_name[80] ="exercises/";
+    strcat(location_name, name);
+    FILE* ex_prog = fopen(location_name, "r");
+
+    int new_weight = 0;
+    int new_reps = 0;
+    int new_sets = 0;
+    progression1 last_weight = {0};
+    if(ex_prog == NULL){
+        printf("hello\n");
+        ex_prog = fopen(location_name, "w");
+        new_reps = 8;
+        printf("%s\n", location_name);
+        printf("please enter a starting weight: ");
+        scanf("%d", &new_weight);
+        new_sets = sets;
+    } else {
+        last_weight = calculate_new_weight1(location_name, &new_weight, &new_reps, &new_sets);
+    }
+    progression1 new_weight_data = new_progression1(location_name, last_weight, new_weight, new_reps, new_sets);
+
+    fclose(ex_prog);
+}
+void change_workout_program(){
 
 }
 
+void Chose_workout(char workout_name[STR_SIZE]){
+    FILE* file = fopen("workouts/workout_names", "r");
+    int workout_count = count_lines(file);
+    int workout_index;
+    char workout_names[STR_SIZE][100];
+    char letter = 'a';
+    char choice;
 
+    for (workout_index = 0; workout_index < workout_count; workout_index++){
+        fscanf(file, "%99[^\n]\n", workout_names[workout_index]);
+    }
+
+    printf("enter letter to the right of the workout you chose: \n");
+    for (int i = 0; i < workout_count; i++){
+        printf("%-60s(%c)\n", workout_names[i], letter);
+        letter++;
+    }
+    scanf("%c", &choice);
+    letter = 'a';
+
+    for (int i = 0; i < workout_count; i++){
+        if (choice == letter){
+            strcpy(workout_name, workout_names[i]);
+            break;
+        }
+        letter++;
+    }
+    fclose(file);
+}
 
 void DoEachSet() {
-    read_workout_program();
+    char workout_name[STR_SIZE];
+    FILE* file = fopen("exercises/current_workout", "r");
+    fscanf(file, "%99[^|]", workout_name);
+    fclose(file);
+    read_workout_program(workout_name);
+
     printf("Now doing workout: \"%s\"\n",workout_program.workoutname);
 
     for (int i=0; i<workout_program.amount_of_workouts; i++) {
         for (int j=0; j<workout_program.amount_of_exercises[i]; j++) {
             int amount_of_sets = workout_program.amount_of_sets[i][j];
             char *name = workout_program.exercise_name[i][j];
-            scan_prog(name, amount_of_sets);
+            printf("%d\n", amount_of_sets);
+            scan_prog1(name, amount_of_sets);
         }
     }
 }

@@ -11,7 +11,6 @@ typedef struct {
 // calculate next suggested progression for user
 progression calculate_new_weight(char *filename, int *new_weight, int *new_reps, int *new_sets){
     progression last_weight;
-    
     // Reads in data from exercise file
     double x[300], y[300];
     int n = 0;
@@ -32,8 +31,8 @@ progression calculate_new_weight(char *filename, int *new_weight, int *new_reps,
         y[n] = last_weight.weight;
         n++;
     }
-    printf("%lf\n",x[0]);
-    printf("%lf\n",y[0]);
+    //printf("%lf\n",x[0]);
+    //printf("%lf\n",y[0]);
     int new_weight_rec= 0;
     //if (n > 3){
     //    Term t = log_regression(n, x, y);
@@ -61,7 +60,6 @@ progression calculate_new_weight(char *filename, int *new_weight, int *new_reps,
             new_repsNew = i + 1;
         }
     }
-    printf("hello\n");
 
     if (new_repsNew < last_weight.sets[0]){
         *new_reps = last_weight.sets[0];
@@ -89,8 +87,8 @@ progression new_progression(char *filename, progression last_weight, int new_wei
 
 
     for (int i = 0; i < new_sets; i++){
-    printf("please enter the amount of reps you have taken for set 1: (target: %d | last time: %d)\n", new_reps, last_weight.sets[i]);
-    scanf("%d", &new_weight_data.sets[i]);
+        printf("please enter the amount of reps you have taken for set 1: (target: %d | last time: %d)\n", new_reps, last_weight.sets[i]);
+        scanf("%d", &new_weight_data.sets[i]);
     }
 
     // TODO: use weeks gotten from GetDate
@@ -112,25 +110,28 @@ progression new_progression(char *filename, progression last_weight, int new_wei
 
 void scan_prog(char *exercise, int sets){
     int text;
+    printf("your current exercise is: %s", exercise);
     char *name = strcat(exercise, ".prog.txt");
-    printf("%s", name);
-    printf("%s\n", name);
+    char location_name[80] ="exercises/";
+    strcat(location_name, name);
+    FILE* ex_prog = fopen(location_name, "r");
 
-    FILE* ex_prog = fopen(name, "r");
     int new_weight = 0;
     int new_reps = 0;
     int new_sets = 0;
     progression last_weight = {0};
     if(ex_prog == NULL){
-        ex_prog = fopen(name, "ab+");
+        printf("hello\n");
+        ex_prog = fopen(location_name, "w");
         new_reps = 8;
+        printf("%s\n", location_name);
         printf("please enter a starting weight: ");
         scanf("%d", &new_weight);
         new_sets = sets;
     } else {
-        last_weight = calculate_new_weight(name, &new_weight, &new_reps, &new_sets);
+        last_weight = calculate_new_weight(location_name, &new_weight, &new_reps, &new_sets);
     }
-    progression new_weight_data = new_progression(name, last_weight, new_weight, new_reps, new_sets);
+    progression new_weight_data = new_progression(location_name, last_weight, new_weight, new_reps, new_sets);
 
     fclose(ex_prog);
 }
