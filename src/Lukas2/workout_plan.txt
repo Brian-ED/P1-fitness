@@ -1,4 +1,4 @@
-FullBodyWorkout | 3 | 5 | 4 | 3 | 0 | 0 | 0 | 0 |
+FullBodyWorkout | 3 | 4 | 3 | 2 | 0 | 0 | 0 | 0 |
 Pushups          | 3
 Squats           | 4
 Deadlifts        | 3

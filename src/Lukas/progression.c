@@ -15,7 +15,7 @@ progression calculate_new_weight(char *filename, int *new_weight, int *new_reps,
     // Reads in data from exercise file
     double x[300], y[300];
     int n = 0;
-    FILE *file = openSafe(filename, "r");
+    FILE *file = fopen(filename, "r");
     while (fscanf(
         file, "%d %d %d %d %d %d %d %d %d",
         &last_weight.week,
@@ -34,13 +34,13 @@ progression calculate_new_weight(char *filename, int *new_weight, int *new_reps,
     }
     printf("%lf\n",x[0]);
     printf("%lf\n",y[0]);
-    int new_weight_rec;
-    if (n > 3){
-        Term t = log_regression(n, x, y);
-        printf("aa: %lf\n",t.coefficient);
-        new_weight_rec = 0.5+t.coefficient*log(t.exponent*(last_weight.week+1));
-        printf("aa: %lf\n",t.exponent);
-    }
+    int new_weight_rec= 0;
+    //if (n > 3){
+    //    Term t = log_regression(n, x, y);
+    //    printf("aa: %lf\n",t.coefficient);
+    //    new_weight_rec = 0.5+t.coefficient*log(t.exponent*(last_weight.week+1));
+    //    printf("aa: %lf\n",t.exponent);
+    //}
 
     *new_sets = last_weight.amount_of_sets;
     *new_weight = last_weight.weight;
@@ -79,7 +79,7 @@ progression calculate_new_weight(char *filename, int *new_weight, int *new_reps,
 // write new progression to txt file
 progression new_progression(char *filename, progression last_weight, int new_weight, int new_reps, int new_sets){
     progression new_weight_data = { 0 };
-    FILE *file = openCreate(filename, "a");
+    FILE *file = fopen(filename, "a");
 
     for (int i = 0; i < 6; i++){
         new_weight_data.sets[i] = 0;
@@ -110,7 +110,7 @@ progression new_progression(char *filename, progression last_weight, int new_wei
     return new_weight_data;
 }
 
-void scan_prog(char *exercise){
+void scan_prog(char *exercise, int sets){
     int text;
     char *name = strcat(exercise, ".prog.txt");
     printf("%s", name);
@@ -126,8 +126,7 @@ void scan_prog(char *exercise){
         new_reps = 8;
         printf("please enter a starting weight: ");
         scanf("%d", &new_weight);
-        printf("please enter the amount of sets for this exercise: ");
-        scanf("%d", &new_sets);
+        new_sets = sets;
     } else {
         last_weight = calculate_new_weight(name, &new_weight, &new_reps, &new_sets);
     }

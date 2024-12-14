@@ -413,20 +413,23 @@ int find_exercise_in_struct(Exercise *exercise, int exercise_length, char exerci
     }
     return exercise_index;
 }
+void create_workout_program(){
+
+
+
+}
+
+
 
 void DoEachSet() {
     read_workout_program();
     printf("Now doing workout: \"%s\"\n",workout_program.workoutname);
 
     for (int i=0; i<workout_program.amount_of_workouts; i++) {
-        for (int j=0; j<12; j++) {
+        for (int j=0; j<workout_program.amount_of_exercises[i]; j++) {
             int amount_of_sets = workout_program.amount_of_sets[i][j];
             char *name = workout_program.exercise_name[i][j];
-            // TODO: This will be implemented when scan_prog is redesigned.
-            //   for (int k; k<amount_of_sets; k++) {
-            //
-            //   }
-            scan_prog(name);
+            scan_prog(name, amount_of_sets);
         }
     }
 }
