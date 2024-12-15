@@ -73,7 +73,7 @@ void printExercises(Exercise exercises[], int count) {
 void writeExercisesToFile(const char *filename, Exercise exercises[], int count) {
     FILE *file = fopen(filename, "w");
     if (!file) {
-        perror("Error opening file for writing");
+        perror("Error opening file for writing\n");
         return;
     }
 
@@ -91,7 +91,7 @@ void writeExercisesToFile(const char *filename, Exercise exercises[], int count)
 void writeExercisesToFile1(const char *filename, Exercise exercises[], int count) {
     FILE *file = fopen(filename, "w");
     if (!file) {
-        perror("Error opening file for writing");
+        perror("Error opening file for writing\n");
         return;
     }
 
