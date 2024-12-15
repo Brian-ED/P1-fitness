@@ -9,12 +9,12 @@ FILE *openSafe(char *filename, char *mode) {
     }
     if (mode == NULL) {
         printf("ERROR: openSafe: mode was NULL pointer\n");
-        assert(1);
+        assert(0);
     }
     FILE *file = fopen(filename, mode);
     if (file == NULL) {
         printf("ERROR: openSafe: Cannot find file %s\n", filename);
-        assert(1);
+        assert(0);
     }
     return file;
 }
@@ -22,11 +22,11 @@ FILE *openSafe(char *filename, char *mode) {
 FILE *openCreate(char *filename, char *mode) {
     if (filename == NULL) {
         printf("ERROR: openSafe: filename was NULL pointer\n");
-        assert(1);
+        assert(0);
     }
     if (mode == NULL) {
         printf("ERROR: openSafe: mode was NULL pointer\n");
-        assert(1);
+        assert(0);
     }
     FILE *file = fopen(filename, mode);
     if (file != NULL) return file;
@@ -62,7 +62,7 @@ int count_lines(FILE* file)
         size_t res = fread(buf, 1, BUF_SIZE, file);
         if (ferror(file)) {
             printf("ERROR: count_lines: cannot read file\n");
-            assert(1);
+            assert(0);
         }
 
         for(int i = 0; i < res; i++)
