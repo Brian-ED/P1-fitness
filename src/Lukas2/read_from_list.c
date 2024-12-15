@@ -417,28 +417,48 @@ void filter_exercises_by_type(Exercise *exercise, int *exercise_length) {
     *exercise_length = index_count_list;
 }
 
+// run two binary searches to find the upper and lower bounds
 Exercise_index get_index_from_list(Exercise *exercise, char musclegroup[STR_SIZE], char muscletarget[STR_SIZE], int exercise_length){
 
-    Exercise_index index;
+    // binary search to find the upper bound
+    int lower_bound = 0;
+    int s = exercise_length;
+    int dir = 1;
+    int preference = -1;
+    while (s/=2) {
+        lower_bound+=dir*s;
+        int dir = strcmp(exercise[j].muscletarget, muscletarget);
+        if (0 == dir) {dir = strcmp(exercise[lower_bound].musclegroup, musclegroup);}
+        if (0>dir) {dir = -1;};
+        if (0<dir) {dir =  1;};
+        if (dir==0) {dir=preference;}
+    }
+    // NOTICE: To make sure lower_bound points at first valid index, not the index to the left of it,
+    // the "!=" here makes sure only to shift right if the musclegroups aren't the same.
+    if (exercise[lower_bound].musclegroup != musclegroup) {
+        lower_bound++;
+    }
 
-    int i;
-    for (i = 0; i < exercise_length; i++){
-        if(!strcmp(exercise[i].musclegroup, musclegroup) && !strcmp(exercise[i].muscletarget, muscletarget)){
-            index.i1 = i;
-            break;
-        }
+    // binary search to find the lower bound
+    int upper_bound = 0;
+    s = exercise_length;
+    dir = 1;
+    preference = 1;
+    while (s/=2) {
+        upper_bound += dir*s;
+        int dir = strcmp(exercise[j].muscletarget, muscletarget);
+        if (0 == dir) {dir = strcmp(exercise[lower_bound].musclegroup, musclegroup);}
+        if (0>dir) {dir = -1;};
+        if (0<dir) {dir =  1;};
+        if (dir==0) {dir=preference;}
     }
-    if (i == exercise_length) {
-        perror("get_index_from_list: index not found\n");
-        exit(EXIT_FAILURE);
+    // NOTICE: To make sure upper_bound points after last valid index, not the index to the left of it,
+    // the "==" here makes sure only to shift right if the musclegroups are the same.
+    if (exercise[upper_bound].musclegroup == musclegroup) {
+        upper_bound--;
     }
-    for (int j = index.i1; j < exercise_length; j++){
-        if(strcmp(exercise[j].musclegroup, musclegroup) && strcmp(exercise[j].muscletarget, muscletarget)){
-            index.i2 = j;
-            break;
-        }
-    }
-    return index;
+
+    return (Exercise_index){.i1=lower_bound, .i2=upper_bound};
 }
 
 void clean_struct(Exercise *exercise, int exercise_length){
