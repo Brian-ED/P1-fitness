@@ -425,7 +425,7 @@ Exercise_index get_index_from_list(Exercise *exercise, char musclegroup[STR_SIZE
     int s = exercise_length;
     int dir = 1;
     int preference = -1;
-    while (s/=2) {
+    while (s/=2) { // Approching a fixed-point
         lower_bound+=dir*s;
         int dir = strcmp(exercise[j].muscletarget, muscletarget);
         if (0 == dir) {dir = strcmp(exercise[lower_bound].musclegroup, musclegroup);}
@@ -444,7 +444,7 @@ Exercise_index get_index_from_list(Exercise *exercise, char musclegroup[STR_SIZE
     s = exercise_length;
     dir = 1;
     preference = 1;
-    while (s/=2) {
+    while (s/=2) { // Approching a fixed-point
         upper_bound += dir*s;
         int dir = strcmp(exercise[j].muscletarget, muscletarget);
         if (0 == dir) {dir = strcmp(exercise[lower_bound].musclegroup, musclegroup);}
