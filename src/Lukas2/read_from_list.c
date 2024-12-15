@@ -337,12 +337,12 @@ int compare(const void *s1, const void *s2){
     Exercise *e1 = (Exercise *)s1;
     Exercise *e2 = (Exercise *)s2;
     int c;
-    if ((c=strcmp(e1->type       , e2->type         )) != 0) return c;
-    if ((c=strcmp(e1->musclegroup, e2->musclegroup  )) != 0) return c;
-    if ((c=strcmp(e1->muscletarget, e2->muscletarget)) != 0) return c;
-    if ((c=strcmp(e1->level      , e2->level        )) != 0) return c;
-    if ((c=intcmp(e1->rating     , e2->rating       )) != 0) return c;
-    if ((c=strcmp(e1->name       , e2->name         )) != 0) return c;
+    if ((c = strcmp(e1->type        , e2->type         )) != 0) return c;
+    if ((c = strcmp(e1->musclegroup , e2->musclegroup  )) != 0) return c;
+    if ((c = strcmp(e1->muscletarget, e2->muscletarget )) != 0) return c;
+    if ((c = strcmp(e1->level       , e2->level        )) != 0) return c;
+    if ((c = intcmp(e1->rating      , e2->rating       )) != 0) return c;
+    if ((c = strcmp(e1->name        , e2->name         )) != 0) return c;
     return 0;
 }
 void get_category_names_exercises(Exercise *exercise, int exercise_length, char musclegroup_names[30][STR_SIZE], char equipment_names[30][STR_SIZE], char type_names[30][STR_SIZE], char level_names[30][STR_SIZE]){
@@ -429,9 +429,12 @@ Exercise_index get_index_from_list(Exercise *exercise, char musclegroup[STR_SIZE
         lower_bound+=dir*s;
         int dir = strcmp(exercise[j].muscletarget, muscletarget);
         if (0 == dir) {dir = strcmp(exercise[lower_bound].musclegroup, musclegroup);}
+    while (s /= 2) { // Approching a fixed-point
+        lower_bound += dir*s;
+        dir = strcmp(exercise[lower_bound].musclegroup, musclegroup);
         if (0>dir) {dir = -1;};
         if (0<dir) {dir =  1;};
-        if (dir==0) {dir=preference;}
+        if (dir==0) {dir = preference;}
     }
     // NOTICE: To make sure lower_bound points at first valid index, not the index to the left of it,
     // the "!=" here makes sure only to shift right if the musclegroups aren't the same.
@@ -450,7 +453,7 @@ Exercise_index get_index_from_list(Exercise *exercise, char musclegroup[STR_SIZE
         if (0 == dir) {dir = strcmp(exercise[lower_bound].musclegroup, musclegroup);}
         if (0>dir) {dir = -1;};
         if (0<dir) {dir =  1;};
-        if (dir==0) {dir=preference;}
+        if (dir==0) {dir = preference;}
     }
     // NOTICE: To make sure upper_bound points after last valid index, not the index to the left of it,
     // the "==" here makes sure only to shift right if the musclegroups are the same.
@@ -458,7 +461,10 @@ Exercise_index get_index_from_list(Exercise *exercise, char musclegroup[STR_SIZE
         upper_bound--;
     }
 
-    return (Exercise_index){.i1=lower_bound, .i2=upper_bound};
+    return (Exercise_index){
+        .i1 = lower_bound,
+        .i2 = upper_bound,
+    };
 }
 
 void clean_struct(Exercise *exercise, int exercise_length){
