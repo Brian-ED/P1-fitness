@@ -513,7 +513,7 @@ progression1 new_progression1(char *filename, progression1 last_weight, int new_
     printf("The target sets are %d, the target reps are %d and the target weight is %d kg\n", new_sets, new_reps, new_weight);
 
 
-    for (int i = 0; i < new_sets; i++){
+    for (int i = 0; i < new_sets-1; i++){
         printf("please enter the amount of reps you have taken for set 1: (target: %d | last time: %d)\n", new_reps, last_weight.sets[i]);
         scanf("%d", &new_weight_data.sets[i]);
     }

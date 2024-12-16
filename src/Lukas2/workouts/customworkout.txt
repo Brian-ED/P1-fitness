@@ -1,11 +1,11 @@
-Fullbody Workout   | 3 | 5 | 3 | 2 | 0 | 0 | 0 | 0 |
-Dumbbell Lunges| 3
-Single-arm dumbbell preacher curl| 3
-Narrow Stance Hack Squats| 4
+Fullbody Workout  | 3 | 5 | 3 | 2 | 0 | 0 | 0 | 0 |
+Single-Leg Press| 3
+EZ-bar spider curl| 3
+Jefferson Squats| 4
 Cable Deadlifts| 3
 Leg Extensions| 2
-Barbell pull-over to press| 3
-Bear crawl shoulder tap| 3
-Wide-grip bench press| 3
-Alternate Incline Dumbbell Curl| 3
-Triceps dip| 3
+Close-Grip Front Lat Pulldown| 3
+Snatch-Grip Behind-The-Neck Overhead Press| 3
+Barbell Bench Press-Wide Grip| 3
+Close-grip EZ-bar curl| 3
+Dip Machine| 3
