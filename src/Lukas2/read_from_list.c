@@ -41,7 +41,7 @@ void SaveProgramToWorkoutFile() {
     FILE *workout_file = openSafe("workouts/customworkout.txt", "w");
     FILE *workout_names = openSafe("workouts/workout_names", "a");
     FILE *current_workout = openSafe("exercises/current_workout", "w");
-
+    
     fprintf(workout_names, "%s", "customworkout");
     fprintf(current_workout, "%s", "workouts/customworkout.txt");
 
