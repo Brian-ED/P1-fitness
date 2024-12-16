@@ -153,9 +153,10 @@ void SaveUserOptionsToFile() {
     to_file(user_why, age, height, weight, gender, protein, calorie);
 }
 
-//void WriteChangedWorkoutToFile() {
-//    read_exercises();
-//} // Lukas
+// Defined but does nothing.
+// File saving is currently happening during workout, not all in one go.
+// Should probably be changed to be all in one go, since that would be safer
+void WriteChangedWorkoutToFile() {}
 
 void ReadInDataFile() {
     char *why;
