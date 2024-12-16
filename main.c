@@ -1,15 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
-#include <time.h>
-
-#include "src/utils.c"
-#include "src/log_regression-Brian/log_regression.c"
-#include "src/Lukas/progression.c"
-#include "src/Lukas2/read_from_list.c"
-#include "src/Parsa/Funktioner.c"
-#include "src/welcome_back-Jonas/welcome_back.c"
-#include "src/terminal_funcs-Brian/terminal-funcs.c"
+#include "src/include_me_in_mains.c"
 
 // TODO
 void ShowProgressionViaDataIfEnoughWorkoutsSavedInData() {} // Jonas

@@ -1,11 +1,8 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include "../utils.c"
-#include "../Lukas/progression.c"
-#include "read_from_list.c"
+#include "../include_me_in_mains.c"
 
 int main(void){
     read_exercises();
+    GetDate();
+    DoEachSet();
     return 0;
 }

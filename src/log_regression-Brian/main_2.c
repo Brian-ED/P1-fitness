@@ -1,5 +1,4 @@
-#include <stdio.h>
-#include <math.h>
+#include "../include_me_in_mains.c"
 
 int main() {
     // Input data points (x, y)

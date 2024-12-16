@@ -1,13 +1,12 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
-#include "../utils.c"
-#include "../log_regression-Brian/log_regression.c"
-#include "progression.c"
+#include "../include_me_in_mains.c"
 
 int main(void){
-    char exercise[80] = "squats";
-    scan_prog(exercise);
+
+    char exercise[80] = "rows";
+    int sets = 3;
+    GetDate();
+
+    scan_prog(exercise, sets);
     return 0;
 }
 
