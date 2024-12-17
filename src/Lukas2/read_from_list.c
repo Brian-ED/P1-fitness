@@ -111,12 +111,71 @@ void read_workout_program(char workout_name[STR_SIZE]) {
     fclose(workout_file);
 }
 
-void read_exercises() {
+void print_workout_program(Exercise *exercise, int exercise_length){
+
+    int default_index = -1;
+    //allocate later!!
+    Exercise exercise_to_print[100];
+    int while_true = 1;
+    char letter = 'a';
+    char choice;
+    int exercise_count = 0;
+    while (while_true == 1){
+        for (int i = 0; i < workout_program.amount_of_workouts; i++){
+        printf("This is your workoutprogram for day %d:\n", i);
+        printf("Name:                                              Sets:  Musclegroup:    Muscletarget:   Equipment:\n");
+            for(int j = 0; j < workout_program.amount_of_exercises[i]; j++){
+                int exercise_index = find_exercise_in_struct(exercise, exercise_length, workout_program.exercise_name[i][j], default_index);
+                if (exercise_index == -1){
+                    printf("exercise not in list\n");
+                    break;
+                }
+                exercise_to_print[exercise_count] = exercise[exercise_index];
+                printf("%-50s %-6d %-15s %-15s %-15s (%c)\n", exercise_to_print[exercise_count].name,
+                                                             workout_program.amount_of_sets[i][j],
+                                                             exercise_to_print[exercise_count].musclegroup,
+                                                             exercise_to_print[exercise_count].muscletarget,
+                                                             exercise_to_print[exercise_count].equipment,
+                                                             letter);
+                letter++;
+                exercise_count++;
+            }
+                printf("\n");
+        }
+        printf("enter letter to the right of the exercise if you want to see exercise info or press q exit: \n");
+        scanf(" %c", &choice);
+        letter = 'a';
+        for (int i = 0; i < exercise_count; i++){
+            if (choice == letter){
+                resolve_backslash(exercise_to_print[i].exercise_info);
+                resolve_newline(exercise_to_print[i].exercise_info);
+                printf("%s", exercise_to_print[i].exercise_info);
+            }
+            letter++;
+        }
+        printf("\npress q to start workout or press p to reveiw another exercise\n");
+        scanf(" %c", &choice);
+        while (1){
+            if (choice == 'q'){
+                while_true = 0;
+                break;
+            } else if (choice == 'p'){
+                break;
+            } else {
+                printf("please chose a valid input\n");
+                scanf(" %c", &choice);
+                continue;
+            }
+        }
+    }
+}
+
+Exercise *read_exercises(int *exercise_lenght) {
     FILE* exercise_file = fopen("out copy 2.txt", "r");
 
     if (exercise_file == NULL) {
         perror("Error opening file\n");
-        return;
+        exit(1);
     }
 
     int exerciseCount = count_lines(exercise_file);
@@ -126,7 +185,6 @@ void read_exercises() {
         perror("Memory allocation failed");
         exit(EXIT_FAILURE);
     }
-
     int exercise_index;
     for (exercise_index = 0; exercise_index < exerciseCount; exercise_index++) {
 
@@ -192,15 +250,19 @@ void read_exercises() {
     fclose(exercise_file);
     char answer;
     printf("do you want to change your workout? enter 'y' for yes and 'n' for no\n");
-    scanf("%c", &answer);
+    scanf(" %c", &answer);
     while (answer != 'y' && answer != 'n'){
         printf("please enter a valid answer\n");
         printf("do you want to change your workout? enter 'y' for yes and 'n' for no\n");
-        scanf("%c", &answer);
+        scanf(" %c", &answer);
     }
     if (answer == 'y'){
         change_workout_program(filtered_exercises, exercise_index);
     }
+    *exercise_lenght = exercise_index;
+
+    return filtered_exercises;
+
 }
 
 void print_exercises(Exercise *exercise, int exercise_length){
@@ -588,9 +650,9 @@ void change_workout_program(Exercise *exercise, int exercise_length){
     int alt_count = 0;
     char workout_name[STR_SIZE];
     Chose_workout(workout_name);
-    char workout_name_adaress[STR_SIZE] = "workouts/";
-    strcat(workout_name_adaress, workout_name);
-    read_workout_program(workout_name_adaress);
+    char workout_name_address[STR_SIZE] = "workouts/";
+    strcat(workout_name_address, workout_name);
+    read_workout_program(workout_name_address);
     char choice[7];
     for (int i = 0; i < workout_program.amount_of_workouts; i++){
         printf("please chose a exercise to change by entering the letter to the right, or press q when satisfied with the workout\n");
@@ -629,7 +691,7 @@ void change_workout_program(Exercise *exercise, int exercise_length){
     SaveProgramToWorkoutFile();
 }
 
-void DoEachSet() {
+void DoEachSet(Exercise *exercises, int exercise_lenght) {
     char workout_name[STR_SIZE];
     int workout_day;
     FILE* file = fopen("exercises/current_workout", "r");
@@ -637,9 +699,20 @@ void DoEachSet() {
     fclose(file);
     read_workout_program(workout_name);
 
-    printf("Now doing workout: \"%s\"\n",workout_program.workoutname);
-    
     char answer;
+    printf("do you want to reveiw your workout? enter 'y' for yes and 'n' for no\n");
+    scanf(" %c", &answer);
+    while (answer != 'y' && answer != 'n'){
+        printf("please enter a valid answer\n");
+        printf("do you want to reveiw your workout? enter 'y' for yes and 'n' for no\n");
+        scanf(" %c", &answer);
+    }
+    if (answer == 'y'){
+        print_workout_program(exercises, exercise_lenght);
+    }
+    printf("Now doing workout: \"%s\"\n",workout_program.workoutname);
+
+    answer = 0;
     printf("do you want to start next workout session? enter 'y' for yes and 'n' for no\n");
     scanf(" n%c", &answer);
     while (answer != 'y' && answer != 'n'){
