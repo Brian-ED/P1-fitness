@@ -121,4 +121,11 @@ alternativeExercises ← ⟨⟩⁼¨⌾((¬hasAlternatives)⊸/) alterPrefixes (
 
 alternativeExercises (⍉∘>⊢∾¨·⥊⟜⟨"-"⟩¨·⌈´⊸-≠¨)↩
 
-"out.txt" •FLines ∨`⌾⌽∘≠⟜' '⊸/¨ " | "⊸(<⊣∾⁼·∾∾⚇1)˘ ⍉ (⊢↑˜¨·⌈´≠¨)˘ ∾¨(@+10)⊸=◶⋈‿"\n"¨¨ (∨`∧∨⟜«)∘≠⟜' '⊸/¨ [names⋄muscleGroups⋄equipment⋄types⋄level⋄rating]∾alternativeExercises∾[description]
+
+lines ← •FLines "../Lukas2/dd.txt"
+lines ∾⟜")"⁼¨↩
+compOrIso‿workout_names ← ∧`⌾⌽∘≠⟜'('¨⊸(/¨⋈¬⊸/¨)lines
+workout_names ∾⟜" ("⁼¨↩
+
+namesAndCmpOrIso ← ⍉{names⊣⌾(("Unknown"⊸≡¨𝕩)⊸/)𝕩}⌾(⊏˘){i←workout_names⊐𝕩 ⋄ i⊏"Unknown"‿"Unknown"∾˜workout_names∾˘compOrIso}names
+"out.txt" •FLines ∨`⌾⌽∘≠⟜' '⊸/¨ " | "⊸(<⊣∾⁼·∾∾⚇1)˘ ⍉ (⊢↑˜¨·⌈´≠¨)˘ ∾¨(@+10)⊸=◶⋈‿"\n"¨¨ (∨`∧∨⟜«)∘≠⟜' '⊸/¨ namesAndCmpOrIso∾[⋄muscleGroups⋄equipment⋄types⋄level⋄rating]∾alternativeExercises∾[description]
