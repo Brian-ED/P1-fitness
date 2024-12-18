@@ -21,7 +21,12 @@ void FLOW_SaveRepsToWorkoutFile() {
 
 void FLOW_DoEachSet() {
     if (DEBUG) {printf("DEBUG: DoEachSet\n");}
-    DoEachSet();
+
+    int exercise_lenght;
+    Exercise *exercises = read_exercises(&exercise_lenght);
+    GetDate();
+    DoEachSet(exercises, exercise_lenght);
+
     FLOW_SaveRepsToWorkoutFile();
 }
 
