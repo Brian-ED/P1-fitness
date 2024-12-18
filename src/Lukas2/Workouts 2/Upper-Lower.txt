@@ -1,0 +1,25 @@
+Upper-Lower                    | 4 | 6 | 6 | 6 | 6 | 0 | 0 | 0 |
+Barbell Bench Press-Wide Grip                                  | 4
+Pendlay Row                                                    | 4
+Smith Machine Military Press                                   | 4
+Kneeling Lat Pull-Down                                         | 4
+Palms-out Incline Biceps Curl                                  | 4
+Cable Incline Pushdown                                         | 4
+Smith Machine Squat                                            | 4
+Reverse Hyperextension                                         | 4
+Dumbbell Walking Lunge                                         | 4
+Seated Leg Curl                                                | 4
+Standing Barbell Calf Raise                                    | 4
+Reverse Band Deadlift                                          | 4
+Smith Machine Decline Press                                    | 4
+Overhead Squat                                                 | 4
+Standing Bent-Over One-Arm Dumbbell Triceps Extension          | 4
+Push-Up to Side Plank                                          | 4
+Smith Machine Incline Bench Press                              | 4
+Close-Grip EZ-Bar Curl with Band                               | 4
+Smith Machine Leg Press                                        | 4
+Romanian Deadlift with Kettlebell                              | 4
+Smith Machine Behind-the-Back Shrug                            | 4
+Dumbbell Seated One-Leg Calf Raise                             | 4
+Suspended Reverse Crunch                                       | 4
+Kettlebell Curtsy Lunge                                        | 4
