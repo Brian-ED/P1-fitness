@@ -459,10 +459,10 @@ Exercise_index get_index_from_list(Exercise *exercise, char musclegroup[STR_SIZE
     speed = exercise_length;
     dir = 1;
     preference = 1;
-    while (speed/=2) { // Approching a fixed-point
+    while (speed /= 2) { // Approching a fixed-point
         upper_bound += dir*speed;
         int dir = strcmp(exercise[upper_bound].muscletarget, muscletarget);
-        if (0 == dir) {dir = strcmp(exercise[upper_bound].musclegroup, musclegroup);}
+        if (0==dir) {dir = strcmp(exercise[upper_bound].musclegroup, musclegroup);}
         if (0>dir) {dir = -1;};
         if (0<dir) {dir =  1;};
         if (dir==0) {dir = preference;}
