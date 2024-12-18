@@ -7,3 +7,4 @@ int main(void){
     DoEachSet(exercises, exercise_lenght);
     return 0;
 }
+ 
