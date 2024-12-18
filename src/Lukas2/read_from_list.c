@@ -442,11 +442,46 @@ Exercise_index get_index_from_list(Exercise *exercise, char musclegroup[STR_SIZE
     int preference = -1;
     while (speed /= 2) { // Approching a fixed-point
         lower_bound += dir*speed;
-        int dir = strcmp(exercise[lower_bound].musclegroup, musclegroup);
-        if (0 == dir) {dir = strcmp(exercise[lower_bound].muscletarget, muscletarget);}
-        if (0>dir) {dir = -1;};
-        if (0<dir) {dir =  1;};
-        if (dir==0) {dir = preference;}
+
+        // Bound checks
+        // c1 c2 → result
+        //  0  0 → preference
+        // -1 -1 → -1
+        //  1  1 →  1
+        //  0  1 →  1
+        //  0 -1 → -1
+        //  1 -1 →  1
+        // -1  1 → -1
+        //
+        //  1  0 → impossible
+        // -1  0 → impossible
+        int c2 = strcmp(exercise[lower_bound].musclegroup, musclegroup);
+        int c1 = strcmp(exercise[lower_bound].muscletarget, muscletarget);
+        if (c1>0) {c1= 1;} if (c2>0) {c2= 1;}
+        if (c1<0) {c1=-1;} if (c2<0) {c2=-1;}
+
+        if (c1 == 0 && c2 == 0) {
+            // 0  0 → preference
+            dir = preference;
+        } else if (c1 == c2) {
+            // -1 -1 → -1
+            //  1  1 →  1
+            dir = c1;
+        } else if (c1 == 0){
+            //  0  1 →  1
+            //  0 -1 → -1
+            dir = c2;
+        } else if (c2!=0) {
+            //  1 -1 →  1
+            // -1  1 → -1
+            dir = c1;
+        } else {
+            //  1  0 → impossible
+            // -1  0 → impossible
+            printf("%d %d a\n",c1,c2);
+            perror("Incorrect Binary Search implementation\n");
+            assert(0);
+        }
     }
     // NOTICE: To make sure lower_bound points at first valid index, not the index to the left of it,
     // the "!=" here makes sure only to shift right if the musclegroups aren't the same.
@@ -461,11 +496,24 @@ Exercise_index get_index_from_list(Exercise *exercise, char musclegroup[STR_SIZE
     preference = 1;
     while (speed /= 2) { // Approching a fixed-point
         upper_bound += dir*speed;
-        int dir = strcmp(exercise[upper_bound].musclegroup, musclegroup);
-        if (0==dir) {dir = strcmp(exercise[upper_bound].muscletarget, muscletarget);}
-        if (0>dir) {dir = -1;};
-        if (0<dir) {dir =  1;};
-        if (dir==0) {dir = preference;}
+        int c2 = strcmp(exercise[upper_bound].musclegroup, musclegroup);
+        int c1 = strcmp(exercise[upper_bound].muscletarget, muscletarget);
+        if (c1>0) {c1= 1;} if (c2>0) {c2= 1;}
+        if (c1<0) {c1=-1;} if (c2<0) {c2=-1;}
+
+        if (c1 == 0 && c2 == 0) {
+            dir = preference;
+        } else if (c1 == c2) {
+            dir = c1;
+        } else if (c1 == 0){
+            dir = c2;
+        } else if (c1!=0 && c2!=0) {
+            dir = c1;
+        } else {
+            printf("%d %d a\n",c1,c2);
+            perror("Incorrect Binary Search implementation\n");
+            assert(0);
+        }
     }
     // NOTICE: To make sure upper_bound points after last valid index, not the index to the left of it,
     // the "==" here makes sure only to shift right if the musclegroups are the same.
