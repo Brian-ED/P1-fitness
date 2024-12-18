@@ -619,6 +619,7 @@ void scan_prog1(char *exercise, int sets){
     char location_name[80] ="exercises/";
     strcat(location_name, name);
     FILE* ex_prog = fopen(location_name, "r");
+    printf("hello");
 
     int new_weight = 0;
     int new_reps = 0;
@@ -737,7 +738,7 @@ void DoEachSet(Exercise *exercises, int exercise_lenght) {
 
     answer = 0;
     printf("do you want to start next workout session? enter 'y' for yes and 'n' for no\n");
-    scanf(" n%c", &answer);
+    scanf(" %c", &answer);
     while (answer != 'y' && answer != 'n'){
         printf("please enter a valid answer\n");
         printf("do you want to start next workout session? enter 'y' for yes and 'n' for no\n");
@@ -745,8 +746,11 @@ void DoEachSet(Exercise *exercises, int exercise_lenght) {
     }
     if (answer == 'y'){
         for (int j = 0; j < workout_program.amount_of_exercises[workout_day-1]; j++) {
+    printf("hello");
+
             int amount_of_sets = workout_program.amount_of_sets[workout_day-1][j];
             char *name = workout_program.exercise_name[workout_day-1][j];
+            
             scan_prog1(name, amount_of_sets);
         }
     }
