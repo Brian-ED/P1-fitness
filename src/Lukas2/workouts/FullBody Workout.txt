@@ -1,11 +1,19 @@
-Fullbody Workout | 3 | 5 | 3 | 2 | 0 | 0 | 0 | 0 |
-Single-Leg Press| 3
-EZ-bar spider curl| 3
-Jefferson Squats| 4
-Cable Deadlifts| 3
-Leg Extensions| 2
-Close-Grip Front Lat Pulldown| 3
-Snatch-Grip Behind-The-Neck Overhead Press| 3
-Barbell Bench Press-Wide Grip| 3
-Close-grip EZ-bar curl| 3
-Dip Machine| 3
+Fullbody| 3 | 6 | 6 | 6 | 0 | 0 | 0 | 0 |
+Barbell Squat To A Bench| 4
+Barbell Bench Press-Wide Grip| 4
+Wide-Grip Rear Pull-Up| 4
+Lateral Raise - With Bands| 4
+Lying High Bench Barbell Curl| 4
+Close-Hands Push-Up| 4
+Standing Barbell Press Behind Neck| 4
+Pendlay Row| 4
+Smith machine leg press| 4
+Close-Hands Push-Up| 4
+Palms-out incline biceps curl| 4
+Suspended Reverse Crunch| 4
+Romanian Deadlift with Kettlebell| 4
+Smith Machine Incline Bench Press| 4
+Machine Shoulder (Military) Press| 4
+Romanian Deadlift with Kettlebell| 4
+Close-Hands Push-Up| 4
+Dumbbell Walking Lunge| 4
