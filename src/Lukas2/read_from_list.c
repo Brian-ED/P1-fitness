@@ -337,12 +337,12 @@ int compare(const void *s1, const void *s2){
     Exercise *e1 = (Exercise *)s1;
     Exercise *e2 = (Exercise *)s2;
     int c;
-    if ((c=strcmp(e1->type       , e2->type         )) != 0) return c;
-    if ((c=strcmp(e1->musclegroup, e2->musclegroup  )) != 0) return c;
-    if ((c=strcmp(e1->muscletarget, e2->muscletarget)) != 0) return c;
-    if ((c=strcmp(e1->level      , e2->level        )) != 0) return c;
-    if ((c=intcmp(e1->rating     , e2->rating       )) != 0) return c;
-    if ((c=strcmp(e1->name       , e2->name         )) != 0) return c;
+    if ((c = strcmp(e1->type        , e2->type         )) != 0) return c;
+    if ((c = strcmp(e1->musclegroup , e2->musclegroup  )) != 0) return c;
+    if ((c = strcmp(e1->muscletarget, e2->muscletarget )) != 0) return c;
+    if ((c = strcmp(e1->level       , e2->level        )) != 0) return c;
+    if ((c = intcmp(e1->rating      , e2->rating       )) != 0) return c;
+    if ((c = strcmp(e1->name        , e2->name         )) != 0) return c;
     return 0;
 }
 void get_category_names_exercises(Exercise *exercise, int exercise_length, char musclegroup_names[30][STR_SIZE], char equipment_names[30][STR_SIZE], char type_names[30][STR_SIZE], char level_names[30][STR_SIZE]){
@@ -417,28 +417,51 @@ void filter_exercises_by_type(Exercise *exercise, int *exercise_length) {
     *exercise_length = index_count_list;
 }
 
+// run two binary searches to find the upper and lower bounds
 Exercise_index get_index_from_list(Exercise *exercise, char musclegroup[STR_SIZE], char muscletarget[STR_SIZE], int exercise_length){
 
-    Exercise_index index;
+    // binary search to find the upper bound
+    int lower_bound = 0;
+    int speed = exercise_length;
+    int dir = 1;
+    int preference = -1;
+    while (speed /= 2) { // Approching a fixed-point
+        lower_bound += dir*speed;
+        int dir = strcmp(exercise[lower_bound].muscletarget, muscletarget);
+        if (0 == dir) {dir = strcmp(exercise[lower_bound].musclegroup, musclegroup);}
+        if (0>dir) {dir = -1;};
+        if (0<dir) {dir =  1;};
+        if (dir==0) {dir = preference;}
+    }
+    // NOTICE: To make sure lower_bound points at first valid index, not the index to the left of it,
+    // the "!=" here makes sure only to shift right if the musclegroups aren't the same.
+    if (exercise[lower_bound].musclegroup != musclegroup) {
+        lower_bound++;
+    }
 
-    int i;
-    for (i = 0; i < exercise_length; i++){
-        if(!strcmp(exercise[i].musclegroup, musclegroup) && !strcmp(exercise[i].muscletarget, muscletarget)){
-            index.i1 = i;
-            break;
-        }
+    // binary search to find the lower bound
+    int upper_bound = 0;
+    speed = exercise_length;
+    dir = 1;
+    preference = 1;
+    while (speed/=2) { // Approching a fixed-point
+        upper_bound += dir*speed;
+        int dir = strcmp(exercise[upper_bound].muscletarget, muscletarget);
+        if (0 == dir) {dir = strcmp(exercise[upper_bound].musclegroup, musclegroup);}
+        if (0>dir) {dir = -1;};
+        if (0<dir) {dir =  1;};
+        if (dir==0) {dir = preference;}
     }
-    if (i == exercise_length) {
-        perror("get_index_from_list: index not found\n");
-        exit(EXIT_FAILURE);
+    // NOTICE: To make sure upper_bound points after last valid index, not the index to the left of it,
+    // the "==" here makes sure only to shift right if the musclegroups are the same.
+    if (exercise[upper_bound].musclegroup == musclegroup) {
+        upper_bound--;
     }
-    for (int j = index.i1; j < exercise_length; j++){
-        if(strcmp(exercise[j].musclegroup, musclegroup) && strcmp(exercise[j].muscletarget, muscletarget)){
-            index.i2 = j;
-            break;
-        }
-    }
-    return index;
+
+    return (Exercise_index){
+        .i1 = lower_bound,
+        .i2 = upper_bound,
+    };
 }
 
 void clean_struct(Exercise *exercise, int exercise_length){
@@ -596,6 +619,7 @@ void scan_prog1(char *exercise, int sets){
     char location_name[80] ="exercises/";
     strcat(location_name, name);
     FILE* ex_prog = fopen(location_name, "r");
+    printf("hello");
 
     int new_weight = 0;
     int new_reps = 0;
@@ -714,7 +738,7 @@ void DoEachSet(Exercise *exercises, int exercise_lenght) {
 
     answer = 0;
     printf("do you want to start next workout session? enter 'y' for yes and 'n' for no\n");
-    scanf(" n%c", &answer);
+    scanf(" %c", &answer);
     while (answer != 'y' && answer != 'n'){
         printf("please enter a valid answer\n");
         printf("do you want to start next workout session? enter 'y' for yes and 'n' for no\n");
@@ -722,8 +746,11 @@ void DoEachSet(Exercise *exercises, int exercise_lenght) {
     }
     if (answer == 'y'){
         for (int j = 0; j < workout_program.amount_of_exercises[workout_day-1]; j++) {
+    printf("hello");
+
             int amount_of_sets = workout_program.amount_of_sets[workout_day-1][j];
             char *name = workout_program.exercise_name[workout_day-1][j];
+            
             scan_prog1(name, amount_of_sets);
         }
     }
