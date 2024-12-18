@@ -1,0 +1,11 @@
+Fullbody Workout | 3 | 5 | 3 | 2 | 0 | 0 | 0 | 0 |
+Pushups          | 3
+x                | 3
+Squats           | 4
+Deadlifts        | 3
+Plank            | 2
+Pullups          | 3
+OverheadPress    | 3
+BenchPress       | 3
+BicepCurls       | 3
+TricepExtensions | 3

@@ -18,7 +18,7 @@ void CreateDefaultProgram() {
     protein = weight*1.7;
     calorie = 1.5*10*weight + 6.25*height - 5*age + 5;
     program_days = 4;
-    node *firstnode = NULL; // First node is the "Why" string
+    node *firstnode = scaningwhy(); // First node is the "Why" string
 
     to_file(firstnode, age, height, weight, gender, protein, calorie);
 
