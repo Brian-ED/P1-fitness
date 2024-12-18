@@ -1,8 +1,9 @@
 #include "../include_me_in_mains.c"
 
 int main(void){
-    read_exercises();
+    int exercise_lenght;
+    Exercise *exercises = read_exercises(&exercise_lenght);
     GetDate();
-    DoEachSet();
+    DoEachSet(exercises, exercise_lenght);
     return 0;
 }
