@@ -102,9 +102,10 @@ void AskForWeight(void) {
 }
 
 int DoesUserWantToChangeWorkout(void) {
-    char m[3] = "";
+    char m[4] = "";
     printf("Do you want to change the workout? Please type 'yes' or 'no'");
     scanf("%s", m);
+    m[3] = '\0';
 
     if (!strcmp(m, "yes")) {
         return 1;
