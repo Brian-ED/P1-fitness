@@ -151,6 +151,7 @@ void FLOW_DoesDataFileExist() {
 
 void FLOW_start_app() {
     if (DEBUG) {printf("DEBUG: start_app\n");}
+    printf("Warning; This app only aims to assist you with fitness training and better habits. If you have injuries, or suffer from any sort of disease, seek professional medical attention before considering using our app\n");
     FLOW_DoesDataFileExist();
 }
 
