@@ -49,9 +49,11 @@ int DoesDataFileExist() {
 }
 
 int DoesUserWantToChangeDaysPerWeek() {
-    char m[3] = "";
+    char m[4] = "";
+
     printf("Do you want to change the amount of workout days per week? Please type 'yes' or 'no'");
     scanf("%s", m);
+    m[3] = '\0';
 
     if (!strcmp(m, "yes")) {
         return 1;
@@ -64,9 +66,10 @@ int DoesUserWantToChangeDaysPerWeek() {
 }
 
 int DoesUserWantToAddNewWeight() {
-    char m[3] = "";
+    char m[4] = "";
     printf("Would you like to measure weight today? Please type 'yes' or 'no'");
     scanf("%s", m);
+    m[3] = '\0';
 
     if (!strcmp(m, "yes")) {
         return 1;
@@ -102,9 +105,10 @@ void AskForWeight(void) {
 }
 
 int DoesUserWantToChangeWorkout(void) {
-    char m[3] = "";
+    char m[4] = "";
     printf("Do you want to change the workout? Please type 'yes' or 'no'");
     scanf("%s", m);
+    m[3] = '\0';
 
     if (!strcmp(m, "yes")) {
         return 1;
@@ -118,9 +122,10 @@ int DoesUserWantToChangeWorkout(void) {
 }
 
 int DoesUserWantToChangeOptions(void) {
-    char m[3] = "";
+    char m[4] = "";
     printf("Do you want to change any options? Please type 'yes' or 'no'");
     scanf("%s", m);
+    m[3] = '\0';
 
     if (!strcmp(m, "yes")) {
         return 1;
@@ -135,9 +140,11 @@ int DoesUserWantToChangeOptions(void) {
 
 
 int DoesUserWantToStartAWorkoutSession(void) {
-    char m[3] = "";
-    printf("Do you want to start a workout? Please type 'yes' or 'no'");
+    char m[4] = "";
+
+    printf("Do you want to start a workout? Please type 'yes' or 'no'\n");
     scanf("%s", m);
+    m[3] = '\0';
 
     if (!strcmp(m, "yes")) {
         return 1;
@@ -151,6 +158,7 @@ int DoesUserWantToStartAWorkoutSession(void) {
 
 void SaveUserOptionsToFile() {
     to_file(user_why, age, height, weight, gender, protein, calorie);
+    system("notepad User_Data");
 }
 
 // Defined but does nothing.
