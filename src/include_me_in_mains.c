@@ -24,7 +24,6 @@ int program_days;
 // --------------------------- //
 #include "utils.c"
 #include "log_regression-Brian/log_regression.c"
-#include "Lukas/progression.c"
 #include "Lukas2/read_from_list.c"
 #include "Parsa/Funktioner.c"
 #include "welcome_back-Jonas/welcome_back.c"
