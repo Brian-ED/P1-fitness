@@ -142,7 +142,7 @@ int DoesUserWantToChangeOptions(void) {
 int DoesUserWantToStartAWorkoutSession(void) {
     char m[4] = "";
 
-    printf("Do you want to start a workout? Please type 'yes' or 'no'");
+    printf("Do you want to start a workout? Please type 'yes' or 'no'\n");
     scanf("%s", m);
     m[3] = '\0';
 
