@@ -56,9 +56,9 @@ void Chose_workout(char workout_name[STR_SIZE]);
 Workout_Program workout_program; // Array of exercises
 
 void SaveProgramToWorkoutFile() {
-    FILE *workout_file = openSafe("workouts/Custom Workout.txt", "w+");
-    FILE *workout_names = openSafe("workouts/workout_names", "a");
-    FILE *current_workout = openSafe("exercises/current_workout", "w+");
+    FILE *workout_file = openSafe(PATH_TO_DATA "workouts/Custom Workout.txt", "w+");
+    FILE *workout_names = openSafe(PATH_TO_DATA "workouts/workout_names", "a");
+    FILE *current_workout = openSafe(PATH_TO_DATA "exercises/current_workout", "w+");
 
     fprintf(current_workout, "%s|%d", "workouts/Custom Workout.txt", 1);
 
@@ -738,7 +738,7 @@ void change_workout_program(Exercise *exercise, int exercise_length){
     }
 
     Chose_workout(workout_name);
-    char workout_name_address[STR_SIZE] = "workouts/";
+    char workout_name_address[STR_SIZE] = PATH_TO_DATA "workouts/";
     strcat(workout_name_address, workout_name);
     read_workout_program(workout_name_address);
     char choice[7];
@@ -779,11 +779,13 @@ void change_workout_program(Exercise *exercise, int exercise_length){
 }
 
 void DoEachSet(Exercise *exercises, int exercise_lenght) {
-    char workout_name[STR_SIZE];
+    char workout_name[STR_SIZE] = PATH_TO_DATA;
+    char workout_name_temp[STR_SIZE] = "";
     int workout_day;
     FILE* file = fopen(PATH_TO_DATA "exercises/current_workout", "r");
-    fscanf(file, "%99[^|] | %d", workout_name, &workout_day);
+    fscanf(file, "%99[^|] | %d", workout_name_temp, &workout_day);
     fclose(file);
+    strcat(workout_name, workout_name_temp);
     read_workout_program(workout_name);
 
     char answer;

@@ -3,22 +3,10 @@
 #include <string.h>
 #include <math.h>
 
-//the size of character array in each linked list node
-#define SIZE_NO_LIMIT 16
-
 void DisplayIntroductionMessage() {
   printf("Welcome to a new chapter in your life\n");
   printf("Welcome to (APP name)\n");
 };
-
-/* struct: your_why = fixed-size array for storing some of input
- * nextnode = pointer to the next node in the linked list
- * this struct enables efficient memory management because of the fixed-sized array
- */
-typedef struct node {
-  char your_why[SIZE_NO_LIMIT];
-  struct node *nextnode;
-} node;
 
 /* reading the input that is in the linked list
  * Initialization:
@@ -125,7 +113,8 @@ void CalculateCaloryIntake() {
   } else if (gender == 'f'){
     calorie = -5*age - 161;
   } else {
-    exit(1);
+    printf("%c a\n",gender);
+    exit(0);
   }
   calorie += 1.5*10*weight + 6.25*height;
 }
@@ -199,7 +188,9 @@ void free_space(node *firstnode){
   freemyguy(firstnode); //frees the memory
 }
 void ShowAndAskAndSaveUserOptions() {
-  node *firstnode = scaningwhy();
+  DisplayIntroductionMessage();
+  user_why = scaningwhy();
   info();
-  printf("open the document \"User_Data\" to view relevant data related to your training journey\n");
+  program();
+  to_file(user_why, age, height, weight, gender, protein, calorie);
 }

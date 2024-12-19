@@ -1,6 +1,27 @@
+// ------------------ //
+// Global definitions //
+// ------------------ //
+
+//the size of character array in each linked list node
+#define SIZE_NO_LIMIT 16
+
+// ------------------- //
+// Global struct types //
+// ------------------- //
+
+/* struct: your_why = fixed-size array for storing some of input
+ * nextnode = pointer to the next node in the linked list
+ * this struct enables efficient memory management because of the fixed-sized array
+ */
+typedef struct node {
+  char your_why[SIZE_NO_LIMIT];
+  struct node *nextnode;
+} node;
+
 // ---------------- //
 // Global variables //
 // ---------------- //
+node *user_why;
 int week_number = -1;
 int day_of_the_week = -1;
 int age;

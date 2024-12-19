@@ -1,6 +1,9 @@
 #define PATH_TO_DATA "data/"
 #include "src/include_me_in_mains.c"
 
+Exercise *exercises;
+int exercise_length;
+
 // TODO
 void ShowProgressionViaDataIfEnoughWorkoutsSavedInData() {} // Jonas
 
@@ -22,20 +25,14 @@ void FLOW_SaveRepsToWorkoutFile() {
 
 void FLOW_DoEachSet() {
     if (DEBUG) {printf("DEBUG: DoEachSet\n");}
-
-    int exercise_length;
     return_random_quote();
-    Exercise *exercises = read_exercises(&exercise_length);
-    change_workout_program(exercises, exercise_length);
-    GetDate();
     DoEachSet(exercises, exercise_length);
-
     FLOW_SaveRepsToWorkoutFile();
 }
 
 void FLOW_ReadInDataFileAndGetDate() {
     if (DEBUG) {printf("DEBUG: ReadInDataFileAndGetDate\n");}
-    // TODO: ReadInDataFile(); Reading in data is done during "DoEachSet()", and should be moved to the ReadInDataFile() function.
+    exercises = read_exercises(&exercise_length);
     GetDate();
     FLOW_DoEachSet();
 }
@@ -79,6 +76,7 @@ void FLOW_SaveUserOptionsToFile() {
 
 void FLOW_ShowAndAskOptions() {
     if (DEBUG) {printf("DEBUG: ShowAndAskOptions\n");}
+    ReadInDataFile();
     ShowAndAskAndSaveUserOptions();
     FLOW_SaveUserOptionsToFile();
 }
@@ -88,19 +86,20 @@ void FLOW_DoesUserWantToChangeOptions() {
     if (DoesUserWantToChangeOptions()) {
         FLOW_ShowAndAskOptions();
     } else {
+        ReadInDataFile();
         FLOW_DoesUserWantToAddNewWeight();
     }
 }
 
 void FLOW_WriteChangedWorkoutToFile() {
     if (DEBUG) {printf("DEBUG: WriteChangedWorkoutToFile\n");}
-    WriteChangedWorkoutToFile();
+    // WriteChangedWorkoutToFile(); TODO: File saving is currently happening during workout, not all in one go. Should probably be changed to be all in one go, since that would be safer
     FLOW_DoesUserWantToChangeOptions();
 }
 
 void FLOW_ChangeWorkoutViaAskingUserQuestions() {
     if (DEBUG) {printf("DEBUG: ChangeWorkoutViaAskingUserQuestions\n");}
-    ChangeWorkoutViaAskingQuestions();
+    ChangeWorkoutViaAskingQuestions(exercises, exercise_length);
     FLOW_WriteChangedWorkoutToFile();
 }
 

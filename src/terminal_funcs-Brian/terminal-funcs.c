@@ -1,7 +1,5 @@
 #define WEEKS_TO_SECONDS (60.0*60.0*24.0*7.0)
 
-node *user_why;
-
 void GetDate(void) {
     time_t t = time(NULL);
     week_number = ((double)t)/WEEKS_TO_SECONDS;
@@ -81,14 +79,14 @@ int DoesUserWantToAddNewWeight() {
     exit(1);
 }
 
-void ChangeWorkoutViaAskingQuestions() {
+void ChangeWorkoutViaAskingQuestions(Exercise *exercises, int exercise_length) {
 
     if (DoesUserWantToChangeDaysPerWeek()) {
         // How many days a week
         program(); // Also calculates calories needed and protein goals
     }
     if (change_exercises_or_not()) {
-        // LikeOrDislikeCertainExercises();
+        change_workout_program(exercises, exercise_length);
     }
 }
 
@@ -160,11 +158,6 @@ void SaveUserOptionsToFile() {
     to_file(user_why, age, height, weight, gender, protein, calorie);
     system("notepad " PATH_TO_DATA "User_Data");
 }
-
-// Defined but does nothing.
-// File saving is currently happening during workout, not all in one go.
-// Should probably be changed to be all in one go, since that would be safer
-void WriteChangedWorkoutToFile() {}
 
 void ReadInDataFile() {
     char *why;
