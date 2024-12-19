@@ -15,7 +15,7 @@ void FLOW_EndApp() {
 
 void FLOW_SaveRepsToWorkoutFile() {
     if (DEBUG) {printf("DEBUG: SaveRepsToWorkoutFile\n");}
-    // SaveRepsToWorkoutFile(); Not neccessary since DoEachSet() currently saves as it goes.
+    // TODO: SaveRepsToWorkoutFile(); Not neccessary since DoEachSet() currently saves as it goes. Should be moved to SaveRepsToWorkoutFile().
     FLOW_EndApp();
 }
 
