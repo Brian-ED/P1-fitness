@@ -344,6 +344,7 @@ int compare(const void *s1, const void *s2){
     if ((c = strcmp(e1->name        , e2->name         )) != 0) return c;
     return 0;
 }
+
 void get_category_names_exercises(Exercise *exercise, int exercise_length, char musclegroup_names[30][STR_SIZE], char equipment_names[30][STR_SIZE], char type_names[30][STR_SIZE], char level_names[30][STR_SIZE]){
 
     int musclegroup_names_index = 0;
@@ -351,7 +352,6 @@ void get_category_names_exercises(Exercise *exercise, int exercise_length, char 
     int type_names_index = 0;
     int level_names_index = 0;
     int list_count;
-
 
     for (list_count = 0; list_count < exercise_length; list_count++) {
 
@@ -555,7 +555,6 @@ int change_exercise(int exercise_to_change, Exercise *exercise, int *alt_count, 
         return next_exercise_index;
     }
     (*alt_count)++;
-    //eg havi sett alt_count at index'a vid -1 tí annars loypur tad um tad fyrsta alternative exercise
     return find_exercise_in_struct(exercise, exercise_length, exercise[exercise_to_change].alternative_exercises[*alt_count-1], next_exercise_index);
 }
 
@@ -688,7 +687,6 @@ void scan_prog1(char *exercise, int sets){
 
     fclose(ex_prog);
 }
-
 
 void Chose_workout(char workout_name[STR_SIZE]){
     FILE* file = fopen("workouts/workout_names", "r");
