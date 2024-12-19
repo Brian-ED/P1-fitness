@@ -112,7 +112,7 @@ void scan_prog(char *exercise, int sets){
     int text;
     printf("your current exercise is: %s", exercise);
     char *name = strcat(exercise, ".prog.txt");
-    char location_name[80] ="exercises/";
+    char location_name[80] = PATH_TO_DATA "exercises/";
     strcat(location_name, name);
     FILE* ex_prog = fopen(location_name, "r");
 

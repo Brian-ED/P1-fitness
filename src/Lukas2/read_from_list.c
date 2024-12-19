@@ -163,7 +163,7 @@ void print_workout_program(Exercise *exercise, int exercise_length){
 }
 
 Exercise *read_exercises(int *exercise_lenght) {
-    FILE* exercise_file = fopen("out copy 2.txt", "r");
+    FILE* exercise_file = fopen(PATH_TO_DATA "out copy 2.txt", "r");
 
     if (exercise_file == NULL) {
         perror("Error opening file\n");
@@ -244,7 +244,7 @@ Exercise *read_exercises(int *exercise_lenght) {
 }
 
 void return_random_quote() {
-    FILE* file = fopen("Quotes.txt", "r");
+    FILE* file = fopen(PATH_TO_DATA "Quotes.txt", "r");
     int count_lines_file = count_lines(file);
     char quotes[count_lines_file][5000];
 
@@ -666,7 +666,7 @@ void scan_prog1(char *exercise, int sets){
     int text;
     printf("your current exercise is: %s\n", exercise);
     char *name = strcat(exercise, ".prog.txt");
-    char location_name[80] ="exercises/";
+    char location_name[80] = PATH_TO_DATA "exercises/";
     strcat(location_name, name);
     FILE* ex_prog = fopen(location_name, "r");
 
@@ -689,7 +689,7 @@ void scan_prog1(char *exercise, int sets){
 }
 
 void Chose_workout(char workout_name[STR_SIZE]){
-    FILE* file = fopen("workouts/workout_names", "r");
+    FILE* file = fopen(PATH_TO_DATA "workouts/workout_names", "r");
     int workout_count = count_lines(file);
     int workout_index;
     char workout_names[STR_SIZE][100];
@@ -781,7 +781,7 @@ void change_workout_program(Exercise *exercise, int exercise_length){
 void DoEachSet(Exercise *exercises, int exercise_lenght) {
     char workout_name[STR_SIZE];
     int workout_day;
-    FILE* file = fopen("exercises/current_workout", "r");
+    FILE* file = fopen(PATH_TO_DATA "exercises/current_workout", "r");
     fscanf(file, "%99[^|] | %d", workout_name, &workout_day);
     fclose(file);
     read_workout_program(workout_name);
@@ -821,7 +821,7 @@ void DoEachSet(Exercise *exercises, int exercise_lenght) {
     } else {
         workout_day++;
     }
-    FILE* file1 = fopen("exercises/current_workout", "w+");
+    FILE* file1 = fopen(PATH_TO_DATA "exercises/current_workout", "w+");
     fprintf(file1,"%s|%d", workout_name, workout_day);
 
     fclose(file1);

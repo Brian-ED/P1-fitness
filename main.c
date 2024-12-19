@@ -1,3 +1,4 @@
+#define PATH_TO_DATA "data/"
 #include "src/include_me_in_mains.c"
 
 // TODO
@@ -15,7 +16,7 @@ void FLOW_EndApp() {
 
 void FLOW_SaveRepsToWorkoutFile() {
     if (DEBUG) {printf("DEBUG: SaveRepsToWorkoutFile\n");}
-    // SaveRepsToWorkoutFile(); Not neccessary since DoEachSet() currently saves as it goes.
+    // TODO: SaveRepsToWorkoutFile(); Not neccessary since DoEachSet() currently saves as it goes. Should be moved to SaveRepsToWorkoutFile().
     FLOW_EndApp();
 }
 
@@ -32,7 +33,7 @@ void FLOW_DoEachSet() {
 
 void FLOW_ReadInDataFileAndGetDate() {
     if (DEBUG) {printf("DEBUG: ReadInDataFileAndGetDate\n");}
-    ReadInDataFile();
+    // TODO: ReadInDataFile(); Reading in data is done during "DoEachSet()", and should be moved to the ReadInDataFile() function.
     GetDate();
     FLOW_DoEachSet();
 }
@@ -151,6 +152,7 @@ void FLOW_DoesDataFileExist() {
 
 void FLOW_start_app() {
     if (DEBUG) {printf("DEBUG: start_app\n");}
+    printf("Warning; This app only aims to assist you with fitness training and better habits. If you have injuries, or suffer from any sort of disease, seek professional medical attention before considering using our app\n");
     FLOW_DoesDataFileExist();
 }
 

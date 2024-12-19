@@ -22,8 +22,8 @@ void CreateDefaultProgram() {
 
     to_file(firstnode, age, height, weight, gender, protein, calorie);
 
-    char *workout_filename = "workout_plan.txt";
-    char *workout_default_filename = "workout_plan_default.txt";
+    char *workout_filename = PATH_TO_DATA "workout_plan.txt";
+    char *workout_default_filename = PATH_TO_DATA "workout_plan_default.txt";
     FILE *workout_file = fopen(workout_filename, "r+");
     if (workout_file == NULL) {
         copyFile(workout_default_filename, workout_filename);
@@ -37,11 +37,11 @@ void CreateDefaultProgram() {
 int DoesDataFileExist() {
     FILE *file;
 
-    file = fopen("User_Data","r+");
+    file = fopen(PATH_TO_DATA "User_Data","r+");
     if (file == NULL) return 0;
     fclose(file);
 
-    file = fopen("workout_plan.txt","r+");
+    file = fopen(PATH_TO_DATA "workout_plan.txt","r+");
     if(file == NULL) return 0;
     fclose(file);
 
@@ -158,7 +158,7 @@ int DoesUserWantToStartAWorkoutSession(void) {
 
 void SaveUserOptionsToFile() {
     to_file(user_why, age, height, weight, gender, protein, calorie);
-    system("notepad User_Data");
+    system("notepad " PATH_TO_DATA "User_Data");
 }
 
 // Defined but does nothing.
@@ -171,7 +171,7 @@ void ReadInDataFile() {
     char genderText[8];
     int days;
 
-    FILE *file = fopen("User_Data", "r+");
+    FILE *file = fopen(PATH_TO_DATA "User_Data", "r+");
     if (file == NULL) {
         printf("Error opening file");
         exit(1);
