@@ -1,11 +1,32 @@
-Fullbody Workout | 3 | 5 | 3 | 2 | 0 | 0 | 0 | 0 |
-Pushups          | 3
-x                | 3
-Squats           | 4
-Deadlifts        | 3
-Plank            | 2
-Pullups          | 3
-OverheadPress    | 3
-BenchPress       | 3
-BicepCurls       | 3
-TricepExtensions | 3
+Upper-Lower-Push-Pull-Legs| 5 | 6 | 6 | 6 | 6 | 7 | 0 | 0 |
+Barbell Bench Press-Wide Grip|4
+Pendlay Row|4
+Wide-Grip Rear Pull-Up|4
+Lateral Raise - With Bands|4
+Lying High Bench Barbell Curl|4
+Incline cable straight-bar triceps extension|4
+Romanian Deadlift with Kettlebell|4
+Smith machine leg press|4
+Barbell Squat To A Bench|4
+Standing barbell calf raise|4
+Kettlebell Curtsy Lunge|4
+Suspended Reverse Crunch|4
+Smith Machine Incline Bench Press|4
+Incline cable chest fly|4
+Machine Shoulder (Military) Press|4
+Cable Incline Pushdown|4
+Standing Barbell Press Behind Neck|4
+Close-Hands Push-Up|4
+Kneeling lat pull-down|4
+Band-assisted pull-up|4
+Palms-out incline biceps curl|4
+Cable Seated Lateral Raise|4
+Pendlay Row|4
+Seated Leg Curl|4
+Barbell Squat To A Bench|4
+Smith machine leg press|4
+Dumbbell Walking Lunge|4
+Seated Leg Curl|4
+Standing barbell calf raise|4
+Hip Extension with Bands|4
+Bodyweight Walking Lunge|4
