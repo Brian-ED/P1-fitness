@@ -202,5 +202,4 @@ void ShowAndAskAndSaveUserOptions() {
   node *firstnode = scaningwhy();
   info();
   printf("open the document \"User_Data\" to view relevant data related to your training journey\n");
-  system("notepad User_Data");
 }

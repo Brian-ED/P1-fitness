@@ -158,6 +158,7 @@ int DoesUserWantToStartAWorkoutSession(void) {
 
 void SaveUserOptionsToFile() {
     to_file(user_why, age, height, weight, gender, protein, calorie);
+    system("notepad User_Data");
 }
 
 // Defined but does nothing.
