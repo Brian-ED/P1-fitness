@@ -761,7 +761,7 @@ void change_workout_program(Exercise *exercise, int exercise_length){
                 int default_index = -1;
                 int exercise_index_change = find_exercise_in_struct(exercise, exercise_length, workout_program.exercise_name[i][exercise_index], default_index);
                 if (exercise_index_change == -1) {
-                    printf("exercise not found in database");
+                    printf("exercise not found in database\n");
                     //!!modify to delete exercise later and ask user for new
                     i--;
                     break;
