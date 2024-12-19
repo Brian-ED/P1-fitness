@@ -60,7 +60,7 @@ void SaveProgramToWorkoutFile() {
     FILE *workout_names = openSafe("workouts/workout_names", "a");
     FILE *current_workout = openSafe("exercises/current_workout", "w+");
 
-    fprintf(current_workout, "%s", "workouts/Custom Workout.txt");
+    fprintf(current_workout, "%s|%d", "workouts/Custom Workout.txt", 1);
 
     fprintf(workout_file, "%s | %d | %d | %d | %d | %d | %d | %d | %d |\n",
         workout_program.workoutname,
@@ -228,9 +228,6 @@ Exercise *read_exercises(int *exercise_lenght) {
 
         exercise[exercise_index].exercise_info = new_exercise_info;
     }
-
-
-    //read_workout_program();
     clean_exercise_database(exercise, exercise_index);
     filter_exercises_by_type(exercise, &exercise_index);
     Exercise *filtered_exercises = (Exercise *)malloc(exercise_index*sizeof(Exercise));
@@ -240,17 +237,6 @@ Exercise *read_exercises(int *exercise_lenght) {
     qsort(filtered_exercises, exercise_index, sizeof(Exercise), compare);
 
     fclose(exercise_file);
-    char answer;
-    printf("do you want to change your workout? enter 'y' for yes and 'n' for no\n");
-    scanf(" %c", &answer);
-    while (answer != 'y' && answer != 'n'){
-        printf("please enter a valid answer\n");
-        printf("do you want to change your workout? enter 'y' for yes and 'n' for no\n");
-        scanf(" %c", &answer);
-    }
-    if (answer == 'y'){
-        change_workout_program(filtered_exercises, exercise_index);
-    }
     *exercise_lenght = exercise_index;
 
     return filtered_exercises;
@@ -264,7 +250,7 @@ void return_random_quote() {
 
     if (file == NULL) {
         perror("Error opening file\n");
-        exit(1);
+        return;
     }
 
     for (int i = 0; i < count_lines_file; i++){
@@ -277,8 +263,6 @@ void return_random_quote() {
     fclose(file);
     printf("%s\n",quotes[random_index]);
 }
-
-
 
 void print_exercises(Exercise *exercise, int exercise_length){
     // Print and free the data
@@ -638,7 +622,6 @@ void scan_prog1(char *exercise, int sets){
     char location_name[80] ="exercises/";
     strcat(location_name, name);
     FILE* ex_prog = fopen(location_name, "r");
-    printf("hello");
 
     int new_weight = 0;
     int new_reps = 0;
@@ -693,9 +676,21 @@ void Chose_workout(char workout_name[STR_SIZE]){
     fclose(file);
 }
 void change_workout_program(Exercise *exercise, int exercise_length){
-
+    char answer;
     int alt_count = 0;
     char workout_name[STR_SIZE];
+
+    printf("do you want to change your workout? enter 'y' for yes and 'n' for no\n");
+    scanf(" %c", &answer);
+    while (answer != 'y' && answer != 'n'){
+        printf("please enter a valid answer\n");
+        printf("do you want to change your workout? enter 'y' for yes and 'n' for no\n");
+        scanf(" %c", &answer);
+    }
+    if (answer == 'n'){
+        return;
+    }
+
     Chose_workout(workout_name);
     char workout_name_address[STR_SIZE] = "workouts/";
     strcat(workout_name_address, workout_name);
@@ -717,7 +712,6 @@ void change_workout_program(Exercise *exercise, int exercise_length){
         }else {
             int exercise_index = choice[i] - 'a';
             if (exercise_index >= 0 && exercise_index < workout_program.amount_of_exercises[i]) {
-                //printf("Valid input for exercise: %s\n", workout_program.exercise_name[i][exercise_index]);
                 int default_index = -1;
                 int exercise_index_change = find_exercise_in_struct(exercise, exercise_length, workout_program.exercise_name[i][exercise_index], default_index);
                 if (exercise_index == -1) {
@@ -773,6 +767,8 @@ void DoEachSet(Exercise *exercises, int exercise_lenght) {
             char *name = workout_program.exercise_name[workout_day-1][j];
             scan_prog1(name, amount_of_sets);
         }
+    } else {
+        return;
     }
     if (workout_day == workout_program.amount_of_workouts) {
         workout_day = 1;
