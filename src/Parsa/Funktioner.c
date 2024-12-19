@@ -172,7 +172,7 @@ void program(){
 
 // I make a txt document where i put important about the user
 void to_file(node *firstnode, int age, int height, int weight, char gender, float protein, float calorie){
-  FILE* file = fopen("User_Data","w");
+  FILE* file = fopen(PATH_TO_DATA "User_Data","w");
   if (file == NULL) {
     printf("Error opening file\n");
     exit(EXIT_FAILURE);

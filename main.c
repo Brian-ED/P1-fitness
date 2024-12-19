@@ -1,3 +1,4 @@
+#define PATH_TO_DATA "data/"
 #include "src/include_me_in_mains.c"
 
 // TODO
