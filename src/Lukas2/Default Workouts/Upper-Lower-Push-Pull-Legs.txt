@@ -23,10 +23,10 @@ Palms-out incline biceps curl                                      | 4
 Cable Seated Lateral Raise                                         | 4
 Pendlay Row (Repeated)                                             | 4
 Seated Leg Curl                                                    | 4
-Barbell Squat To A Bench                                           | 4
-Smith machine leg press                                            | 4
+Barbell Squat To A Bench (Repeated)                                | 4
+Smith machine leg press (Repeated)                                 | 4
 Dumbbell Walking Lunge                                             | 4
-Seated Leg Curl                                                    | 4
-Standing Barbell Calf Raise                                        | 4
+Seated Leg Curl (Repeated)                                         | 4
+Standing Barbell Calf Raise (Repeated)                             | 4
 Hip Extension with Bands                                           | 4
 Bodyweight Walking Lunge                                           | 4

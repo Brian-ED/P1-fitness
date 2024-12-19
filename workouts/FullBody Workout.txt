@@ -1,7 +1,7 @@
-Fullbody Workout  | 3 | 5 | 3 | 2 | 0 | 0 | 0 | 0 |
-Weighted sissy squat| 3
-Cross-body hammer curl| 3
-Dumbbell squat| 4
+Fullbody Workout | 3 | 5 | 3 | 2 | 0 | 0 | 0 | 0 |
+Single-Leg Press| 3
+EZ-bar spider curl| 3
+Jefferson Squats| 4
 Cable Deadlifts| 3
 Leg Extensions| 2
 Close-Grip Front Lat Pulldown| 3

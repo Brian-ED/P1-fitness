@@ -46,7 +46,7 @@ int compare(const void *s1, const void *s2);
 void filter_exercises_by_type(Exercise *exercise, int *exercise_length);
 Exercise_index get_index_from_list(Exercise *exercise, char musclegroup[STR_SIZE],char muscletarget[STR_SIZE], int exercise_length);
 void delete_spaces(char str[]);
-void clean_struct(Exercise *exercise, int exercise_length);
+void clean_exercise_database(Exercise *exercise, int exercise_length);
 int change_exercise(int exercise_to_change, Exercise *exercise, int *alt_count, int exercise_length);
 int find_exercise_in_struct(Exercise *exercise, int exercise_length, char exercise_name[STR_SIZE], int defaultIndex);
 void change_workout_program(Exercise *exercise, int exercise_length);
@@ -87,7 +87,6 @@ void SaveProgramToWorkoutFile() {
 }
 
 void read_workout_program(char workout_name[STR_SIZE]) {
-
     FILE *workout_file = openSafe(workout_name, "r");
     fscanf(workout_file, "%99[^|] | %d | %d | %d | %d | %d | %d | %d | %d |\n",
         workout_program.workoutname,
@@ -113,60 +112,53 @@ void read_workout_program(char workout_name[STR_SIZE]) {
 
 void print_workout_program(Exercise *exercise, int exercise_length){
 
-    int default_index = -1;
-    //allocate later!!
     Exercise exercise_to_print[100];
-    int while_true = 1;
-    char letter = 'a';
-    char choice;
+    int choice = -1;
     int exercise_count = 0;
-    while (while_true == 1){
+
+    while (1){
+        exercise_count = 0;
         for (int i = 0; i < workout_program.amount_of_workouts; i++){
-        printf("This is your workoutprogram for day %d:\n", i);
-        printf("Name:                                              Sets:  Musclegroup:    Muscletarget:   Equipment:\n");
+        printf("This is your workoutprogram for day %d:\n", i + 1);
+        printf("Index: Name:                                              Sets:  Musclegroup:    Muscletarget:   Equipment:\n");
             for(int j = 0; j < workout_program.amount_of_exercises[i]; j++){
-                int exercise_index = find_exercise_in_struct(exercise, exercise_length, workout_program.exercise_name[i][j], default_index);
+                int exercise_index = find_exercise_in_struct(
+                    exercise,
+                    exercise_length,
+                    workout_program.exercise_name[i][j],
+                    -1);
                 if (exercise_index == -1){
-                    printf("exercise not in list\n");
-                    break;
+                    printf("Exercise not in list\n");
+                    continue;;
                 }
                 exercise_to_print[exercise_count] = exercise[exercise_index];
-                printf("%-50s %-6d %-15s %-15s %-15s (%c)\n", exercise_to_print[exercise_count].name,
-                                                             workout_program.amount_of_sets[i][j],
-                                                             exercise_to_print[exercise_count].musclegroup,
-                                                             exercise_to_print[exercise_count].muscletarget,
-                                                             exercise_to_print[exercise_count].equipment,
-                                                             letter);
-                letter++;
+                printf("%-6d %-50s %-6d %-15s %-15s %-15s\n",
+                                                            exercise_count,
+                                                            exercise_to_print[exercise_count].name,
+                                                            workout_program.amount_of_sets[i][j],
+                                                            exercise_to_print[exercise_count].musclegroup,
+                                                            exercise_to_print[exercise_count].muscletarget,
+                                                            exercise_to_print[exercise_count].equipment);
                 exercise_count++;
             }
-                printf("\n");
         }
-        printf("enter letter to the right of the exercise if you want to see exercise info or press q exit: \n");
-        scanf(" %c", &choice);
-        letter = 'a';
-        for (int i = 0; i < exercise_count; i++){
-            if (choice == letter){
-                resolve_backslash(exercise_to_print[i].exercise_info);
-                resolve_newline(exercise_to_print[i].exercise_info);
-                printf("%s", exercise_to_print[i].exercise_info);
-            }
-            letter++;
+
+        printf("\nEnter the index of an exercise to view more info, or -1 to exit: ");
+        scanf("%d", &choice);
+
+        if (choice == -1) break;
+
+        if (choice >= 0 && choice < exercise_count) {
+            resolve_backslash(exercise_to_print[choice].exercise_info);
+            resolve_newline(exercise_to_print[choice].exercise_info);
+            printf("\nDetails for '%s':\n%s\n", exercise_to_print[choice].name, exercise_to_print[choice].exercise_info);
+        } else {
+            printf("Invalid choice. Please try again.\n");
         }
-        printf("\npress q to start workout or press p to reveiw another exercise\n");
-        scanf(" %c", &choice);
-        while (1){
-            if (choice == 'q'){
-                while_true = 0;
-                break;
-            } else if (choice == 'p'){
-                break;
-            } else {
-                printf("please chose a valid input\n");
-                scanf(" %c", &choice);
-                continue;
-            }
-        }
+
+        printf("\nPress -1 to quit or any other number to continue reviewing exercises: ");
+        scanf("%d", &choice);
+        if (choice == -1) break;
     }
 }
 
@@ -239,7 +231,7 @@ Exercise *read_exercises(int *exercise_lenght) {
 
 
     //read_workout_program();
-    clean_struct(exercise, exercise_index);
+    clean_exercise_database(exercise, exercise_index);
     filter_exercises_by_type(exercise, &exercise_index);
     Exercise *filtered_exercises = (Exercise *)malloc(exercise_index*sizeof(Exercise));
     memcpy(filtered_exercises, exercise, exercise_index*sizeof(Exercise));
@@ -264,6 +256,29 @@ Exercise *read_exercises(int *exercise_lenght) {
     return filtered_exercises;
 
 }
+
+void return_random_quote() {
+    FILE* file = fopen("Quotes.txt", "r");
+    int count_lines_file = count_lines(file);
+    char quotes[count_lines_file][5000];
+
+    if (file == NULL) {
+        perror("Error opening file\n");
+        exit(1);
+    }
+
+    for (int i = 0; i < count_lines_file; i++){
+        fscanf(file, "%4999[^\n]\n", quotes[i]);
+    }
+    int size = sizeof(quotes) / sizeof(quotes[0]);
+    srand(time(NULL));
+    int random_index = rand() %size;
+
+    fclose(file);
+    printf("%s\n",quotes[random_index]);
+}
+
+
 
 void print_exercises(Exercise *exercise, int exercise_length){
     // Print and free the data
@@ -422,11 +437,11 @@ Exercise_index get_index_from_list(Exercise *exercise, char musclegroup[STR_SIZE
 
     // binary search to find the upper bound
     int lower_bound = 0;
-    int s = exercise_length;
+    int speed = exercise_length;
     int dir = 1;
     int preference = -1;
-    while (s /= 2) { // Approching a fixed-point
-        lower_bound += dir*s;
+    while (speed /= 2) { // Approching a fixed-point
+        lower_bound += dir*speed;
         int dir = strcmp(exercise[lower_bound].muscletarget, muscletarget);
         if (0 == dir) {dir = strcmp(exercise[lower_bound].musclegroup, musclegroup);}
         if (0>dir) {dir = -1;};
@@ -441,11 +456,11 @@ Exercise_index get_index_from_list(Exercise *exercise, char musclegroup[STR_SIZE
 
     // binary search to find the lower bound
     int upper_bound = 0;
-    s = exercise_length;
+    speed = exercise_length;
     dir = 1;
     preference = 1;
-    while (s/=2) { // Approching a fixed-point
-        upper_bound += dir*s;
+    while (speed/=2) { // Approching a fixed-point
+        upper_bound += dir*speed;
         int dir = strcmp(exercise[upper_bound].muscletarget, muscletarget);
         if (0 == dir) {dir = strcmp(exercise[upper_bound].musclegroup, musclegroup);}
         if (0>dir) {dir = -1;};
@@ -464,7 +479,7 @@ Exercise_index get_index_from_list(Exercise *exercise, char musclegroup[STR_SIZE
     };
 }
 
-void clean_struct(Exercise *exercise, int exercise_length){
+void clean_exercise_database(Exercise *exercise, int exercise_length){
     for (int i=0; i<exercise_length; i++){
         delete_spaces(exercise[i].name);
         delete_spaces(exercise[i].musclegroup);
@@ -518,6 +533,7 @@ progression1 calculate_new_weight1(char *filename, int *new_weight, int *new_rep
     // Reads in data from exercise file
     double x[300], y[300];
     int n = 0;
+    int last_weight_change = 0;
     FILE *file = fopen(filename, "r");
     while (fscanf(
         file, "%d %d %d %d %d %d %d %d %d",
@@ -531,19 +547,22 @@ progression1 calculate_new_weight1(char *filename, int *new_weight, int *new_rep
         &last_weight.sets[4],
         &last_weight.sets[5]
     ) == 9 ) {
-        x[n] = last_weight.week; // TODO: use actual weeks
-        y[n] = last_weight.weight;
-        n++;
+        if (last_weight.weight != last_weight_change){
+            last_weight_change = last_weight.weight;
+            x[n] = last_weight.week; // TODO: use actual weeks
+            y[n] = last_weight.weight;
+            n++;
+        }
     }
-    //printf("%lf\n",x[0]);
-    //printf("%lf\n",y[0]);
+    printf("%lf\n",x[0]);
+    printf("%lf\n",y[0]);
     int new_weight_rec= 0;
-    //if (n > 3){
-    //    Term t = log_regression(n, x, y);
-    //    printf("aa: %lf\n",t.coefficient);
-    //    new_weight_rec = 0.5+t.coefficient*log(t.exponent*(last_weight.week+1));
-    //    printf("aa: %lf\n",t.exponent);
-    //}
+    if (n > 3){
+        Term t = log_regression(n, x, y);
+        printf("aa: %lf\n",t.coefficient);
+        new_weight_rec = 0.5+t.coefficient*log(t.exponent*(last_weight.week+1));
+        printf("aa: %lf\n",t.exponent);
+    }
 
     *new_sets = last_weight.amount_of_sets;
     *new_weight = last_weight.weight;
@@ -619,6 +638,7 @@ void scan_prog1(char *exercise, int sets){
     char location_name[80] ="exercises/";
     strcat(location_name, name);
     FILE* ex_prog = fopen(location_name, "r");
+    printf("hello");
 
     int new_weight = 0;
     int new_reps = 0;
@@ -657,6 +677,10 @@ void Chose_workout(char workout_name[STR_SIZE]){
         letter++;
     }
     scanf(" %c", &choice);
+    while (choice < 'a' || choice > letter){
+        printf("please enter a valid input\n");
+        scanf(" %c", &choice);
+    }
     letter = 'a';
     for (int i = 0; i < workout_count; i++){
         if (choice == letter){
@@ -737,7 +761,7 @@ void DoEachSet(Exercise *exercises, int exercise_lenght) {
 
     answer = 0;
     printf("do you want to start next workout session? enter 'y' for yes and 'n' for no\n");
-    scanf(" n%c", &answer);
+    scanf(" %c", &answer);
     while (answer != 'y' && answer != 'n'){
         printf("please enter a valid answer\n");
         printf("do you want to start next workout session? enter 'y' for yes and 'n' for no\n");
@@ -758,13 +782,5 @@ void DoEachSet(Exercise *exercises, int exercise_lenght) {
     FILE* file1 = fopen("exercises/current_workout", "w+");
     fprintf(file1,"%s|%d", workout_name, workout_day);
 
-    //for (int i=0; i<workout_program.amount_of_workouts; i++) {
-    //    for (int j = 0; j < workout_program.amount_of_exercises[i]; j++) {
-    //        int amount_of_sets = workout_program.amount_of_sets[i][j];
-    //        char *name = workout_program.exercise_name[i][j];
-    //        printf("%d\n", amount_of_sets);
-    //        scan_prog1(name, amount_of_sets);
-    //    }
-    //}
     fclose(file1);
 }
