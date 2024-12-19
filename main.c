@@ -32,7 +32,7 @@ void FLOW_DoEachSet() {
 
 void FLOW_ReadInDataFileAndGetDate() {
     if (DEBUG) {printf("DEBUG: ReadInDataFileAndGetDate\n");}
-    ReadInDataFile();
+    // TODO: ReadInDataFile(); Reading in data is done during "DoEachSet()", and should be moved to the ReadInDataFile() function.
     GetDate();
     FLOW_DoEachSet();
 }
