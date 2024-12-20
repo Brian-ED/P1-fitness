@@ -49,9 +49,3 @@ int program_days;
 #include "settings-Parsa/Funktioner.c"
 #include "welcome_back-Jonas/welcome_back.c"
 #include "terminal_funcs-Brian/terminal-funcs.c"
-
-// ----------------------------------------------- //
-// project files excluded because they aren't used //
-// ----------------------------------------------- //
-
-// #include "testing program/functions.c"
