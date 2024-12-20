@@ -163,24 +163,26 @@ void print_workout_program(Exercise *exercise, int exercise_length){
 }
 
 Exercise *read_exercises(int *exercise_lenght) {
+    // open file containing all the scraped exercise data
     FILE* exercise_file = fopen(PATH_TO_DATA "out copy 2.txt", "r");
-
     if (exercise_file == NULL) {
         perror("Error opening file\n");
         exit(1);
     }
 
+    // Get lines of file to know how much space to allocate, then allocate exercises
     int exerciseCount = count_lines(exercise_file);
-
     Exercise *exercise = (Exercise *)malloc(exerciseCount*sizeof(Exercise)); // Array of exercises
     if (exercise == NULL) {
         perror("Memory allocation failed");
         exit(EXIT_FAILURE);
     }
-    int exercise_index;
-    for (exercise_index = 0; exercise_index < exerciseCount; exercise_index++) {
 
-        // Allocate memory for large fields dynamically
+    // Load each exercise from each row of the file
+    for (int exercise_index = 0; exercise_index < exerciseCount; exercise_index++) {
+
+        // Allocate memory for the exercise info,
+        // reallocated later to minimize space usage
         char *exercise_info = calloc(5000, sizeof(char));
 
         // Ensure malloc succeeded
@@ -228,16 +230,16 @@ Exercise *read_exercises(int *exercise_lenght) {
 
         exercise[exercise_index].exercise_info = new_exercise_info;
     }
-    clean_exercise_database(exercise, exercise_index);
-    filter_exercises_by_type(exercise, &exercise_index);
-    Exercise *filtered_exercises = (Exercise *)malloc(exercise_index*sizeof(Exercise));
-    memcpy(filtered_exercises, exercise, exercise_index*sizeof(Exercise));
+    clean_exercise_database(exercise, exerciseCount);
+    filter_exercises_by_type(exercise, &exerciseCount);
+    Exercise *filtered_exercises = (Exercise *)malloc(exerciseCount*sizeof(Exercise));
+    memcpy(filtered_exercises, exercise, exerciseCount*sizeof(Exercise));
     free(exercise);
 
-    qsort(filtered_exercises, exercise_index, sizeof(Exercise), compare);
+    qsort(filtered_exercises, exerciseCount, sizeof(Exercise), compare);
 
     fclose(exercise_file);
-    *exercise_lenght = exercise_index;
+    *exercise_lenght = exerciseCount;
 
     return filtered_exercises;
 
