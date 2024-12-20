@@ -52,9 +52,9 @@ int find_exercise_in_struct(Exercise *exercise, int exercise_length, char exerci
 void change_workout_program();
 void Chose_workout(char workout_name[STR_SIZE]);
 
-
 Workout_Program workout_program; // Array of exercises
 
+// Saves the current program the user selects to "Custom Workout.txt"
 void SaveProgramToWorkoutFile() {
     FILE *workout_file = openSafe(PATH_TO_DATA "workouts/Custom Workout.txt", "w+");
     FILE *workout_names = openSafe(PATH_TO_DATA "workouts/workout_names", "a");
@@ -86,6 +86,8 @@ void SaveProgramToWorkoutFile() {
 
 }
 
+// Read workout file in order to globally load current
+// workout into the workout_program variable
 void read_workout_program(char workout_name[STR_SIZE]) {
     FILE *workout_file = openSafe(workout_name, "r");
     fscanf(workout_file, "%99[^|] | %d | %d | %d | %d | %d | %d | %d | %d |\n",
@@ -110,6 +112,7 @@ void read_workout_program(char workout_name[STR_SIZE]) {
     fclose(workout_file);
 }
 
+// Show user exercise program info
 void print_workout_program(Exercise *exercise, int exercise_length){
 
     Exercise exercise_to_print[100];
@@ -245,6 +248,7 @@ Exercise *read_exercises(int *exercise_lenght) {
 
 }
 
+// Prints a random quote using rand() and srand()
 void return_random_quote() {
     FILE* file = fopen(PATH_TO_DATA "Quotes.txt", "r");
     int count_lines_file = count_lines(file);
@@ -266,6 +270,7 @@ void return_random_quote() {
     printf("%s\n",quotes[random_index]);
 }
 
+// Print a given exercise, utility function
 void print_exercises(Exercise *exercise, int exercise_length){
     // Print and free the data
     for (int i = 0; i < exercise_length; i++){
@@ -294,6 +299,7 @@ void print_exercises(Exercise *exercise, int exercise_length){
     }
 }
 
+// Turn \n into actual newlines
 void resolve_backslash(char *text){
     int a_index = 0;
     int e_index = 0;
@@ -310,6 +316,8 @@ void resolve_backslash(char *text){
     text[a_index] = '\0';
 }
 
+// Remove and add newlines so that there's an appropriate
+// amount of characters between each newline
 void resolve_newline(char *text){
     int a_index = 0;
     int e_index = 0;
@@ -330,10 +338,12 @@ void resolve_newline(char *text){
     }
 }
 
+// Compare two ints, returning -1 if ordered left to right, 1 right to left, 0 exactly the same.
 int intcmp(int x, int y) {
     return (x > y) - (x < y);
 }
 
+// Used to get a -1 if the ordering of the two elements is left to right, 1 if right to left, and 0 if exactly equal
 int compare(const void *s1, const void *s2){
     Exercise *e1 = (Exercise *)s1;
     Exercise *e2 = (Exercise *)s2;
