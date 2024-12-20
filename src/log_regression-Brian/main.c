@@ -18,6 +18,6 @@ int main() {
     }
 
     Term out = log_regression(n, x, y);
-    printf("\n\n The curve is y = ln(x*%4.3f)*%4.3f = x\n", out.exponent, out.coefficient);
+    printf("\n\n The curve is y = ln(x*%4.3f)*%4.3f\n", out.exponent, out.coefficient);
     return 0;
 }
