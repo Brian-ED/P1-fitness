@@ -585,14 +585,13 @@ progression1 calculate_new_weight1(char *filename, int *new_weight, int *new_rep
             n++;
         }
     }
-    printf("%lf\n",x[0]);
-    printf("%lf\n",y[0]);
     int new_weight_rec= 0;
     if (n > 3){
         Term t = log_regression(n, x, y);
-        printf("aa: %lf\n",t.coefficient);
+        // since new_weight_rec is an int, it rounds down for us.
+        // Add 0.5 so we round to nearest int instead of "flooring".
+        // Note, rounding with Int only works like floor for positive integers.
         new_weight_rec = 0.5+t.coefficient*log(t.exponent*(last_weight.week+1));
-        printf("aa: %lf\n",t.exponent);
     }
 
     *new_sets = last_weight.amount_of_sets;
