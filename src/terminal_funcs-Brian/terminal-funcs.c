@@ -31,7 +31,7 @@ void CreateDefaultProgram() {
     user_why = firstnode;
 }
 
-// Only cross platform way to check if file exists, according to https://stackoverflow.com/a/29510380
+// Cross platform way to check if file exists, according to https://stackoverflow.com/a/29510380
 int DoesDataFileExist() {
     FILE *file;
 
