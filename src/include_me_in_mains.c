@@ -44,8 +44,8 @@ int program_days;
 // project files include order //
 // --------------------------- //
 #include "utils.c"
-#include "log_regression-Brian/log_regression.c"
-#include "exercise_management-Lukas/read_from_list.c"
-#include "settings-Parsa/Funktioner.c"
-#include "welcome_back-Jonas/welcome_back.c"
-#include "terminal_funcs-Brian/terminal-funcs.c"
+#include "log_regression/log_regression.c"
+#include "exercise_management/read_from_list.c"
+#include "settings/Funktioner.c"
+#include "welcome_back/welcome_back.c"
+#include "terminal_funcs/terminal-funcs.c"
