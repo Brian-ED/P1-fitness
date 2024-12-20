@@ -7,9 +7,7 @@ int exercise_length;
 // TODO
 void ShowProgressionViaDataIfEnoughWorkoutsSavedInData() {} // Jonas
 
-#define DEBUG 1
-// #define BACKGROUND_IMAGE "content/workout-images.png"
-// #include "src/frontend-brian/frontend.c"
+#define DEBUG 0
 
 void FLOW_EndApp() {
     if (DEBUG) {printf("DEBUG: EndApp\n");}
