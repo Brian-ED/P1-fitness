@@ -49,16 +49,16 @@ void delete_spaces(char str[]);
 void clean_exercise_database(Exercise *exercise, int exercise_length);
 int change_exercise(int exercise_to_change, Exercise *exercise, int *alt_count, int exercise_length);
 int find_exercise_in_struct(Exercise *exercise, int exercise_length, char exercise_name[STR_SIZE], int defaultIndex);
-void change_workout_program(Exercise *exercise, int exercise_length);
+void change_workout_program();
 void Chose_workout(char workout_name[STR_SIZE]);
 
 
 Workout_Program workout_program; // Array of exercises
 
 void SaveProgramToWorkoutFile() {
-    FILE *workout_file = openSafe("workouts/Custom Workout.txt", "w+");
-    FILE *workout_names = openSafe("workouts/workout_names", "a");
-    FILE *current_workout = openSafe("exercises/current_workout", "w+");
+    FILE *workout_file = openSafe(PATH_TO_DATA "workouts/Custom Workout.txt", "w+");
+    FILE *workout_names = openSafe(PATH_TO_DATA "workouts/workout_names", "a");
+    FILE *current_workout = openSafe(PATH_TO_DATA "exercises/current_workout", "w+");
 
     fprintf(current_workout, "%s|%d", "workouts/Custom Workout.txt", 1);
 
@@ -163,24 +163,26 @@ void print_workout_program(Exercise *exercise, int exercise_length){
 }
 
 Exercise *read_exercises(int *exercise_lenght) {
+    // open file containing all the scraped exercise data
     FILE* exercise_file = fopen(PATH_TO_DATA "out copy 2.txt", "r");
-
     if (exercise_file == NULL) {
         perror("Error opening file\n");
         exit(1);
     }
 
+    // Get lines of file to know how much space to allocate, then allocate exercises
     int exerciseCount = count_lines(exercise_file);
-
     Exercise *exercise = (Exercise *)malloc(exerciseCount*sizeof(Exercise)); // Array of exercises
     if (exercise == NULL) {
         perror("Memory allocation failed");
         exit(EXIT_FAILURE);
     }
-    int exercise_index;
-    for (exercise_index = 0; exercise_index < exerciseCount; exercise_index++) {
 
-        // Allocate memory for large fields dynamically
+    // Load each exercise from each row of the file
+    for (int exercise_index = 0; exercise_index < exerciseCount; exercise_index++) {
+
+        // Allocate memory for the exercise info,
+        // reallocated later to minimize space usage
         char *exercise_info = calloc(5000, sizeof(char));
 
         // Ensure malloc succeeded
@@ -228,16 +230,16 @@ Exercise *read_exercises(int *exercise_lenght) {
 
         exercise[exercise_index].exercise_info = new_exercise_info;
     }
-    clean_exercise_database(exercise, exercise_index);
-    filter_exercises_by_type(exercise, &exercise_index);
-    Exercise *filtered_exercises = (Exercise *)malloc(exercise_index*sizeof(Exercise));
-    memcpy(filtered_exercises, exercise, exercise_index*sizeof(Exercise));
+    clean_exercise_database(exercise, exerciseCount);
+    filter_exercises_by_type(exercise, &exerciseCount);
+    Exercise *filtered_exercises = (Exercise *)malloc(exerciseCount*sizeof(Exercise));
+    memcpy(filtered_exercises, exercise, exerciseCount*sizeof(Exercise));
     free(exercise);
 
-    qsort(filtered_exercises, exercise_index, sizeof(Exercise), compare);
+    qsort(filtered_exercises, exerciseCount, sizeof(Exercise), compare);
 
     fclose(exercise_file);
-    *exercise_lenght = exercise_index;
+    *exercise_lenght = exerciseCount;
 
     return filtered_exercises;
 
@@ -585,14 +587,13 @@ progression1 calculate_new_weight1(char *filename, int *new_weight, int *new_rep
             n++;
         }
     }
-    printf("%lf\n",x[0]);
-    printf("%lf\n",y[0]);
     int new_weight_rec= 0;
     if (n > 3){
         Term t = log_regression(n, x, y);
-        printf("aa: %lf\n",t.coefficient);
+        // since new_weight_rec is an int, it rounds down for us.
+        // Add 0.5 so we round to nearest int instead of "flooring".
+        // Note, rounding with Int only works like floor for positive integers.
         new_weight_rec = 0.5+t.coefficient*log(t.exponent*(last_weight.week+1));
-        printf("aa: %lf\n",t.exponent);
     }
 
     *new_sets = last_weight.amount_of_sets;
@@ -721,7 +722,10 @@ void Chose_workout(char workout_name[STR_SIZE]){
     }
     fclose(file);
 }
-void change_workout_program(Exercise *exercise, int exercise_length){
+void change_workout_program(){
+    int exercise_length;
+    Exercise *exercise = read_exercises(&exercise_length);
+
     char answer;
     int alt_count = 0;
     char workout_name[STR_SIZE];
@@ -738,7 +742,7 @@ void change_workout_program(Exercise *exercise, int exercise_length){
     }
 
     Chose_workout(workout_name);
-    char workout_name_address[STR_SIZE] = "workouts/";
+    char workout_name_address[STR_SIZE] = PATH_TO_DATA "workouts/";
     strcat(workout_name_address, workout_name);
     read_workout_program(workout_name_address);
     char choice[7];
@@ -760,8 +764,8 @@ void change_workout_program(Exercise *exercise, int exercise_length){
             if (exercise_index >= 0 && exercise_index < workout_program.amount_of_exercises[i]) {
                 int default_index = -1;
                 int exercise_index_change = find_exercise_in_struct(exercise, exercise_length, workout_program.exercise_name[i][exercise_index], default_index);
-                if (exercise_index == -1) {
-                    printf("exercise not found in database");
+                if (exercise_index_change == -1) {
+                    printf("exercise not found in database\n");
                     //!!modify to delete exercise later and ask user for new
                     i--;
                     break;
@@ -779,11 +783,13 @@ void change_workout_program(Exercise *exercise, int exercise_length){
 }
 
 void DoEachSet(Exercise *exercises, int exercise_lenght) {
-    char workout_name[STR_SIZE];
+    char workout_name[STR_SIZE] = PATH_TO_DATA;
+    char workout_name_temp[STR_SIZE] = "";
     int workout_day;
     FILE* file = fopen(PATH_TO_DATA "exercises/current_workout", "r");
-    fscanf(file, "%99[^|] | %d", workout_name, &workout_day);
+    fscanf(file, "%99[^|] | %d", workout_name_temp, &workout_day);
     fclose(file);
+    strcat(workout_name, workout_name_temp);
     read_workout_program(workout_name);
 
     char answer;

@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-//#include "../Parsa/Funktioner.c"
 
 #define BACKGROUND_IMAGE "../../content/workout-images.png"
 #include "../frontend-brian/frontend.c"

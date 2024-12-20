@@ -1,7 +1,5 @@
 #define WEEKS_TO_SECONDS (60.0*60.0*24.0*7.0)
 
-node *user_why;
-
 void GetDate(void) {
     time_t t = time(NULL);
     week_number = ((double)t)/WEEKS_TO_SECONDS;
@@ -33,7 +31,7 @@ void CreateDefaultProgram() {
     user_why = firstnode;
 }
 
-// Only cross platform way to check if file exists, according to https://stackoverflow.com/a/29510380
+// Cross platform way to check if file exists, according to https://stackoverflow.com/a/29510380
 int DoesDataFileExist() {
     FILE *file;
 
@@ -82,13 +80,12 @@ int DoesUserWantToAddNewWeight() {
 }
 
 void ChangeWorkoutViaAskingQuestions() {
-
     if (DoesUserWantToChangeDaysPerWeek()) {
         // How many days a week
         program(); // Also calculates calories needed and protein goals
     }
     if (change_exercises_or_not()) {
-        // LikeOrDislikeCertainExercises();
+        change_workout_program();
     }
 }
 
@@ -159,71 +156,5 @@ int DoesUserWantToStartAWorkoutSession(void) {
 void SaveUserOptionsToFile() {
     to_file(user_why, age, height, weight, gender, protein, calorie);
     system("notepad " PATH_TO_DATA "User_Data");
-}
-
-// Defined but does nothing.
-// File saving is currently happening during workout, not all in one go.
-// Should probably be changed to be all in one go, since that would be safer
-void WriteChangedWorkoutToFile() {}
-
-void ReadInDataFile() {
-    char *why;
-    char genderText[8];
-    int days;
-
-    FILE *file = fopen(PATH_TO_DATA "User_Data", "r+");
-    if (file == NULL) {
-        printf("Error opening file");
-        exit(1);
-    }
-    fscanf(file, " --- Your Very Own Document ---\n");
-    fscanf(file, "\n");
-    fscanf(file, "\n");
-    fscanf(file, "User's Why: ");
-
-    node *firstnode = NULL, *currentnode = NULL;
-    int index = 0;
-    char c;
-    while ((c=fgetc(file)) == '\n') {} // Clearing newlines still present in stdin
-    do {
-        if (!currentnode || index == SIZE_NO_LIMIT - 1) { //The element of the list starts from 0, there for it is important to minus 1.
-            node *node2 = (node *)malloc(sizeof(node));
-            if (!node2) {
-                printf("Can't allocate memory");
-                exit(EXIT_FAILURE);
-            }
-            node2 -> nextnode = NULL;
-            if (!firstnode) {
-                firstnode = node2;
-            } else {
-                currentnode -> nextnode = node2;
-            }
-            currentnode = node2;
-            index = 0;
-        }
-        currentnode -> your_why[index++] = c;
-    } while ((c=fgetc(file)) != '\n' && c != EOF);
-
-    fscanf(file, "Personal Information:\n");
-    fscanf(file, "Age: %d\n", &age);
-    fscanf(file, "Height: %d cm\n", &height);
-    fscanf(file, "Weight: %d kg\n", &weight);
-    fscanf(file, "Gender: %s\n", genderText);
-    fscanf(file, "\n");
-    fscanf(file, "Training:\n");
-    fscanf(file, "Days: %d\n", &days);
-    fscanf(file, "\n");
-    fscanf(file, "Nutritional Needs:\n");
-    fscanf(file, "Protein Requirement: %f grams/day\n", &protein);
-    fscanf(file, "Calorie Requirement: %f calories/day\n", &calorie);
-    if (!strcmp(genderText, "Male")) {
-        gender = 'm';
-    } else if (!strcmp(genderText, "Female")) {
-        gender = 'f';
-    }
-    if (user_why != NULL) {
-        free_space(user_why);
-    }
-    user_why = firstnode;
 }
 

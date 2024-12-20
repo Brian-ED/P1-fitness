@@ -3,22 +3,10 @@
 #include <string.h>
 #include <math.h>
 
-//the size of character array in each linked list node
-#define SIZE_NO_LIMIT 16
-
 void DisplayIntroductionMessage() {
   printf("Welcome to a new chapter in your life\n");
   printf("Welcome to (APP name)\n");
 };
-
-/* struct: your_why = fixed-size array for storing some of input
- * nextnode = pointer to the next node in the linked list
- * this struct enables efficient memory management because of the fixed-sized array
- */
-typedef struct node {
-  char your_why[SIZE_NO_LIMIT];
-  struct node *nextnode;
-} node;
 
 /* reading the input that is in the linked list
  * Initialization:
@@ -125,7 +113,8 @@ void CalculateCaloryIntake() {
   } else if (gender == 'f'){
     calorie = -5*age - 161;
   } else {
-    exit(1);
+    printf("%c a\n",gender);
+    exit(0);
   }
   calorie += 1.5*10*weight + 6.25*height;
 }
@@ -199,7 +188,70 @@ void free_space(node *firstnode){
   freemyguy(firstnode); //frees the memory
 }
 void ShowAndAskAndSaveUserOptions() {
-  node *firstnode = scaningwhy();
+  DisplayIntroductionMessage();
+  user_why = scaningwhy();
   info();
-  printf("open the document \"User_Data\" to view relevant data related to your training journey\n");
+  program();
+  to_file(user_why, age, height, weight, gender, protein, calorie);
+}
+
+void ReadInDataFile() {
+    char *why;
+    char genderText[8];
+    int days;
+
+    FILE *file = fopen(PATH_TO_DATA "User_Data", "r+");
+    if (file == NULL) {
+        printf("Error opening file");
+        exit(1);
+    }
+    fscanf(file, " --- Your Very Own Document ---\n");
+    fscanf(file, "\n");
+    fscanf(file, "\n");
+    fscanf(file, "User's Why: ");
+
+    node *firstnode = NULL, *currentnode = NULL;
+    int index = 0;
+    char c;
+    while ((c=fgetc(file)) == '\n') {} // Clearing newlines still present in stdin
+    do {
+        if (!currentnode || index == SIZE_NO_LIMIT - 1) { //The element of the list starts from 0, there for it is important to minus 1.
+            node *node2 = (node *)malloc(sizeof(node));
+            if (!node2) {
+                printf("Can't allocate memory");
+                exit(EXIT_FAILURE);
+            }
+            node2 -> nextnode = NULL;
+            if (!firstnode) {
+                firstnode = node2;
+            } else {
+                currentnode -> nextnode = node2;
+            }
+            currentnode = node2;
+            index = 0;
+        }
+        currentnode -> your_why[index++] = c;
+    } while ((c=fgetc(file)) != '\n' && c != EOF);
+
+    fscanf(file, "Personal Information:\n");
+    fscanf(file, "Age: %d\n", &age);
+    fscanf(file, "Height: %d cm\n", &height);
+    fscanf(file, "Weight: %d kg\n", &weight);
+    fscanf(file, "Gender: %s\n", genderText);
+    fscanf(file, "\n");
+    fscanf(file, "Training:\n");
+    fscanf(file, "Days: %d\n", &days);
+    fscanf(file, "\n");
+    fscanf(file, "Nutritional Needs:\n");
+    fscanf(file, "Protein Requirement: %f grams/day\n", &protein);
+    fscanf(file, "Calorie Requirement: %f calories/day\n", &calorie);
+    if (!strcmp(genderText, "Male")) {
+        gender = 'm';
+    } else if (!strcmp(genderText, "Female")) {
+        gender = 'f';
+    }
+    if (user_why != NULL) {
+        free_space(user_why);
+    }
+    user_why = firstnode;
 }

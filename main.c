@@ -1,12 +1,7 @@
 #define PATH_TO_DATA "data/"
 #include "src/include_me_in_mains.c"
 
-// TODO
-void ShowProgressionViaDataIfEnoughWorkoutsSavedInData() {} // Jonas
-
-#define DEBUG 1
-// #define BACKGROUND_IMAGE "content/workout-images.png"
-// #include "src/frontend-brian/frontend.c"
+#define DEBUG 0
 
 void FLOW_EndApp() {
     if (DEBUG) {printf("DEBUG: EndApp\n");}
@@ -20,22 +15,19 @@ void FLOW_SaveRepsToWorkoutFile() {
     FLOW_EndApp();
 }
 
-void FLOW_DoEachSet() {
+void FLOW_DoEachSet(Exercise *exercises, int exercise_length) {
     if (DEBUG) {printf("DEBUG: DoEachSet\n");}
-
-    int exercise_lenght;
-    Exercise *exercises = read_exercises(&exercise_lenght);
-    GetDate();
-    DoEachSet(exercises, exercise_lenght);
-
+    return_random_quote();
+    DoEachSet(exercises, exercise_length);
     FLOW_SaveRepsToWorkoutFile();
 }
 
 void FLOW_ReadInDataFileAndGetDate() {
     if (DEBUG) {printf("DEBUG: ReadInDataFileAndGetDate\n");}
-    // TODO: ReadInDataFile(); Reading in data is done during "DoEachSet()", and should be moved to the ReadInDataFile() function.
+    int exercise_length;
+    Exercise *exercises = read_exercises(&exercise_length);
     GetDate();
-    FLOW_DoEachSet();
+    FLOW_DoEachSet(exercises, exercise_length);
 }
 
 void FLOW_DoesUserWantToStartAWorkoutSession() {
@@ -49,7 +41,7 @@ void FLOW_DoesUserWantToStartAWorkoutSession() {
 
 void FLOW_ShowProgressionViaDataIfEnoughWorkoutsSavedInData() {
     if (DEBUG) {printf("DEBUG: ShowProgressionViaDataIfEnoughWorkoutsSavedInData\n");}
-    ShowProgressionViaDataIfEnoughWorkoutsSavedInData();
+    // TODO: ShowProgressionViaDataIfEnoughWorkoutsSavedInData(); This is done in DoEachSet(), should be a seperate function
     FLOW_DoesUserWantToStartAWorkoutSession();
 }
 
@@ -83,6 +75,7 @@ void FLOW_ShowAndAskOptions() {
 
 void FLOW_DoesUserWantToChangeOptions() {
     if (DEBUG) {printf("DEBUG: DoesUserWantToChangeOptions\n");}
+    ReadInDataFile();
     if (DoesUserWantToChangeOptions()) {
         FLOW_ShowAndAskOptions();
     } else {
@@ -92,7 +85,7 @@ void FLOW_DoesUserWantToChangeOptions() {
 
 void FLOW_WriteChangedWorkoutToFile() {
     if (DEBUG) {printf("DEBUG: WriteChangedWorkoutToFile\n");}
-    WriteChangedWorkoutToFile();
+    // WriteChangedWorkoutToFile(); TODO: File saving is currently happening during workout, not all in one go. Should probably be changed to be all in one go, since that would be safer
     FLOW_DoesUserWantToChangeOptions();
 }
 
