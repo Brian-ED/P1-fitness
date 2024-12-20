@@ -576,7 +576,7 @@ int change_exercise(int exercise_to_change, Exercise *exercise, int *alt_count, 
 }
 
 // calculate next suggested progression for user
-progression1 calculate_new_weight1(char *filename, int *new_weight, int *new_reps, int *new_sets){
+progression1 calculate_new_weight(char *filename, int *new_weight, int *new_reps, int *new_sets){
     progression1 last_weight;
     // Reads in data from exercise file
     double x[300], y[300];
@@ -645,7 +645,7 @@ progression1 calculate_new_weight1(char *filename, int *new_weight, int *new_rep
 }
 
 // write new progression to txt file
-progression1 new_progression1(char *filename, progression1 last_weight, int new_weight, int new_reps, int new_sets){
+progression1 new_progression(char *filename, progression1 last_weight, int new_weight, int new_reps, int new_sets){
     progression1 new_weight_data = { 0 };
     FILE *file = fopen(filename, "a");
 
@@ -678,7 +678,7 @@ progression1 new_progression1(char *filename, progression1 last_weight, int new_
     return new_weight_data;
 }
 
-void scan_prog1(char *exercise, int sets){
+void scan_prog(char *exercise, int sets){
     int text;
     printf("your current exercise is: %s\n", exercise);
     char *name = strcat(exercise, ".prog.txt");
@@ -697,9 +697,9 @@ void scan_prog1(char *exercise, int sets){
         scanf("%d", &new_weight);
         new_sets = sets;
     } else {
-        last_weight = calculate_new_weight1(location_name, &new_weight, &new_reps, &new_sets);
+        last_weight = calculate_new_weight(location_name, &new_weight, &new_reps, &new_sets);
     }
-    progression1 new_weight_data = new_progression1(location_name, last_weight, new_weight, new_reps, new_sets);
+    progression1 new_weight_data = new_progression(location_name, last_weight, new_weight, new_reps, new_sets);
 
     fclose(ex_prog);
 }
@@ -832,7 +832,7 @@ void DoEachSet(Exercise *exercises, int exercise_lenght) {
         for (int j = 0; j < workout_program.amount_of_exercises[workout_day-1]; j++) {
             int amount_of_sets = workout_program.amount_of_sets[workout_day-1][j];
             char *name = workout_program.exercise_name[workout_day-1][j];
-            scan_prog1(name, amount_of_sets);
+            scan_prog(name, amount_of_sets);
         }
     } else {
         return;
