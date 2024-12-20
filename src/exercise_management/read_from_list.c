@@ -403,6 +403,7 @@ void get_category_names_exercises(Exercise *exercise, int exercise_length, char 
     }
 }
 
+// deletes unneded exercises
 void filter_exercises_by_type(Exercise *exercise, int *exercise_length) {
 
     int index_count_list = 0;
@@ -513,6 +514,7 @@ Exercise_index get_index_from_list(Exercise *exercise, char musclegroup[STR_SIZE
     };
 }
 
+// Delete trailing spaces on all strings in all exercises
 void clean_exercise_database(Exercise *exercise, int exercise_length){
     for (int i=0; i<exercise_length; i++){
         delete_spaces(exercise[i].name);
@@ -527,12 +529,15 @@ void clean_exercise_database(Exercise *exercise, int exercise_length){
     }
 }
 
+// Remove trailing spaces, the last spaces in the string
 void delete_spaces(char str[]){
     int i = strlen(str)-1;
     while (i>0 && str[i]==' ') {i--;}
     str[i+1] = '\0';
 }
 
+// Linear search through struct
+// TODO: Use binary search
 int find_exercise_in_struct(Exercise *exercise, int exercise_length, char exercise_name[STR_SIZE], int default_index){
     int exercise_index = 0;
     while (exercise_index < exercise_length && strcmp(exercise[exercise_index].name, exercise_name)) {
