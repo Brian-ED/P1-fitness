@@ -69,17 +69,16 @@ void FLOW_SaveUserOptionsToFile() {
 
 void FLOW_ShowAndAskOptions() {
     if (DEBUG) {printf("DEBUG: ShowAndAskOptions\n");}
-    ReadInDataFile();
     ShowAndAskAndSaveUserOptions();
     FLOW_SaveUserOptionsToFile();
 }
 
 void FLOW_DoesUserWantToChangeOptions() {
     if (DEBUG) {printf("DEBUG: DoesUserWantToChangeOptions\n");}
+    ReadInDataFile();
     if (DoesUserWantToChangeOptions()) {
         FLOW_ShowAndAskOptions();
     } else {
-        ReadInDataFile();
         FLOW_DoesUserWantToAddNewWeight();
     }
 }
