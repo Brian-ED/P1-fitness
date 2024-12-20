@@ -4,9 +4,6 @@
 Exercise *exercises;
 int exercise_length;
 
-// TODO
-void ShowProgressionViaDataIfEnoughWorkoutsSavedInData() {} // Jonas
-
 #define DEBUG 0
 
 void FLOW_EndApp() {
@@ -46,7 +43,7 @@ void FLOW_DoesUserWantToStartAWorkoutSession() {
 
 void FLOW_ShowProgressionViaDataIfEnoughWorkoutsSavedInData() {
     if (DEBUG) {printf("DEBUG: ShowProgressionViaDataIfEnoughWorkoutsSavedInData\n");}
-    ShowProgressionViaDataIfEnoughWorkoutsSavedInData();
+    // TODO: ShowProgressionViaDataIfEnoughWorkoutsSavedInData(); This is done in DoEachSet(), should be a seperate function
     FLOW_DoesUserWantToStartAWorkoutSession();
 }
 
