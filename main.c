@@ -1,9 +1,6 @@
 #define PATH_TO_DATA "data/"
 #include "src/include_me_in_mains.c"
 
-Exercise *exercises;
-int exercise_length;
-
 #define DEBUG 0
 
 void FLOW_EndApp() {
@@ -18,7 +15,7 @@ void FLOW_SaveRepsToWorkoutFile() {
     FLOW_EndApp();
 }
 
-void FLOW_DoEachSet() {
+void FLOW_DoEachSet(Exercise *exercises, int exercise_length) {
     if (DEBUG) {printf("DEBUG: DoEachSet\n");}
     return_random_quote();
     DoEachSet(exercises, exercise_length);
@@ -27,9 +24,10 @@ void FLOW_DoEachSet() {
 
 void FLOW_ReadInDataFileAndGetDate() {
     if (DEBUG) {printf("DEBUG: ReadInDataFileAndGetDate\n");}
-    exercises = read_exercises(&exercise_length);
+    int exercise_length;
+    Exercise *exercises = read_exercises(&exercise_length);
     GetDate();
-    FLOW_DoEachSet();
+    FLOW_DoEachSet(exercises, exercise_length);
 }
 
 void FLOW_DoesUserWantToStartAWorkoutSession() {
@@ -94,7 +92,7 @@ void FLOW_WriteChangedWorkoutToFile() {
 
 void FLOW_ChangeWorkoutViaAskingUserQuestions() {
     if (DEBUG) {printf("DEBUG: ChangeWorkoutViaAskingUserQuestions\n");}
-    ChangeWorkoutViaAskingQuestions(exercises, exercise_length);
+    ChangeWorkoutViaAskingQuestions();
     FLOW_WriteChangedWorkoutToFile();
 }
 

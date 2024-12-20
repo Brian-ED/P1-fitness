@@ -79,14 +79,13 @@ int DoesUserWantToAddNewWeight() {
     exit(1);
 }
 
-void ChangeWorkoutViaAskingQuestions(Exercise *exercises, int exercise_length) {
-
+void ChangeWorkoutViaAskingQuestions() {
     if (DoesUserWantToChangeDaysPerWeek()) {
         // How many days a week
         program(); // Also calculates calories needed and protein goals
     }
     if (change_exercises_or_not()) {
-        change_workout_program(exercises, exercise_length);
+        change_workout_program();
     }
 }
 

@@ -49,7 +49,7 @@ void delete_spaces(char str[]);
 void clean_exercise_database(Exercise *exercise, int exercise_length);
 int change_exercise(int exercise_to_change, Exercise *exercise, int *alt_count, int exercise_length);
 int find_exercise_in_struct(Exercise *exercise, int exercise_length, char exercise_name[STR_SIZE], int defaultIndex);
-void change_workout_program(Exercise *exercise, int exercise_length);
+void change_workout_program();
 void Chose_workout(char workout_name[STR_SIZE]);
 
 
@@ -720,7 +720,10 @@ void Chose_workout(char workout_name[STR_SIZE]){
     }
     fclose(file);
 }
-void change_workout_program(Exercise *exercise, int exercise_length){
+void change_workout_program(){
+    int exercise_length;
+    Exercise *exercise = read_exercises(&exercise_length);
+
     char answer;
     int alt_count = 0;
     char workout_name[STR_SIZE];
