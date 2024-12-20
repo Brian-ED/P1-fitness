@@ -167,7 +167,7 @@ void print_workout_program(Exercise *exercise, int exercise_length){
 
 Exercise *read_exercises(int *exercise_lenght) {
     // open file containing all the scraped exercise data
-    FILE* exercise_file = fopen(PATH_TO_DATA "out copy 2.txt", "r");
+    FILE* exercise_file = fopen(PATH_TO_DATA "exercise-database.txt", "r");
     if (exercise_file == NULL) {
         perror("Error opening file\n");
         exit(1);
