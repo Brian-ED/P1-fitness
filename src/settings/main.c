@@ -3,6 +3,7 @@
 
 int main() {
   ShowAndAskAndSaveUserOptions();
+  ReadInDataFile();
   return 0;
 }
 

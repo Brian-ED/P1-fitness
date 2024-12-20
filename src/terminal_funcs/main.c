@@ -4,7 +4,6 @@
 int main(void) {
     GetDate();
     printf("Day %d, Week %d.\n", day_of_the_week, week_number);
-    ReadInDataFile();
 
 //    printf("%d\n", age);
 //    printf("%d\n", height);

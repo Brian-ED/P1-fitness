@@ -76,6 +76,9 @@ void FLOW_ShowAndAskOptions() {
 void FLOW_DoesUserWantToChangeOptions() {
     if (DEBUG) {printf("DEBUG: DoesUserWantToChangeOptions\n");}
     ReadInDataFile();
+    printf("Your current recommended protein intake is: %d\n",(int)protein);
+    printf("Your current recommended calorie intake is: %d\n",(int)calorie);
+
     if (DoesUserWantToChangeOptions()) {
         FLOW_ShowAndAskOptions();
     } else {
