@@ -1,9 +1,5 @@
-#define WEEKS_TO_SECONDS (60.0*60.0*24.0*7.0)
-
 void GetDate(void) {
     time_t t = time(NULL);
-    week_number = ((double)t)/WEEKS_TO_SECONDS;
-
     struct tm *tm = localtime(&t);
     day_of_the_week = tm->tm_wday;
 }
@@ -157,4 +153,3 @@ void SaveUserOptionsToFile() {
     to_file(user_why, age, height, weight, gender, protein, calorie);
     system("notepad " PATH_TO_DATA "User_Data");
 }
-
