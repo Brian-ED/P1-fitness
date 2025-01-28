@@ -113,8 +113,7 @@ void CalculateCaloryIntake() {
   } else if (gender == 'f'){
     calorie = -5*age - 161;
   } else {
-    printf("%c a\n",gender);
-    exit(0);
+    calorie = -5*age + 5;
   }
   calorie += 1.5*10*weight + 6.25*height;
 }

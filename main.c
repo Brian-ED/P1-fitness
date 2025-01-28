@@ -140,6 +140,7 @@ void FLOW_AskUserIfTheyWantToChangeOptionsAndOrWorkout() {
 void FLOW_DoesDataFileExist() {
     if (DEBUG) {printf("DEBUG: DoesDataFileExist\n");}
     if (DoesDataFileExist()) {
+        ReadInDataFile();
         FLOW_AskUserIfTheyWantToChangeOptionsAndOrWorkout();
     } else {
         FLOW_DisplayIntroduction();

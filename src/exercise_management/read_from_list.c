@@ -843,7 +843,7 @@ void DoEachSet(Exercise *exercises, int exercise_lenght) {
         workout_day++;
     }
     FILE* file1 = fopen(PATH_TO_DATA "exercises/current_workout", "w+");
-    fprintf(file1,"%s|%d", workout_name, workout_day);
+    fprintf(file1,"%s|%d", workout_name_temp, workout_day);
 
     fclose(file1);
 }
